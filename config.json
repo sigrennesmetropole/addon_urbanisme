@@ -1,0 +1,22 @@
+[
+    {
+        "id": "urbanisme_0",
+        "enabled": true,
+        "name": "Urbanisme",
+        "options" : {
+            "cadastrappUrl": "http://localhost:8080/"
+        },
+        "title": {
+            "en": "Land Planning",
+            "es": "Urbanisme",
+            "fr": "Urbanisme",
+            "de": "Urbanisme"
+        },
+        "description": {
+            "en": "Urban planning information",
+            "fr": "Information urbanistique",
+            "es": "...",
+            "de": "..."
+        }
+    }
+]
