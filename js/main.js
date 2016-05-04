@@ -32,6 +32,11 @@ Ext.namespace("GEOR.data");
             NoteStore.superclass.constructor.call(this, config);
 
         },
+        updateCommune: function(communeResp) {
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("commune", communeResp.get("libcom_min"));
+            this.add([noteRecord]);
+        },
         updateParcelle: function(parcelleRecord) {
             //We have trouble with record commit, we copy the record, update it, then add it
             var noteRecord = this.getAt(0).copy();
@@ -113,11 +118,35 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         //We load an empty note record, we will update it with the different requests
         this.noteStore.loadData([{"parcelle": 0}]);
 
+        this.communeStore = new Ext.data.JsonStore({
+            idProperty: "cgocommune",
+            root: "",
+            fields: [
+                "cgocommune",
+                "libcom_min"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.cadastrappUrl + "getCommune"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateCommune(records[0]);
+                    },
+                    scope: this
+                }
+            }
+        });
+
+
         this.parcelleStore = new Ext.data.JsonStore({
             idProperty: "parcelle",
             root: "",
             fields: [
                 "parcelle",
+                "commune",
                 "ccopre",
                 "ccosec",
                 "dnupla",
@@ -209,7 +238,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<table class="table-parcelle">',
                             '<tr>',
                             '<td class="parcelle-table-label">code section</td>',
-                            '<td>{codeSection}</td>',
+                            '<td>{commune} {codeSection}</td>',
                             '</tr>',
                             '<tr>',
                             '<td class="parcelle-table-label">numéro parcelle</td>',
@@ -260,19 +289,25 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
     parcelleAction: function() {
+        var parcelle = "350238000BX0285"
+        this.communeStore.load({
+            params: {
+                cgocommune: parcelle.slice(0, 6)
+            }
+        })
         this.parcelleStore.load({
             params: {
-                parcelle: "350238000BX0285"
+                parcelle: parcelle
             }
         });
         this.renseignUrbaStore.load({
             params: {
-                parcelle: "350238000BX0285"
+                parcelle: parcelle
             }
         });
         this.proprioStore.load({
             params: {
-                parcelle: "350238000BX0285",
+                parcelle: parcelle,
                 onglet: 1
             }
         });
@@ -280,7 +315,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         OpenLayers.Request.GET({
             url: this.options.cadastrappUrl + "getInfoBulle",
             params: {
-                parcelle: "350238000BX0285"
+                parcelle: parcelle
             },
             callback: function(resp) {
                 this.noteStore.updateInfoBulle(resp.responseText);
