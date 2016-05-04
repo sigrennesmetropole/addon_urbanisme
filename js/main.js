@@ -47,6 +47,12 @@ Ext.namespace("GEOR.data");
                 " " + parcelleRecord.get("dvoilib"));
             noteRecord.set("contenanceDGFiP", parcelleRecord.get("dcntpa"));
             this.add([noteRecord]);
+        },
+        updateInfoBulle: function(infoBulleResp) {
+            var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
+                noteRecord = this.getAt(0).copy();
+            noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
+            this.add([noteRecord]);
         }
     });
 
@@ -189,6 +195,16 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.parcelleStore.load({
             params: {
                 parcelle: "350238000BX0285"
+            }
+        });
+        //No store because getInfoBulle don't return an array
+        OpenLayers.Request.GET({
+            url: this.options.cadastrappUrl + "getInfoBulle",
+            params: {
+                parcelle: "350238000BX0285"
+            },
+            callback: function(resp) {
+                this.noteStore.updateInfoBulle(resp.responseText);
             },
             scope: this
         });
