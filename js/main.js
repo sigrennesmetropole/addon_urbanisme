@@ -192,7 +192,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.parcelleWindow = new Ext.Window({
             title: this.getText(record),
             width: 640,
-            height: 540,
+            height: 380,
             closeAction: "hide",
             items: [{
                 xtype: "panel",
@@ -203,37 +203,41 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         store: this.noteStore,
                         tpl: new Ext.XTemplate(
                             '<tpl for=".">',
+                            '<div class="parcelle">',
+                            '<h1>Réglementation applicable à la parcelle Cadastrale</h1>',
+                            '<h2>{parcelle}</h2>',
                             '<table class="table-parcelle">',
                             '<tr>',
-                            '<td>code section</td>',
+                            '<td class="parcelle-table-label">code section</td>',
                             '<td>{codeSection}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>numéro parcelle</td>',
+                            '<td class="parcelle-table-label">numéro parcelle</td>',
                             '<td>{numero}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>adresse du terrain</td>',
+                            '<td class="parcelle-table-label">adresse du terrain</td>',
                             '<td>{adresseCadastrale}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>code Rivoli (Fantoir)</td>',
+                            '<td class="parcelle-table-label">code Rivoli (Fantoir)</td>',
                             '<td>{contenanceDGFiP}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>Surface cadastrale (m²)</td>',
+                            '<td class="parcelle-table-label">Surface cadastrale (m²)</td>',
                             '<td>{surfaceSIG}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>Code propriétaire</td>',
+                            '<td class="parcelle-table-label">Code propriétaire</td>',
                             '<td>{codeProprio}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td>Adresse propriétaire</td>',
+                            '<td class="parcelle-table-label">Adresse propriétaire</td>',
                             '<td>{adresseProprio}</td>',
                             '</tr>',
                             '</table>',
                             '<p>Zone {libelle}</p>',
+                            '</div>',
                             '</tpl>'
                         )
                     }
@@ -241,6 +245,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }],
             buttons: [
                 {
+                    //TODO tr
+                    text: "Export"
+                }, {
                     //TODO tr
                     text: "Close",
                     handler: function() {
