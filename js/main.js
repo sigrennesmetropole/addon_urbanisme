@@ -53,6 +53,18 @@ Ext.namespace("GEOR.data");
                 noteRecord = this.getAt(0).copy();
             noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
             this.add([noteRecord]);
+        },
+        updateRenseignUrba: function(renseignUrbarRecord) {
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("libelle", renseignUrbarRecord.get("libelle"));
+            this.add([noteRecord]);
+        },
+        updateProprio: function(proprioRecord) {
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
+            noteRecord.set("adresseProprio", proprioRecord.get("dlign4") + " " + proprioRecord.get("dlign5") + " " +
+                proprioRecord.get("dlign6"));
+            this.add([noteRecord]);
         }
     });
 
@@ -98,6 +110,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             this.target.doLayout();
         }
 
+        //We load an empty note record, we will update it with the different requests
+        this.noteStore.loadData([{"parcelle": 0}]);
+
         this.parcelleStore = new Ext.data.JsonStore({
             idProperty: "parcelle",
             root: "",
@@ -126,7 +141,53 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
-        this.noteStore.loadData([{"parcelle": 0}]);
+        this.proprioStore = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "parcelle",
+                "comptecommunal",
+                "ddenom",
+                "dlign4",
+                "dlign5",
+                "dlign6"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.cadastrappUrl + "getFIC"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateProprio(records[0]);
+                    },
+                    scope: this
+                }
+            }
+        });
+
+        this.renseignUrbaStore = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "parcelle",
+                "libelle"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.cadastrappUrl + "renseignUrba"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateRenseignUrba(records[0]);
+                    },
+                    scope: this
+                }
+            }
+        });
 
         this.parcelleWindow = new Ext.Window({
             title: this.getText(record),
@@ -142,7 +203,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         store: this.noteStore,
                         tpl: new Ext.XTemplate(
                             '<tpl for=".">',
-                            '<table>',
+                            '<table class="table-parcelle">',
                             '<tr>',
                             '<td>code section</td>',
                             '<td>{codeSection}</td>',
@@ -172,7 +233,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<td>{adresseProprio}</td>',
                             '</tr>',
                             '</table>',
-                            '<p>{libelle}</p>',
+                            '<p>Zone {libelle}</p>',
                             '</tpl>'
                         )
                     }
@@ -195,6 +256,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.parcelleStore.load({
             params: {
                 parcelle: "350238000BX0285"
+            }
+        });
+        this.renseignUrbaStore.load({
+            params: {
+                parcelle: "350238000BX0285"
+            }
+        });
+        this.proprioStore.load({
+            params: {
+                parcelle: "350238000BX0285",
+                onglet: 1
             }
         });
         //No store because getInfoBulle don't return an array
