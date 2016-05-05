@@ -6,6 +6,7 @@ Ext.namespace("GEOR.Addons");
 
 Ext.namespace("GEOR.data");
 
+
 (function() {
     var NoteStore = Ext.extend(Ext.data.JsonStore, {
         constructor: function(config) {
@@ -92,6 +93,14 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     //TODO Document
     parcelleStore: null,
 
+    /** api: config[encoding]
+     * ``String`` The encoding to set in the headers when requesting the print
+     * service. Prevent character encoding issues, especially when using IE.
+     * Default is retrieved from document charset or characterSet if existing
+     * or ``UTF-8`` if not.
+     */
+    encoding: document.charset || document.characterSet || "UTF-8",
+
     /**
      * {Object} - Data representing a Note de renseignement d'urbanisme
      */
@@ -108,15 +117,22 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 tooltip: this.getTooltip(record),
                 iconCls: "addon-urbanisme",
                 listeners: {
-                    "toggle": this.parcelleAction,
+                    "toggle": function() {
+                        this.parcelleAction("350238000BX0285");
+                    },
                     scope: this
                 }
             });
             this.target.doLayout();
         }
 
-        //We load an empty note record, we will update it with the different requests
-        this.noteStore.loadData([{"parcelle": 0}]);
+        this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
+            method: "POST",
+            url: this.options.printServerUrl
+        }),
+
+            //We load an empty note record, we will update it with the different requests
+            this.noteStore.loadData([{"parcelle": 0}]);
 
         this.communeStore = new Ext.data.JsonStore({
             idProperty: "cgocommune",
@@ -218,6 +234,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
+        this.printProvider.loadCapabilities();
+
         this.parcelleWindow = new Ext.Window({
             title: this.getText(record),
             width: 640,
@@ -275,7 +293,44 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             buttons: [
                 {
                     //TODO tr
-                    text: "Export"
+                    text: "Print",
+                    handler: function() {
+                        var params, centerLonLat;
+
+                        centerLonLat = this.map.getCenter();
+
+                        params = {
+                            layout: "A4 portrait",
+                            attributes: {
+                                map: {
+                                    scale: this.map.getScale(),
+                                    center: [centerLonLat.lon, centerLonLat.lat],
+                                    dpi: 72,
+                                    layers: this.baseLayers(),
+                                    projection: this.map.getProjection()
+                                },
+                                title: "Sample Print",
+                                subtitle: "Subtitle",
+                                codeSection: this.noteStore.getAt(0).get("codeSection")
+                            }
+                        };
+
+                        Ext.Ajax.request({
+                            url: this.options.printServerUrl + "report.pdf",
+                            method: 'POST',
+                            jsonData: (new OpenLayers.Format.JSON()).write(params),
+                            headers: {"Content-Type": "application/json; charset=" + this.encoding},
+                            success: function(response) {
+                                callback(Ext.decode(response.responseText));
+                            },
+                            failure: function(response) {
+                                this.fireEvent("printexception", this, response);
+                            },
+                            params: this.baseParams,
+                            scope: this
+                        });
+                    },
+                    scope: this
                 }, {
                     //TODO tr
                     text: "Close",
@@ -288,8 +343,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         })
     },
 
-    parcelleAction: function() {
-        var parcelle = "350238000BX0285"
+    parcelleAction: function(parcelle) {
+        //var parcelle = "350238000BX0285";
         this.communeStore.load({
             params: {
                 cgocommune: parcelle.slice(0, 6)
@@ -324,5 +379,41 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         });
         this.parcelleWindow.show();
         this.components.toggle(false);
+    },
+
+
+    /**
+     * @function baseLayers - Encode every mapPanel layer using the print provider
+     *
+     * @returns {Array}
+     */
+    baseLayers: function() {
+
+        var encodedLayer = null,
+            encodedLayers = [];
+        this.mapPanel.layers.each(function(layerRecord) {
+            if (layerRecord.get("layer").visibility) {
+
+                if (layerRecord.get("layer").name !== "__georchestra_print_bounds_") {
+                    encodedLayer = this.printProvider.encodeLayer(layerRecord.get("layer"), this.map.getMaxExtent());
+                }
+
+
+                if (encodedLayer) {
+
+                    if (encodedLayer.maxScaleDenominator) {
+                        delete encodedLayer.maxScaleDenominator;
+                    }
+                    if (encodedLayer.minScaleDenominator) {
+                        delete encodedLayer.minScaleDenominator;
+                    }
+
+                    encodedLayers.push(encodedLayer);
+                }
+            }
+        }, this);
+
+
+        return encodedLayers;
     },
 });

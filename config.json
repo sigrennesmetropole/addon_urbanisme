@@ -4,7 +4,8 @@
         "enabled": true,
         "name": "Urbanisme",
         "options" : {
-            "cadastrappUrl": "http://localhost:8080/"
+            "cadastrappUrl": "http://localhost:8080/",
+            "printServerUrl": "http://localhost:8181/print/urbanisme/"
         },
         "title": {
             "en": "Land Planning",
