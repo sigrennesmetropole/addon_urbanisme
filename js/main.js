@@ -13,6 +13,7 @@ Ext.namespace("GEOR.data");
             config = Ext.apply({
                 root: "",
                 fields: ["parcelle",
+                    "parcelleTitle",
                     "commune",
                     "codeSection",
                     "numero",
@@ -20,6 +21,7 @@ Ext.namespace("GEOR.data");
                     "contenanceDGFiP",
                     "surfaceSIG",
                     "codeProprio",
+                    "nomProprio",
                     "adresseProprio",
                     "libelle"
                 ],
@@ -40,9 +42,12 @@ Ext.namespace("GEOR.data");
         },
         updateParcelle: function(parcelleRecord) {
             //We have trouble with record commit, we copy the record, update it, then add it
-            var noteRecord = this.getAt(0).copy();
+            var parcelle, noteRecord = this.getAt(0).copy();
 
-            noteRecord.set("parcelle", parcelleRecord.get("parcelle"));
+            parcelle = parcelleRecord.get("parcelle");
+            noteRecord.set("parcelle", parcelle);
+            noteRecord.set("parcelleTitle", parcelle.slice(0, 8) + " " + parcelle.slice(8, 10) + " " +
+                parcelle.slice(10));
             if (parcelleRecord.get("ccopre") !== "000") {
                 noteRecord.set("codeSection", parcelleRecord.get("ccopre") + parcelleRecord.get("ccosec"));
             } else {
@@ -68,7 +73,8 @@ Ext.namespace("GEOR.data");
         updateProprio: function(proprioRecord) {
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
-            noteRecord.set("adresseProprio", proprioRecord.get("dlign4") + " " + proprioRecord.get("dlign5") + " " +
+            noteRecord.set("nomProprio", proprioRecord.get("ddenom"));
+            noteRecord.set("adresseProprio", proprioRecord.get("dlign4e") + " " + proprioRecord.get("dlign5") + " " +
                 proprioRecord.get("dlign6"));
             this.add([noteRecord]);
         }
@@ -252,7 +258,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<tpl for=".">',
                             '<div class="parcelle">',
                             '<h1>Réglementation applicable à la parcelle Cadastrale</h1>',
-                            '<h2>{parcelle}</h2>',
+                            '<h2>{parcelleTitle}</h2>',
                             '<table class="table-parcelle">',
                             '<tr>',
                             '<td class="parcelle-table-label">code section</td>',
@@ -271,15 +277,19 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<td>{contenanceDGFiP}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td class="parcelle-table-label">Surface cadastrale (m²)</td>',
+                            '<td class="parcelle-table-label">surface cadastrale (m²)</td>',
                             '<td>{surfaceSIG}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td class="parcelle-table-label">Code propriétaire</td>',
+                            '<td class="parcelle-table-label">code propriétaire</td>',
                             '<td>{codeProprio}</td>',
                             '</tr>',
                             '<tr>',
-                            '<td class="parcelle-table-label">Adresse propriétaire</td>',
+                            '<td class="parcelle-table-label">nom propriétaire</td>',
+                            '<td>{nomProprio}</td>',
+                            '</tr>',
+                            '<tr>',
+                            '<td class="parcelle-table-label">adresse propriétaire</td>',
                             '<td>{adresseProprio}</td>',
                             '</tr>',
                             '</table>',
@@ -293,7 +303,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             buttons: [
                 {
                     //TODO tr
-                    text: "Print",
+                    text: "Imprimer",
                     handler: function() {
                         var params, centerLonLat;
 
@@ -309,9 +319,18 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                     layers: this.baseLayers(),
                                     projection: this.map.getProjection()
                                 },
-                                title: "Sample Print",
-                                subtitle: "Subtitle",
-                                codeSection: this.noteStore.getAt(0).get("codeSection")
+                                parcelleTitle: this.noteStore.getAt(0).get("parcelleTitle"),
+                                codeSectionFull: this.noteStore.getAt(0).get("commune") + " " +
+                                this.noteStore.getAt(0).get("codeSection"),
+                                numero: this.noteStore.getAt(0).get("numero"),
+                                adresseCadastrale: this.noteStore.getAt(0).get("adresseCadastrale"),
+                                contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
+                                surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
+                                codeProprio: this.noteStore.getAt(0).get("codeProprio"),
+                                nomProprio: this.noteStore.getAt(0).get("nomProprio"),
+                                adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
+                                libelle: this.noteStore.getAt(0).get("libelle")
+
                             }
                         };
 
