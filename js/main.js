@@ -251,14 +251,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
-        this.zonagePluData = {
-            feature2: {
-                geometry: 1,
-                attributes: 'a'
-            },
-            feature: new OpenLayers.Feature.Vector(
+        this.zonagePluData = new (function(addonOptions) {
+            this.addonOptions = addonOptions;
+            this.feature = new OpenLayers.Feature.Vector(
                 new OpenLayers.Geometry.fromWKT("SRID=3948;POLYGON((1348381.125 7216119.5,1348382.875 7216124,1348386.625 7216144.5,1348385.125 7216145,1348389.375 7216166,1348400.25 7216220.5,1348401 7216224.5,1348421.375 7216213.5,1348450.25 7216189,1348467.5 7216173.5,1348470.75 7216175.5,1348498.75 7216191.5,1348527.125 7216207.5,1348562.5 7216228,1348599.375 7216249.5,1348603.75 7216241.5,1348608.75 7216233,1348526.75 7216177,1348510.375 7216139.5,1348506.75 7216136.5,1348534.375 7216110,1348540.25 7216106.5,1348557 7216096.5,1348595.375 7216090.5,1348591.875 7216087,1348591 7216083.5,1348589.625 7216077.5,1348589.125 7216065.5,1348589 7216061,1348588.25 7216043,1348586.75 7216021,1348536.625 7216026.5,1348538 7216039,1348538.5 7216053.5,1348538.5 7216066,1348537.875 7216078.5,1348537.625 7216088.5,1348535.375 7216092,1348530.75 7216091,1348501.5 7216091,1348445.875 7216098.5,1348387.125 7216108,1348382.25 7216109,1348382.625 7216112.5,1348381.125 7216119.5))"),
                 {
+                    id_docurba: "00003506620140602",
                     idzone: "Z1000",
                     libelle: "1AUD2o",
                     libelong: "A Urbaniser alternatif",
@@ -266,9 +264,27 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     destdomi: "Activité agricole",
                     datvalid: "20160506"
                 }
-            ),
-            commune: "Nom de commune"
-        };
+            );
+
+            this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
+            OpenLayers.Request.GET({
+                url: addonOptions.cadastrappUrl + "getCommune",
+                params: {cgocommune: this.communeInsee},
+                callback: function(resp) {
+                    //We assume that we will get one and only one result
+                    this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"]
+                },
+                scope: this
+            });
+
+            this.getUrl = function() {
+                return addonOptions.fileServerUrl + "?get_action=open_file&repository_id=" +
+                    addonOptions.fileRepositoryId +
+                    "&file=" + encodeURI("/PLU : Plans locaux d'urbanisme/En vigueur/" + this.communeInsee + " " +
+                        this.commune + "/04_reglement_litteral/" + this.feature.attributes.urlfic);
+            };
+            this.url = this.getUrl();
+        })(this.options);
 
         this.printProvider.loadCapabilities();
 
@@ -405,7 +421,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 xtype: "panel",
                 items: [
                     {
-                        xtype: "box",
+                        xtype: "dataview",
                         height: 300, //TODO remove
                         width: 530, //TODO remove
                         id: "zonage-plu-box",
@@ -416,15 +432,15 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<div class="zonage-attribs">',
                             '<div id="commune" class="zonage-pair">',
                             '<div class="zonage-attrib-label">Commune : </div>',
-                            '<div class="zonage-attrib-value">{commune}</div>',
+                            '<div class="zonage-attrib-value">{values.commune}</div>',
                             '</div>', // end of commune
                             '<div id="type-libelle" class="zonage-pair">',
                             '<div class="zonage-attrib-label">Type : </div>',
-                            '<div class="zonage-attrib-value">{values.feature.attributes.libelle}</div>',
+                            '<div class="zonage-attrib-value"><a href="{values.url}">{values.feature.attributes.libelle}</a></div>',
                             '</div>', // end of type-libelle
                             '<div id="type-description" class="zonage-pair">',
                             '<div class="zonage-attrib-label"></div>',
-                            '<div class="zonage-attrib-value">{values.feature.attributes.libelong}</div>',
+                            '<div class="zonage-attrib-value"><a href="{values.url}">{values.feature.attributes.libelong}</a></div>',
                             '</div>', // end of type-description
                             '<div id="vocation-dominante" class="zonage-pair">',
                             '<div class="zonage-attrib-label">Vocation dominante : </div>',
@@ -442,43 +458,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }],
             buttons: [
                 {
-                    //TODO tr
-                    text: "Imprimer",
-                    handler: function() {
-                        var params, centerLonLat;
-
-                        centerLonLat = this.map.getCenter();
-
-                        params = {
-                            layout: "A4 portrait",
-                            attributes: {
-                                map: {
-                                    scale: this.map.getScale(),
-                                    center: [centerLonLat.lon, centerLonLat.lat],
-                                    dpi: 72,
-                                    layers: this.baseLayers(),
-                                    projection: this.map.getProjection()
-                                }
-                            }
-                        };
-
-                        Ext.Ajax.request({
-                            url: this.options.printServerUrl + "report.pdf",
-                            method: 'POST',
-                            jsonData: (new OpenLayers.Format.JSON()).write(params),
-                            headers: {"Content-Type": "application/json; charset=" + this.encoding},
-                            success: function(response) {
-                                callback(Ext.decode(response.responseText));
-                            },
-                            failure: function(response) {
-                                this.fireEvent("printexception", this, response);
-                            },
-                            params: this.baseParams,
-                            scope: this
-                        });
-                    },
-                    scope: this
-                }, {
                     //TODO tr
                     text: "Fermer",
                     handler: function() {

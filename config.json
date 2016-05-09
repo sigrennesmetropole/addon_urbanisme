@@ -5,7 +5,9 @@
         "name": "Urbanisme",
         "options" : {
             "cadastrappUrl": "http://localhost:8080/",
-            "printServerUrl": "http://localhost:8181/print/urbanisme/"
+            "printServerUrl": "http://localhost:8181/print/urbanisme/",
+            "fileServerUrl": "https://portail.sig.rennesmetropole.fr/fichiers/index.php",
+            "fileRepositoryId": "a00a272df0c4760a610ee97ca6f648fc"
         },
         "title": {
             "en": "Land Planning",
