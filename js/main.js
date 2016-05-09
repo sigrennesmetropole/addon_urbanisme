@@ -13,7 +13,6 @@ Ext.namespace("GEOR.data");
             config = Ext.apply({
                 root: "",
                 fields: ["parcelle",
-                    "parcelleTitle",
                     "commune",
                     "codeSection",
                     "numero",
@@ -46,8 +45,6 @@ Ext.namespace("GEOR.data");
 
             parcelle = parcelleRecord.get("parcelle");
             noteRecord.set("parcelle", parcelle);
-            noteRecord.set("parcelleTitle", parcelle.slice(0, 8) + " " + parcelle.slice(8, 10) + " " +
-                parcelle.slice(10));
             if (parcelleRecord.get("ccopre") !== "000") {
                 noteRecord.set("codeSection", parcelleRecord.get("ccopre") + parcelleRecord.get("ccosec"));
             } else {
@@ -74,7 +71,7 @@ Ext.namespace("GEOR.data");
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
             noteRecord.set("nomProprio", proprioRecord.get("ddenom"));
-            noteRecord.set("adresseProprio", proprioRecord.get("dlign4e") + " " + proprioRecord.get("dlign5") + " " +
+            noteRecord.set("adresseProprio", proprioRecord.get("dlign4") + " " + proprioRecord.get("dlign5") + " " +
                 proprioRecord.get("dlign6"));
             this.add([noteRecord]);
         }
@@ -290,12 +287,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         tpl: new Ext.XTemplate(
                             '<tpl for=".">',
                             '<div class="parcelle">',
-                            '<h1>Réglementation applicable à la parcelle Cadastrale</h1>',
-                            '<h2>{parcelleTitle}</h2>',
+                            '<h1>Réglementation applicable à la parcelle cadastrale</h1>',
+                            '<h2>{parcelle}</h2>',
                             '<table class="table-parcelle">',
                             '<tr>',
+                            '<td class="parcelle-table-label">commune</td>',
+                            '<td>{commune}</td>',
+                            '</tr>',
+                            '<tr>',
+                            '<tr>',
                             '<td class="parcelle-table-label">code section</td>',
-                            '<td>{commune} {codeSection}</td>',
+                            '<td>{codeSection}</td>',
                             '</tr>',
                             '<tr>',
                             '<td class="parcelle-table-label">numéro parcelle</td>',
@@ -352,9 +354,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                     layers: this.baseLayers(),
                                     projection: this.map.getProjection()
                                 },
-                                parcelleTitle: this.noteStore.getAt(0).get("parcelleTitle"),
-                                codeSectionFull: this.noteStore.getAt(0).get("commune") + " " +
-                                this.noteStore.getAt(0).get("codeSection"),
+                                parcelle: this.noteStore.getAt(0).get("parcelle"),
+                                commune: this.noteStore.getAt(0).get("commune"),
+                                codeSection: this.noteStore.getAt(0).get("codeSection"),
                                 numero: this.noteStore.getAt(0).get("numero"),
                                 adresseCadastrale: this.noteStore.getAt(0).get("adresseCadastrale"),
                                 contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
@@ -373,7 +375,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             jsonData: (new OpenLayers.Format.JSON()).write(params),
                             headers: {"Content-Type": "application/json; charset=" + this.encoding},
                             success: function(response) {
-                                callback(Ext.decode(response.responseText));
+                                this._retreivePdf(Ext.decode(response.responseText));
                             },
                             failure: function(response) {
                                 this.fireEvent("printexception", this, response);
@@ -567,4 +569,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
         return encodedLayers;
     },
+
+    _retreivePdf: function(resp) {
+
+    }
 });
