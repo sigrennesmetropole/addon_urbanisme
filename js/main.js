@@ -117,7 +117,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     "toggle": function() {
                         //TEST : "350238000BX0285"
                         //TEST : "350281000AA0001"
-                        this.parcelleAction("350238000BX0285");
+                        this.parcelleAction("350281000AA0001");
                     },
                     scope: this
                 }
@@ -353,9 +353,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     //TODO tr
                     text: "Imprimer",
                     handler: function() {
-                        var params, centerLonLat;
+                        var params, centerLonLat, libellesArray, libellesAsString;
 
                         centerLonLat = this.map.getCenter();
+                        libellesArray = []
+
+                        this.libellesStore.each(function(record) {
+                            libellesArray.push(record.get("libelle"));
+
+                        });
+
+                        libellesAsString = libellesArray.join("\n\n");
 
                         params = {
                             layout: "A4 portrait",
@@ -377,8 +385,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 codeProprio: this.noteStore.getAt(0).get("codeProprio"),
                                 nomProprio: this.noteStore.getAt(0).get("nomProprio"),
                                 adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
-                                //TODO put real data here
-                                libelles: ['libelle1', 'libelle2']
+                                libelles: libellesAsString
 
                             }
                         };
