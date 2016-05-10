@@ -21,8 +21,7 @@ Ext.namespace("GEOR.data");
                     "surfaceSIG",
                     "codeProprio",
                     "nomProprio",
-                    "adresseProprio",
-                    "libelle"
+                    "adresseProprio"
                 ],
                 proxy: new Ext.data.HttpProxy({
                     method: "POST",
@@ -60,11 +59,6 @@ Ext.namespace("GEOR.data");
             var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
                 noteRecord = this.getAt(0).copy();
             noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
-            this.add([noteRecord]);
-        },
-        updateRenseignUrba: function(renseignUrbarRecord) {
-            var noteRecord = this.getAt(0).copy();
-            noteRecord.set("libelle", renseignUrbarRecord.get("libelle"));
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
@@ -121,6 +115,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: "addon-urbanisme",
                 listeners: {
                     "toggle": function() {
+                        //TEST : "350238000BX0285"
+                        //TEST : "350281000AA0001"
                         this.parcelleAction("350238000BX0285");
                     },
                     scope: this
@@ -229,26 +225,16 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
-        this.renseignUrbaStore = new Ext.data.JsonStore({
-            idProperty: "parcelle",
-            root: "",
+        this.libellesStore = new Ext.data.JsonStore({
+            root: "libelles",
+            //TODO add better id
             fields: [
-                "parcelle",
                 "libelle"
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
                 url: this.options.cadastrappUrl + "renseignUrba"
-            }),
-            listeners: {
-                "load": {
-                    fn: function(store, records) {
-                        //We assume there is only 1 returned record
-                        this.noteStore.updateRenseignUrba(records[0]);
-                    },
-                    scope: this
-                }
-            }
+            })
         });
 
         this.zonagePluData = new (function(addonOptions) {
@@ -293,6 +279,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             width: 640,
             height: 380,
             closeAction: "hide",
+            autoScroll: true,
             items: [{
                 xtype: "panel",
                 items: [
@@ -344,9 +331,19 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<td>{adresseProprio}</td>',
                             '</tr>',
                             '</table>',
-                            '<p>Zone {libelle}</p>',
                             '</div>',
                             '</tpl>'
+                        )
+                    }, {
+                        xtype: "dataview",
+                        id: "parcelle-libelles",
+                        store: this.libellesStore,
+                        tpl: new Ext.XTemplate(
+                            '<div class="parcelle">',
+                            '<tpl for=".">',
+                            '<p class="libelle">{libelle}</p>',
+                            '</tpl>',
+                            '</div>'
                         )
                     }
                 ]
@@ -380,7 +377,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 codeProprio: this.noteStore.getAt(0).get("codeProprio"),
                                 nomProprio: this.noteStore.getAt(0).get("nomProprio"),
                                 adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
-                                libelle: this.noteStore.getAt(0).get("libelle")
+                                //TODO put real data here
+                                libelles: ['libelle1', 'libelle2']
 
                             }
                         };
@@ -481,7 +479,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 parcelle: parcelle
             }
         });
-        this.renseignUrbaStore.load({
+        this.libellesStore.load({
             params: {
                 parcelle: parcelle
             }
