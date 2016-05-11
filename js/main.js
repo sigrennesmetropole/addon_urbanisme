@@ -140,31 +140,54 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
         var layerManager = Ext.getCmp("geor-layerManager");
         layerManager.root.eachChild(function(child) {
-            if (child.layer.params.LAYERS !== this.options.parcellesCadastralesLayer) {
-                return;
+            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
+                child.component.getComponent(0).insert(0, new GeoExt.Action({
+                    map: this.map,
+                    text: "i",
+                    iconCls: "addon-urbanisme-i-button",
+                    control: new OpenLayers.Control.WMSGetFeatureInfo({
+                        layers: this.parcellesCadastralesLayer,
+                        infoFormat: 'application/vnd.ogc.gml',
+                        eventListeners: {
+                            "getfeatureinfo": function(resp) {
+                                var parcelle;
+                                //TODO retrieve the id using the feature
+                                //matricule = resp.features.attributes.idParcelle
+                                parcelle = "350238000BX0285"
+                                this.parcelleAction(parcelle);
+                            },
+                            scope: this
+                        }
+                    }),
+                    toggleGroup: "map",
+                    tooltip: "Renseignement d'urbanisme sur la parcelle",
+                }));
+                child.component.doLayout();
+            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
+                child.component.getComponent(0).insert(0, new GeoExt.Action({
+                    map: this.map,
+                    text: "i",
+                    iconCls: "addon-urbanisme-i-button",
+                    control: new OpenLayers.Control.WMSGetFeatureInfo({
+                        layers: this.zonePluLayer,
+                        infoFormat: 'application/vnd.ogc.gml',
+                        eventListeners: {
+                            "getfeatureinfo": function(resp) {
+                                var idzone;
+                                //TODO retrieve the id using the feature
+                                //matricule = resp.features.attributes.idParcelle
+                                idzone = "Z1000";
+                                this.zonagePluAction(idzone);
+                            },
+                            scope: this
+                        }
+                    }),
+                    toggleGroup: "map",
+                    tooltip: "Zonage d'un PLU",
+                }));
+                child.component.doLayout();
             }
-            var noteAction = new GeoExt.Action({
-                map: this.map,
-                iconCls: "addon-urbanisme",
-                control: new OpenLayers.Control.WMSGetFeatureInfo({
-                    layers: this.parcellesCadastralesLayer,
-                    infoFormat: 'application/vnd.ogc.gml',
-                    eventListeners: {
-                        "getfeatureinfo": function(resp) {
-                            var parcelle;
-                            //TODO retrieve the id using the feature
-                            //matricule = resp.features.attributes.idParcelle
-                            parcelle = "350238000BX0285"
-                            this.parcelleAction(parcelle);
-                        },
-                        scope: this
-                    }
-                }),
-                toggleGroup: "map",
-                tooltip: "Renseignement d'urbanisme sur la parcelle",
-            });
-            child.component.getComponent(0).insert(0, new Ext.Button(noteAction));
-            child.component.doLayout();
+
         }, this);
 
 
