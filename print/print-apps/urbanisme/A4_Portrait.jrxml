@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-05-10T07:24:02 -->
+<!-- 2016-05-11T15:13:29 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Baselland_A4_Portrait" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fb2edee-19b3-488e-bb13-1a3c485efd5f">
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<parameter name="legendURL" class="java.lang.String"/>
@@ -38,7 +38,7 @@
 		</band>
 	</pageHeader>
 	<detail>
-		<band height="624" splitType="Stretch">
+		<band height="713" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<subreport>
 				<reportElement mode="Transparent" x="0" y="10" width="555" height="280" backcolor="#FFFFFF" uuid="c889b337-f931-43d3-b6b5-07e9adb33106">
@@ -282,13 +282,16 @@
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="0" y="494" width="555" height="126" uuid="6bbb2cf7-bcf2-4b1e-ae2d-99eb5b6c17f5"/>
+				<reportElement x="0" y="494" width="555" height="36" uuid="6bbb2cf7-bcf2-4b1e-ae2d-99eb5b6c17f5"/>
 				<textField isStretchWithOverflow="true">
-					<reportElement x="10" y="6" width="534" height="120" uuid="f5c836cf-b591-4599-b777-64b0c9d5e477">
+					<reportElement x="10" y="6" width="534" height="24" uuid="f5c836cf-b591-4599-b777-64b0c9d5e477">
 						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
 					</reportElement>
 					<textFieldExpression><![CDATA[$P{libelles}]]></textFieldExpression>
 				</textField>
+			</frame>
+			<frame>
+				<reportElement x="0" y="530" width="553" height="50" uuid="16b200ad-b594-4dea-a73c-7a671995c3c8"/>
 			</frame>
 		</band>
 	</detail>
@@ -302,4 +305,13 @@
 			</image>
 		</band>
 	</pageFooter>
+	<lastPageFooter>
+		<band height="36">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="2" y="6" width="553" height="30" uuid="61169c33-3392-4b11-8348-b9c20528cf36"/>
+				<text><![CDATA[Un service fourni par le SIG de Rennes Métropole]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
 </jasperReport>
