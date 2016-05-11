@@ -22,6 +22,7 @@ Ext.namespace("GEOR.data");
                     "codeProprio",
                     "nomProprio",
                     "adresseProprio"
+                    //libelles is note there because this is a one to many relationship
                 ],
                 proxy: new Ext.data.HttpProxy({
                     method: "POST",
@@ -52,7 +53,8 @@ Ext.namespace("GEOR.data");
             noteRecord.set("numero", parcelleRecord.get("dnupla"));
             noteRecord.set("adresseCadastrale", parcelleRecord.get("dnvoiri") + " " + parcelleRecord.get("cconvo") +
                 " " + parcelleRecord.get("dvoilib"));
-            noteRecord.set("contenanceDGFiP", parcelleRecord.get("dcntpa"));
+            //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
+            noteRecord.set("contenanceDGFiP", ("0000" + parcelleRecord.get("dcntpa")).slice(-4) );
             this.add([noteRecord]);
         },
         updateInfoBulle: function(infoBulleResp) {
