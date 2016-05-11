@@ -90,6 +90,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     //TODO Document
     parcelleStore: null,
 
+    parcellesCadastralesLayer: null,
+
+    zonesPluLayer: null,
+
     /** api: config[encoding]
      * ``String`` The encoding to set in the headers when requesting the print
      * service. Prevent character encoding issues, especially when using IE.
@@ -117,7 +121,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     "toggle": function() {
                         //TEST : "350238000BX0285"
                         //TEST : "350281000AA0001"
-                        this.parcelleAction("350281000AA0001");
+                        this.showParcelleWindow("350281000AA0001");
                     },
                     scope: this
                 }
@@ -129,7 +133,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: "addon-urbanisme",
                 listeners: {
                     "toggle": function() {
-                        this.zonagePluAction("Z1000");
+                        this.showZonagePluWindow("Z1000");
                     },
                     scope: this
                 }
@@ -138,53 +142,74 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             this.target.doLayout();
         }
 
+        Ext.each(this.map.layers, function(layer) {
+            if (layer.params === undefined) {
+                return;
+            }
+            if (layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
+                this.parcellesCadastralesLayer = layer
+            }
+            if (layer.params.LAYERS === this.options.zonesPluLayer) {
+                this.zonesPluLayer = layer
+            }
+        }, this);
+
+
+        this.createRenseignUrbaAction = function(layer) {
+            return new GeoExt.Action({
+                map: this.map,
+                text: "i",
+                iconCls: "addon-urbanisme-i-button",
+                control: new OpenLayers.Control.WMSGetFeatureInfo({
+                    layers: [layer],
+                    infoFormat: 'application/vnd.ogc.gml',
+                    eventListeners: {
+                        "getfeatureinfo": function(resp) {
+                            var parcelle;
+                            //TODO retrieve the id using the feature
+                            //matricule = resp.features.attributes.idParcelle
+                            parcelle = "350238000BX0285"
+                            this.showParcelleWindow(parcelle);
+                        },
+                        scope: this
+                    }
+                }),
+                toggleGroup: "map",
+                tooltip: "Renseignement d'urbanisme sur la parcelle",
+            })
+        };
+
+        this.createZonagePluAction = function(layer) {
+            return new GeoExt.Action({
+                map: this.map,
+                text: "i",
+                iconCls: "addon-urbanisme-i-button",
+                control: new OpenLayers.Control.WMSGetFeatureInfo({
+                    layers: [layer],
+                    infoFormat: 'application/vnd.ogc.gml',
+                    eventListeners: {
+                        "getfeatureinfo": function(resp) {
+                            var idzone;
+                            //TODO retrieve the id using the feature
+                            //matricule = resp.features.attributes.idParcelle
+                            idzone = "Z1000";
+                            this.showZonagePluWindow(idzone);
+                        },
+                        scope: this
+                    }
+                }),
+                toggleGroup: "map",
+                tooltip: "Zonage d'un PLU",
+            });
+        }
+
         var layerManager = Ext.getCmp("geor-layerManager");
         layerManager.root.eachChild(function(child) {
             if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                child.component.getComponent(0).insert(0, new GeoExt.Action({
-                    map: this.map,
-                    text: "i",
-                    iconCls: "addon-urbanisme-i-button",
-                    control: new OpenLayers.Control.WMSGetFeatureInfo({
-                        layers: this.parcellesCadastralesLayer,
-                        infoFormat: 'application/vnd.ogc.gml',
-                        eventListeners: {
-                            "getfeatureinfo": function(resp) {
-                                var parcelle;
-                                //TODO retrieve the id using the feature
-                                //matricule = resp.features.attributes.idParcelle
-                                parcelle = "350238000BX0285"
-                                this.parcelleAction(parcelle);
-                            },
-                            scope: this
-                        }
-                    }),
-                    toggleGroup: "map",
-                    tooltip: "Renseignement d'urbanisme sur la parcelle",
-                }));
+                child.component.getComponent(0).insert(0, this.createRenseignUrbaAction(this.parcellesCadastralesLayer));
                 child.component.doLayout();
             } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
-                child.component.getComponent(0).insert(0, new GeoExt.Action({
-                    map: this.map,
-                    text: "i",
-                    iconCls: "addon-urbanisme-i-button",
-                    control: new OpenLayers.Control.WMSGetFeatureInfo({
-                        layers: this.zonePluLayer,
-                        infoFormat: 'application/vnd.ogc.gml',
-                        eventListeners: {
-                            "getfeatureinfo": function(resp) {
-                                var idzone;
-                                //TODO retrieve the id using the feature
-                                //matricule = resp.features.attributes.idParcelle
-                                idzone = "Z1000";
-                                this.zonagePluAction(idzone);
-                            },
-                            scope: this
-                        }
-                    }),
-                    toggleGroup: "map",
-                    tooltip: "Zonage d'un PLU",
-                }));
+                child.component.getComponent(0).insert(0, this.createZonagePluAction(this.zonesPluLayer));
                 child.component.doLayout();
             }
 
@@ -526,7 +551,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         })
     },
 
-    parcelleAction: function(parcelle) {
+    showParcelleWindow: function(parcelle) {
         //var parcelle = "350238000BX0285";
         this.communeStore.load({
             params: {
@@ -565,7 +590,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
 
-    zonagePluAction: function(idzone) {
+    showZonagePluWindow: function(idzone) {
         this.zonagePluWindow.show();
         this.components2.toggle(false);
     },
