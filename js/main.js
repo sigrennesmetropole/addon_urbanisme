@@ -138,6 +138,35 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             this.target.doLayout();
         }
 
+        var layerManager = Ext.getCmp("geor-layerManager");
+        layerManager.root.eachChild(function(child) {
+            if (child.layer.params.LAYERS !== this.options.parcellesCadastralesLayer) {
+                return;
+            }
+            var noteAction = new GeoExt.Action({
+                map: this.map,
+                iconCls: "addon-urbanisme",
+                control: new OpenLayers.Control.WMSGetFeatureInfo({
+                    layers: this.parcellesCadastralesLayer,
+                    infoFormat: 'application/vnd.ogc.gml',
+                    eventListeners: {
+                        "getfeatureinfo": function(resp) {
+                            var parcelle;
+                            //TODO retrieve the id using the feature
+                            //matricule = resp.features.attributes.idParcelle
+                            parcelle = "350238000BX0285"
+                            this.parcelleAction(parcelle);
+                        },
+                        scope: this
+                    }
+                }),
+                toggleGroup: "map",
+                tooltip: "Renseignement d'urbanisme sur la parcelle",
+            });
+            child.component.getComponent(0).insert(0, new Ext.Button(noteAction));
+            child.component.doLayout();
+        }, this);
+
 
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
             method: "POST",
