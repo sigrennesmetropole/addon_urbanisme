@@ -7,6 +7,10 @@ Ext.namespace("GEOR.Addons");
 Ext.namespace("GEOR.data");
 
 
+/**
+ *  GEOR.data.NoteStore - JsonStore representing a « note de renseignement d'urbanisme
+ *
+ */
 (function() {
     var NoteStore = Ext.extend(Ext.data.JsonStore, {
         constructor: function(config) {
@@ -23,12 +27,8 @@ Ext.namespace("GEOR.data");
                     "nomProprio",
                     "adresseProprio"
                     //libelles is note there because this is a one to many relationship
-                ],
-                proxy: new Ext.data.HttpProxy({
-                    method: "POST",
-                    //TODO read url from config
-                    url: "http://localhost:8080/urbanisme/note"
-                })
+                ]
+                //Add proxy configuration here if we want to upload Note data to server
             }, config);
 
             NoteStore.superclass.constructor.call(this, config);
@@ -54,7 +54,7 @@ Ext.namespace("GEOR.data");
             noteRecord.set("adresseCadastrale", parcelleRecord.get("dnvoiri") + " " + parcelleRecord.get("cconvo") +
                 " " + parcelleRecord.get("dvoilib"));
             //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
-            noteRecord.set("contenanceDGFiP", ("0000" + parcelleRecord.get("dcntpa")).slice(-4) );
+            noteRecord.set("contenanceDGFiP", ("0000" + parcelleRecord.get("dcntpa")).slice(-4));
             this.add([noteRecord]);
         },
         updateInfoBulle: function(infoBulleResp) {
@@ -75,25 +75,59 @@ Ext.namespace("GEOR.data");
 
     GEOR.data.NoteStore = NoteStore;
 
-})();
+}());
 
+/**
+ * Urbanisme addon
+ */
 GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
     /**
-     * {Ext.Window}
+     * Window containing the « note de renseignement d'urbanisme » - {Ext.Window}
      */
     parcelleWindow: null,
 
     /**
-     * //TODO Document
+     * Window containing information about « zonage d'un plan local d'urbanisme » - {Ext.Window}
      */
-    components: null,
+    zonagePluWindow: null,
 
-    //TODO Document
+    /**
+     * Informations retrieved from addon server about « libelles
+     */
+    libellesStore: null,
+
+    /**
+     * Data representing a Note de renseignement d'urbanisme - {Object}
+     */
+    noteStore: new GEOR.data.NoteStore(),
+
+    /**
+     * Informations retrieved from cadastrapp about « parcelle cadastrale » - {Ext.data.JsonStore}
+     */
     parcelleStore: null,
 
+
+    /**
+     * Informations retrived from cadastrapp about owners - {Ext.data.JsonStore}
+     */
+    proprioStore: null,
+
+    /**
+     * Information about PLU - {Object}
+     *
+     * Data is retrieved from WMS
+     */
+    zonagePluData: null,
+
+    /**
+     * WMS layer of « cadastre » - {OpenLayers.Layer.WMS}
+     */
     parcellesCadastralesLayer: null,
 
+    /**
+     * WMS layer of « zones d'un Plan local d'urbanisme  » - {OpenLayers.Layer.WMS}
+     */
     zonesPluLayer: null,
 
     /** api: config[encoding]
@@ -104,15 +138,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      */
     encoding: document.charset || document.characterSet || "UTF-8",
 
-    /**
-     * {Object} - Data representing a Note de renseignement d'urbanisme
-     */
-    noteStore: new GEOR.data.NoteStore(),
-
     init: function(record) {
-        var action;
-
-
+        //TODO - Remove buttons from toolbar when testing is done
         if (this.target) {
             this.components = this.target.insertButton(this.position, {
                 xtype: "button",
@@ -149,10 +176,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 return;
             }
             if (layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                this.parcellesCadastralesLayer = layer
+                this.parcellesCadastralesLayer = layer;
             }
             if (layer.params.LAYERS === this.options.zonesPluLayer) {
-                this.zonesPluLayer = layer
+                this.zonesPluLayer = layer;
             }
         }, this);
 
@@ -164,21 +191,21 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: "addon-urbanisme-i-button",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
-                    infoFormat: 'application/vnd.ogc.gml',
+                    infoFormat: "application/vnd.ogc.gml",
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
                             var parcelle;
                             //TODO retrieve the id using the feature
                             //matricule = resp.features.attributes.idParcelle
-                            parcelle = "350238000BX0285"
+                            parcelle = "350238000BX0285";
                             this.showParcelleWindow(parcelle);
                         },
                         scope: this
                     }
                 }),
                 toggleGroup: "map",
-                tooltip: "Renseignement d'urbanisme sur la parcelle",
-            })
+                tooltip: "Renseignement d'urbanisme sur la parcelle"
+            });
         };
 
         this.createZonagePluAction = function(layer) {
@@ -188,7 +215,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: "addon-urbanisme-i-button",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
-                    infoFormat: 'application/vnd.ogc.gml',
+                    infoFormat: "application/vnd.ogc.gml",
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
                             var idzone;
@@ -201,9 +228,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     }
                 }),
                 toggleGroup: "map",
-                tooltip: "Zonage d'un PLU",
+                tooltip: "Zonage d'un PLU"
             });
-        }
+        };
 
         var layerManager = Ext.getCmp("geor-layerManager");
         layerManager.root.eachChild(function(child) {
@@ -221,10 +248,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
             method: "POST",
             url: this.options.printServerUrl
-        }),
+        });
 
-            //We load an empty note record, we will update it with the different requests
-            this.noteStore.loadData([{"parcelle": 0}]);
+        //We load an empty note record, we will update it with the different requests
+        this.noteStore.loadData([{"parcelle": 0}]);
 
         this.communeStore = new Ext.data.JsonStore({
             idProperty: "cgocommune",
@@ -317,7 +344,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         });
 
         this.zonagePluData = new (function(addonOptions) {
-            this.addonOptions = addonOptions;
             this.feature = new OpenLayers.Feature.Vector(
                 new OpenLayers.Geometry.fromWKT("SRID=3948;POLYGON((1348381.125 7216119.5,1348382.875 7216124,1348386.625 7216144.5,1348385.125 7216145,1348389.375 7216166,1348400.25 7216220.5,1348401 7216224.5,1348421.375 7216213.5,1348450.25 7216189,1348467.5 7216173.5,1348470.75 7216175.5,1348498.75 7216191.5,1348527.125 7216207.5,1348562.5 7216228,1348599.375 7216249.5,1348603.75 7216241.5,1348608.75 7216233,1348526.75 7216177,1348510.375 7216139.5,1348506.75 7216136.5,1348534.375 7216110,1348540.25 7216106.5,1348557 7216096.5,1348595.375 7216090.5,1348591.875 7216087,1348591 7216083.5,1348589.625 7216077.5,1348589.125 7216065.5,1348589 7216061,1348588.25 7216043,1348586.75 7216021,1348536.625 7216026.5,1348538 7216039,1348538.5 7216053.5,1348538.5 7216066,1348537.875 7216078.5,1348537.625 7216088.5,1348535.375 7216092,1348530.75 7216091,1348501.5 7216091,1348445.875 7216098.5,1348387.125 7216108,1348382.25 7216109,1348382.625 7216112.5,1348381.125 7216119.5))"),
                 {
@@ -337,7 +363,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 params: {cgocommune: this.communeInsee},
                 callback: function(resp) {
                     //We assume that we will get one and only one result
-                    this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"]
+                    this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
                 },
                 scope: this
             });
@@ -435,7 +461,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         var params, centerLonLat, libellesArray, libellesAsString;
 
                         centerLonLat = this.map.getCenter();
-                        libellesArray = []
+                        libellesArray = [];
 
                         this.libellesStore.each(function(record) {
                             libellesArray.push(record.get("libelle"));
@@ -486,7 +512,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     },
                     scope: this
                 }, {
-                    //TODO tr
+
                     text: "Fermer",
                     handler: function() {
                         this.parcelleWindow.hide();
@@ -554,12 +580,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
     showParcelleWindow: function(parcelle) {
-        //var parcelle = "350238000BX0285";
         this.communeStore.load({
             params: {
                 cgocommune: parcelle.slice(0, 6)
             }
-        })
+        });
         this.parcelleStore.load({
             params: {
                 parcelle: parcelle
