@@ -64,6 +64,9 @@ Ext.namespace("GEOR.data");
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
+            if (proprioRecord === undefined) {
+                return;
+            }
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
             noteRecord.set("nomProprio", proprioRecord.get("ddenom"));
@@ -162,7 +165,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: "addon-urbanisme",
                 listeners: {
                     "toggle": function() {
-                        this.showZonagePluWindow("Z1000");
+                        this.showZonagePluWindow();
                     },
                     scope: this
                 }
@@ -214,11 +217,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     infoFormat: "application/vnd.ogc.gml",
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
-                            var idzone;
-                            //TODO retrieve the id using the feature
-                            //matricule = resp.features.attributes.idParcelle
-                            idzone = "Z1000";
-                            this.showZonagePluWindow(idzone);
+                            if (resp.features.length === 0) {
+                                this.zonagePluData.empty = true;
+                                return;
+                            }
+                            this.zonagePluData.update(resp.features[0]);
+                            this.showZonagePluWindow();
                         },
                         scope: this
                     }
@@ -335,43 +339,43 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.cadastrappUrl + "renseignUrba"
+                url: this.options.renseignUrbaUrl + "renseignUrba"
             })
         });
 
-        this.zonagePluData = new (function(addonOptions) {
-            this.feature = new OpenLayers.Feature.Vector(
-                new OpenLayers.Geometry.fromWKT("SRID=3948;POLYGON((1348381.125 7216119.5,1348382.875 7216124,1348386.625 7216144.5,1348385.125 7216145,1348389.375 7216166,1348400.25 7216220.5,1348401 7216224.5,1348421.375 7216213.5,1348450.25 7216189,1348467.5 7216173.5,1348470.75 7216175.5,1348498.75 7216191.5,1348527.125 7216207.5,1348562.5 7216228,1348599.375 7216249.5,1348603.75 7216241.5,1348608.75 7216233,1348526.75 7216177,1348510.375 7216139.5,1348506.75 7216136.5,1348534.375 7216110,1348540.25 7216106.5,1348557 7216096.5,1348595.375 7216090.5,1348591.875 7216087,1348591 7216083.5,1348589.625 7216077.5,1348589.125 7216065.5,1348589 7216061,1348588.25 7216043,1348586.75 7216021,1348536.625 7216026.5,1348538 7216039,1348538.5 7216053.5,1348538.5 7216066,1348537.875 7216078.5,1348537.625 7216088.5,1348535.375 7216092,1348530.75 7216091,1348501.5 7216091,1348445.875 7216098.5,1348387.125 7216108,1348382.25 7216109,1348382.625 7216112.5,1348381.125 7216119.5))"),
-                {
-                    id_docurba: "00003506620140602",
-                    idzone: "Z1000",
-                    libelle: "1AUD2o",
-                    libelong: "A Urbaniser alternatif",
-                    urlfic: "s. o.",
-                    destdomi: "Activité agricole",
-                    datvalid: "20160506"
-                }
-            );
+        this.zonagePluData = new (function(addon) {
+            this.empty = true;
+            this.feature = null;
 
-            this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
-            OpenLayers.Request.GET({
-                url: addonOptions.cadastrappUrl + "getCommune",
-                params: {cgocommune: this.communeInsee},
-                callback: function(resp) {
-                    //We assume that we will get one and only one result
-                    this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
-                },
-                scope: this
-            });
+            this.update = function(feature) {
+                this.feature = feature;
+                this.empty = false;
+                this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
+                OpenLayers.Request.GET({
+                    url: addon.options.cadastrappUrl + "getCommune",
+                    params: {cgocommune: this.communeInsee},
+                    callback: function(resp) {
+                        //We assume that we will get one and only one result
+                        this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
+                        Ext.getCmp("zonage-plu-box").update(this);
+                    },
+                    scope: this
+                });
+            }
 
             this.getUrl = function() {
-                return addonOptions.fileServerUrl + "?get_action=open_file&repository_id=" +
-                    addonOptions.fileRepositoryId +
+                if (this.empty) {
+                    return "";
+                }
+                return addon.options.fileServerUrl + "?get_action=open_file&repository_id=" +
+                    addon.options.fileRepositoryId +
                     "&file=" + encodeURI("/PLU : Plans locaux d'urbanisme/En vigueur/" + this.communeInsee + " " +
                         this.commune + "/04_reglement_litteral/" + this.feature.attributes.urlfic);
             };
+
             this.url = this.getUrl();
-        })(this.options);
+
+        })(this);
 
         this.printProvider.loadCapabilities();
 
@@ -472,6 +476,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 map: {
                                     scale: this.map.getScale(),
                                     center: [centerLonLat.lon, centerLonLat.lat],
+                                    //TODO improve for production
                                     dpi: 72,
                                     layers: this.baseLayers(),
                                     projection: this.map.getProjection()
@@ -613,7 +618,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
 
-    showZonagePluWindow: function(idzone) {
+    showZonagePluWindow: function() {
         this.zonagePluWindow.show();
         this.components2.toggle(false);
     },
