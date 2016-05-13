@@ -194,11 +194,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     infoFormat: "application/vnd.ogc.gml",
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
-                            var parcelle;
-                            //TODO retrieve the id using the feature
-                            //matricule = resp.features.attributes.idParcelle
-                            parcelle = "350238000BX0285";
-                            this.showParcelleWindow(parcelle);
+                            this.showParcelleWindow(resp.features[0].attributes.id_parc);
                         },
                         scope: this
                     }
