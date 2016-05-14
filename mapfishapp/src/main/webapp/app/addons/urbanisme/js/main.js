@@ -219,9 +219,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         "getfeatureinfo": function(resp) {
                             if (resp.features.length === 0) {
                                 this.zonagePluData.empty = true;
-                                return;
+                            } else {
+                                this.zonagePluData.update(resp.features[0]);
                             }
-                            this.zonagePluData.update(resp.features[0]);
                             this.showZonagePluWindow();
                         },
                         scope: this
@@ -539,6 +539,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         data: this.zonagePluData,
                         tpl: new Ext.XTemplate(
                             '<div class="zonage">',
+                            '<tpl if="values.empty==false" >',
                             '<h1>Information sur un zonage d\'un PLU</h1>',
                             '<div class="zonage-attribs">',
                             '<div id="commune" class="zonage-pair">',
@@ -562,6 +563,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '<div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
                             '</div>', // end of vocation-dominante
                             '</div>', //end of zonage-attribs
+                            '</tpl>', // end of if values.empty == false
+                            '<tpl if="values.empty==true" ><p>Pas de PLU numérique disponible pour cette commune.</p></tpl>',
                             '</div>'
                         )
                     }
