@@ -247,7 +247,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
             method: "POST",
-            url: this.options.printServerUrl
+            url: this.options.printServerUrl + "/print/"
         });
 
         //We load an empty note record, we will update it with the different requests
@@ -497,14 +497,15 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         };
 
                         Ext.Ajax.request({
-                            url: this.options.printServerUrl + "report.pdf",
+                            url: this.options.printServerUrl + "/print/" + this.options.printServerApp + "/report.pdf",
                             method: 'POST',
                             jsonData: (new OpenLayers.Format.JSON()).write(params),
                             headers: {"Content-Type": "application/json; charset=" + this.encoding},
                             success: function(response) {
-                                this._retreivePdf(Ext.decode(response.responseText));
+                                this._retrievePdf(Ext.decode(response.responseText));
                             },
                             failure: function(response) {
+                                //TODO Manage this case
                                 this.fireEvent("printexception", this, response);
                             },
                             params: this.baseParams,
@@ -662,7 +663,39 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         return encodedLayers;
     },
 
-    _retreivePdf: function(resp) {
+    _retrievePdf: function(resp) {
+        var addon = this,
+            downloadURL = resp.downloadURL,
+            statusURL = resp.statusURL,
+            task = Ext.TaskMgr.start({
+                run: function(resp) {
+                    Ext.Ajax.request({
+                        url: addon.options.printServerUrl + statusURL,
+                        method: 'GET',
+                        headers: {"Content-Type": "application/json; charset=" + this.encoding},
+                        success: function(response) {
+                            var resp = Ext.decode(response.responseText);
+                            if (resp.done) {
+                                if (resp.status === "finished") {
+                                    window.location.href = addon.options.printServerUrl + downloadURL;
+                                    Ext.TaskMgr.stop(task);
+                                }
+                            }
+                        },
+                        failure: function(response) {
+                            GEOR.util.errorDialog({
+                                msg: "L'impression a échoué"
+                            });
+                            Ext.TaskMgr.stop(task);
+                        },
+                        scope: this
+                    });
+
+
+                },
+                interval: 3000
+            });
+
 
     }
 });
