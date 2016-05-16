@@ -1,23 +1,23 @@
-# Addon urbanisme
+# Extension urbanisme
 
-Cet addon permet de consulter une note de renseignement d'urbanisme ou une fiche d'informations
-"zonage du PLU". L'information peut également être exporté sous forme de document PDF.
+Cet extension permet de consulter une note de renseignement d'urbanisme ou une fiche d'informations
+"zonage du PLU". L'information peut également être exportée sous forme de document PDF.
 
-## Web service setup
+## Mise en place du service web
 
-### Build web service
+### Compilation du service web
 
- In order to build this addon, you just need to launch :
+Pour compiler cette extension, il suffit de lancer la commande :
 
  ```bash
 mvn clean jar:jar install
  ```
- This command will create a jar file and copy it in your local maven repo (`~/.m2`).
+Cette commande créera le fichier jar et le copiera dans votre dépôt maven local (`~/.m2`).
 
 ### Add jar file to mapfishapp
 
- In order to link this addon to mapfishapp, you will need to add following dependency in `pom.xml` file of mapfishapp
- module :
+Afin d'intégrer cette extension à mapfishapp, il faudra ajouter la dépendance suivante dans le fichier `pom.xml` du module
+mapfishapp.
 
  ```xml
 <dependency>
@@ -26,18 +26,18 @@ mvn clean jar:jar install
   <version>16.06</version>
 </dependency>
  ```
- Then, just follow build instruction of mapfishapp georchestra submodule.
 
 
-### Web service configuration
+### Configuration du service web
 
-Configuration of this addon is done in mapfishapp properties files in datadir : `mapfishapp/mapfishapp.properties`.
-The following informations related to database management are required
+La configuration du service web est réalisée dans le fichier de propriétés de mapfishapp contenu dans le `datadir` sous
+`mapfishapp/mapfishapp.properties`.
 
-* jdbc URL to connect to dabatase. For exemple: `jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data`
-* name of the database table containing land planning information (« libelle » data) : `urbanisme.renseignUrbaTable`.
- Table name may contain database schema.
+Les paramètres suivants sont requis:
 
+* URL jdbc de connexion à la base de données. Par exemple: `jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data`
+* nom de la table de base de données contenant l'information urbanistique dont les libelles associés à chaque parcelle :
+`urbanisme.renseignUrbaTable`. Le nom de la table peut contenir l'information sur le schéma.
 
 Exemple:
 
@@ -47,20 +47,20 @@ urbanisme.renseignUrbaTable=urba.renseign_urba
 
 ```
 
-#### Web service database table requirement
+#### Champs requis pour la table de la base de données du service web
 
-The table must contains the following columns:
-* id_parc : ID of parcelle (VARCHAR)
-* libelle : Land management information about the parcelle (VARCHAR)
+La table doit contenir les colonnes suivnates:
+* id_parc : Identifiant unique de la parcelle (VARCHAR)
+* libelle : Information urbanistique applicable à la parcelle (VARCHAR)
 
 
-## PDF Generator
+## Génération du PDF
 
-PDF are generated through MapFish Print V3. Configuration of the server is located in
+Les PDF sont générés à l'aide de MapFish Print V3. La configuration du serveur est située dans le répertoire
 `print/print-apps`.
 
-## Client-side interface
+## Configuration du client
 
-The lient side addon directory - `mapfishapp/src/main/webapp/app/addons/urbanisme/` -
-can be copied to datadir `mapfishapp/addons/`.
+Copier le répertoire de l'extension - `mapfishapp/src/main/webapp/app/addons/urbanisme/` -
+dans le répertoire `mapfishapp/addons/` du `datadir`.
 
