@@ -339,7 +339,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.renseignUrbaUrl + "renseignUrba"
+                url: GEOR.config.PATHNAME + "/ws/urbanisme/renseignUrba"
             })
         });
 

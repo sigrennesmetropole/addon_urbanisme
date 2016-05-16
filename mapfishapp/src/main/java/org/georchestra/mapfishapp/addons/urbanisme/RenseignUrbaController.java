@@ -27,11 +27,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -89,23 +89,27 @@ public class RenseignUrbaController {
      *  Retrieve libelles for the parcelle given in parameter
      *
      * @param response
-     * @param parcelle - Parcelle ID
      * @throws Exception
      */
-    @RequestMapping(value = "/urbanisme/renseignUrba/{parcelle}", method = RequestMethod.GET)
-    public void getRenseignUrba(HttpServletResponse response, @PathVariable String parcelle) throws Exception {
+    @RequestMapping(value = "/urbanisme/renseignUrba", method = RequestMethod.GET)
+    public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        RenseignUrba renseign = this.backend.getParcelle(parcelle);
+        RenseignUrba renseign = this.backend.getParcelle(request.getParameter("parcelle"));
 
         JSONArray libs = new JSONArray();
 
+
         for (String libelle : renseign.getLibelles()) {
-            libs.put(libelle);
+            JSONObject libelleRow = new JSONObject();
+            libelleRow.put("libelle", libelle);
+            libs.put(libelleRow);
         }
 
         
         JSONObject res = new JSONObject();
-        res.put("parcelle", parcelle);
+
+
+        res.put("parcelle", request.getParameter("parcelle"));
         res.put("libelles", libs);
 
         response.setContentType("application/json");

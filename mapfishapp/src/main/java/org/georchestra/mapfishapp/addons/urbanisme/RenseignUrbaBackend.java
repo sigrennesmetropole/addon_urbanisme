@@ -73,7 +73,7 @@ public class RenseignUrbaBackend {
         libellesVal = new ArrayList<String>();
 
         connection = this.basicDataSource.getConnection();
-        String query = "SELECT libelle FROM " + this.table + " WHERE id_parc='" + parcelle + "';";
+        String query = "SELECT DISTINCT libelle FROM " + this.table + " WHERE id_parc='" + parcelle + "';";
         st = connection.createStatement();
         ResultSet rs = st.executeQuery(query);
 
