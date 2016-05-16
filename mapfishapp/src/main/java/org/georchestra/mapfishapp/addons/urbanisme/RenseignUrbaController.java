@@ -36,39 +36,66 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 
-
+/**
+ * This class defines webservices to retrieve « libelles » from database
+ */
 @Controller
 public class RenseignUrbaController {
 
+    /**
+     * GeorchestraConfiguration is used to retrieve database related parameters.
+     * They need to be defined in the mapfishapp.properties file like :
+     * urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/urbanisme?user=www-data&password=www-data
+     * urbanisme.renseignUrbaTable=app_plu.renseign_urba
+     */
     @Autowired
     private GeorchestraConfiguration configuration;
 
+    /**
+     * Backend managing database configuration
+     */
+    private RenseignUrbaBackend backend;
+
+    /**
+     * This read configuration in datadir a create configured backend
+     */
     @PostConstruct
     private void init(){
+        this.backend = new RenseignUrbaBackend(configuration.getProperty("urbanisme.renseignUrbaTable"),
+                configuration.getProperty("urbanisme.jdbcUrl"));
+
     }
 
-    @RequestMapping(value = "/urbanisme/hello", method = RequestMethod.GET)
-        public void sayHello(HttpServletResponse response) throws IOException {
+    /**
+     * Give general information about web service.
+     * Mostly present for debug purpose.
+     *
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(value = "/urbanisme/about", method = RequestMethod.GET)
+        public void getAbout(HttpServletResponse response) throws IOException {
 
         JSONObject res = new JSONObject();
 
-        res.put("say","Hello!");
+        res.put("msg","Urbanisme web service");
 
         response.setContentType("application/json");
         response.getWriter().print(res.toString(4));
 
     }
 
+    /**
+     *  Retrieve libelles for the parcelle given in parameter
+     *
+     * @param response
+     * @param parcelle - Parcelle ID
+     * @throws Exception
+     */
     @RequestMapping(value = "/urbanisme/renseignUrba/{parcelle}", method = RequestMethod.GET)
     public void getRenseignUrba(HttpServletResponse response, @PathVariable String parcelle) throws Exception {
 
-        List<String> libellesVal;
-        libellesVal = new ArrayList<String>();
-        libellesVal.add("a");
-        libellesVal.add("b");
-        libellesVal.add("c");
-        
-        RenseignUrba renseign = new RenseignUrba("1234", libellesVal);
+        RenseignUrba renseign = this.backend.getParcelle(parcelle);
 
         JSONArray libs = new JSONArray();
 

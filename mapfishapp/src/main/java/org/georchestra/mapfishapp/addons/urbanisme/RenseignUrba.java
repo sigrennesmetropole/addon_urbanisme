@@ -22,7 +22,7 @@ package org.georchestra.mapfishapp.addons.urbanisme;
 import java.util.List;
 
 /**
- * This class hold informations about renseignement d'urbanisme. 
+ * This class hold informations about renseignement d'urbanisme.
  */
 public class RenseignUrba {
 
@@ -32,7 +32,8 @@ public class RenseignUrba {
     /**
      * Create a new instance of renseignUrban
      *
-     * @param parcelle Parcelle ID
+     * @param parcelle Parcelle ID.
+     * @param libelles List of libelle string
      */
     public RenseignUrba(String parcelle, List<String> libelles) {
         this.parcelle = parcelle;

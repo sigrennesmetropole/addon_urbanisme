@@ -40,13 +40,18 @@
         <dependency>
             <groupId>org.georchestra</groupId>
             <artifactId>georchestra-commons</artifactId>
-            <version>15.12</version>
+            <version>16.06-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
             <version>20150729</version>
+        </dependency>
+        <dependency>
+            <groupId>org.georchestra</groupId>
+            <artifactId>georchestra-commons</artifactId>
+            <version>16.06-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
