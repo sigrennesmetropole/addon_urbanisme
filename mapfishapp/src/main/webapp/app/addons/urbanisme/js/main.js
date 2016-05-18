@@ -357,6 +357,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     callback: function(resp) {
                         //We assume that we will get one and only one result
                         this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
+                        this.url = this.getUrl();
                         Ext.getCmp("zonage-plu-box").update(this);
                     },
                     scope: this
