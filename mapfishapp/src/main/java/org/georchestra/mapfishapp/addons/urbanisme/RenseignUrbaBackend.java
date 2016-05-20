@@ -25,7 +25,7 @@ import java.util.List;
 import org.apache.commons.dbcp.BasicDataSource;
 
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 
@@ -35,16 +35,23 @@ import java.sql.ResultSet;
 public class RenseignUrbaBackend {
 
     private String table;
+    private String tableTheme;
+    private String ordreTheme;
     private String jdbcUrl;
     private BasicDataSource basicDataSource;
 
     /**
      * Create a new instance of RenseignUrbaBackend and crate a BasicDataSource configured with jdbc URL
-     * @param table name of table containing renseignement d'urbanisme (libelles)
-     * @param jdbcUrl jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     *
+     * @param table      name of table containing renseignement d'urbanisme (libelles)
+     * @param tableTheme name of table containing theme description
+     * @param ordreTheme theme codes order
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
      */
-    public RenseignUrbaBackend(String table, String jdbcUrl) {
+    public RenseignUrbaBackend(String table, String tableTheme, String ordreTheme, String jdbcUrl) {
         this.table = table;
+        this.tableTheme = tableTheme;
+        this.ordreTheme = ordreTheme;
         this.jdbcUrl = jdbcUrl;
 
         this.basicDataSource = new BasicDataSource();
@@ -54,7 +61,7 @@ public class RenseignUrbaBackend {
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
         this.basicDataSource.setDefaultReadOnly(true);
         this.basicDataSource.setDefaultAutoCommit(true);
-        this.basicDataSource.setUrl(jdbcUrl);
+        this.basicDataSource.setUrl(this.jdbcUrl);
     }
 
     /**
@@ -67,15 +74,24 @@ public class RenseignUrbaBackend {
     public RenseignUrba getParcelle(String parcelle) throws SQLException {
 
         Connection connection = null;
-        Statement st = null;
-        
+        PreparedStatement queryLibellesByParcelle = null;
+
         List<String> libellesVal;
         libellesVal = new ArrayList<String>();
 
         connection = this.basicDataSource.getConnection();
-        String query = "SELECT DISTINCT libelle FROM " + this.table + " WHERE id_parc='" + parcelle + "';";
-        st = connection.createStatement();
-        ResultSet rs = st.executeQuery(query);
+        String query = "SELECT libelle FROM " +
+                "(SELECT ru.libelle as libelle, theme.ventilation_ddc as ventilation_ddc " +
+                "FROM " + this.table + " as ru " +
+                "LEFT OUTER JOIN " + this.tableTheme + " as theme " +
+                "ON ru.nom_theme = theme.nom " +
+                "WHERE id_parc = ?) as libelles " +
+                "LEFT JOIN (VALUES " + this.ordreTheme + ") as ordre(code, priorite) " +
+                "ON libelles.ventilation_ddc = ordre.code " +
+                "ORDER BY ordre.priorite;";
+        queryLibellesByParcelle = connection.prepareStatement(query);
+        queryLibellesByParcelle.setString(1, parcelle);
+        ResultSet rs = queryLibellesByParcelle.executeQuery();
 
         while (rs.next()) {
             String libelle = rs.getString("libelle");

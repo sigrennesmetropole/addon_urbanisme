@@ -38,20 +38,29 @@ Les paramètres suivants sont requis:
 * URL jdbc de connexion à la base de données. Par exemple: `jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data`
 * nom de la table de base de données contenant l'information urbanistique dont les libelles associés à chaque parcelle :
 `urbanisme.renseignUrbaTable`. Le nom de la table peut contenir l'information sur le schéma.
+* nom de la table de base de données contenant la description des thèmes : `urbanisme.tableTheme`
+* ordre selon lequel les libelles doivent être affichés selon leur code de thèmes : `urbanisme.ordreTheme`
 
 Exemple:
 
 ```
 urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/rennes_urbanisme?user=www-data&password=www-data
 urbanisme.renseignUrbaTable=urba.renseign_urba
+urbanisme.ordreTheme=('ZON', 1), ('SUP', 2), ('SAU', 3), ('PRE', 4), ('OPE', 5), ('PAR', 6), ('LOT', 7), ('TAX', 8)
 
 ```
 
 #### Champs requis pour la table de la base de données du service web
 
-La table doit contenir les colonnes suivnates:
-* id_parc : Identifiant unique de la parcelle (VARCHAR)
-* libelle : Information urbanistique applicable à la parcelle (VARCHAR)
+La table de renseignement d'urbanisme doit contenir les colonnes suivantes:
+* id_parc : Identifiant unique de la parcelle (VARCHAR);
+* libelle : Information urbanistique applicable à la parcelle (VARCHAR);
+* param_theme: code spécifique du thème.
+
+La table des thèmes doit contenir les colonnes suivantes :
+* nom : code spécifique du thème
+* ventilation_ddc : Code du thème à des fins de classification.
+
 
 
 ## Génération du PDF

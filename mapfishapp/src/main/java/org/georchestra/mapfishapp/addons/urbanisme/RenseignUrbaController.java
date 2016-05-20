@@ -60,8 +60,10 @@ public class RenseignUrbaController {
      * This read configuration in datadir a create configured backend
      */
     @PostConstruct
-    private void init(){
+    private void init() {
         this.backend = new RenseignUrbaBackend(configuration.getProperty("urbanisme.renseignUrbaTable"),
+                configuration.getProperty("urbanisme.tableTheme"),
+                configuration.getProperty("urbanisme.ordreTheme"),
                 configuration.getProperty("urbanisme.jdbcUrl"));
 
     }
@@ -74,11 +76,11 @@ public class RenseignUrbaController {
      * @throws IOException
      */
     @RequestMapping(value = "/urbanisme/about", method = RequestMethod.GET)
-        public void getAbout(HttpServletResponse response) throws IOException {
+    public void getAbout(HttpServletResponse response) throws IOException {
 
         JSONObject res = new JSONObject();
 
-        res.put("msg","Urbanisme web service");
+        res.put("msg", "Urbanisme web service");
 
         response.setContentType("application/json");
         response.getWriter().print(res.toString(4));
@@ -86,7 +88,7 @@ public class RenseignUrbaController {
     }
 
     /**
-     *  Retrieve libelles for the parcelle given in parameter
+     * Retrieve libelles for the parcelle given in parameter
      *
      * @param response
      * @throws Exception
@@ -105,7 +107,7 @@ public class RenseignUrbaController {
             libs.put(libelleRow);
         }
 
-        
+
         JSONObject res = new JSONObject();
 
 
