@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with Jaspersoft Studio version 6.2.1.final using JasperReports Library version 6.2.1  -->
-<!-- 2016-05-11T15:13:29 -->
+<!-- 2016-05-26T13:05:14 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Baselland_A4_Portrait" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fb2edee-19b3-488e-bb13-1a3c485efd5f">
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<parameter name="legendURL" class="java.lang.String"/>
@@ -22,19 +22,23 @@
 		<band height="46">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="20" width="555" height="20" uuid="be1c2711-dc38-4407-84a6-af5b22ecae1b"/>
+				<reportElement stretchType="RelativeToTallestObject" x="217" y="25" width="335" height="20" uuid="be1c2711-dc38-4407-84a6-af5b22ecae1b"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{parcelle}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="-4" width="556" height="20" uuid="365b1684-2aad-4bdd-bb3b-ab5bb81bb253"/>
+				<reportElement x="217" y="1" width="336" height="20" uuid="365b1684-2aad-4bdd-bb3b-ab5bb81bb253"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true" isUnderline="true"/>
 				</textElement>
-				<text><![CDATA[Représentation applicable à la parcelle cadastrale]]></text>
+				<text><![CDATA[Règlements d’urbanisme applicable à la parcelle]]></text>
 			</staticText>
+			<image>
+				<reportElement x="60" y="8" width="90" height="31" uuid="4fc3c970-1761-4e33-8962-b10c72673334"/>
+				<imageExpression><![CDATA["https://raw.githubusercontent.com/sigrennesmetropole/images/master/logos/RM_quadriNOIR.png"]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<detail>
@@ -306,12 +310,33 @@
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="36">
+		<band height="63">
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement x="2" y="6" width="553" height="30" uuid="61169c33-3392-4b11-8348-b9c20528cf36"/>
+				<reportElement x="360" y="6" width="195" height="30" uuid="61169c33-3392-4b11-8348-b9c20528cf36"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
 				<text><![CDATA[Un service fourni par le SIG de Rennes Métropole]]></text>
 			</staticText>
+			<image>
+				<reportElement x="10" y="6" width="30" height="30" uuid="5866bbe5-f7ea-4755-8266-e35aa0d3514f"/>
+				<imageExpression><![CDATA["https://raw.githubusercontent.com/sigrennesmetropole/images/master/logos/SIG_RM.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="40" y="0" width="160" height="60" uuid="14c2f179-8e30-4570-adf2-33d1dfb0279c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Portail des données \n géographiques \n de Rennes Métropole"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="190" y="6" width="176" height="30" uuid="6e3edb21-3dee-4fa0-9259-9241a4e2baab"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Document créé le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy ' à ' HH:mm", new Locale("fr")).format(new Date())]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>
