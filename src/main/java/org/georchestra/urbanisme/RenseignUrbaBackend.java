@@ -17,17 +17,16 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.mapfishapp.addons.urbanisme;
+package org.georchestra.urbanisme;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbcp.BasicDataSource;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.ResultSet;
 
 /**
  * This class represent storage of Renseignement d'urbanisme.

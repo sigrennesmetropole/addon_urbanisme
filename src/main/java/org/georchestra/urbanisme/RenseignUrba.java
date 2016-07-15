@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.mapfishapp.addons.urbanisme;
+package org.georchestra.urbanisme;
 
 import java.util.List;
 
