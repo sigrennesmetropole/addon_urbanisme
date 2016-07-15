@@ -20,7 +20,5 @@
 
     <context:property-placeholder properties-ref="urbaProps" />
 
-	<bean id="georchestraConfiguration" class="org.georchestra.commons.configuration.GeorchestraConfiguration">
-		<constructor-arg value="urbanisme" />
-	</bean>
+
 </beans>

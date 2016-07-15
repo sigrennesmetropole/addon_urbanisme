@@ -25,10 +25,9 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.georchestra.commons.configuration.GeorchestraConfiguration;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,29 +40,26 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class RenseignUrbaController {
 
     /**
-     * GeorchestraConfiguration is used to retrieve database related parameters.
-     * They need to be defined in the mapfishapp.properties file like :
-     * urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/urbanisme?user=www-data&password=www-data
-     * urbanisme.renseignUrbaTable=app_plu.renseign_urba
-     */
-    @Autowired
-    private GeorchestraConfiguration configuration;
-
-    /**
      * Backend managing database configuration
      */
     private RenseignUrbaBackend backend;
+
+	@Value("${renseignUrbaTable}")
+	private String renseignUrbaTable;
+	@Value("${tableTheme}")
+	private String tableTheme;
+	@Value("${ordreTheme}")
+	private String ordreTheme;
+	@Value("${jdbcUrl}")
+	private String jdbcUrl;
 
     /**
      * This read configuration in datadir a create configured backend
      */
     @PostConstruct
     private void init() {
-        this.backend = new RenseignUrbaBackend(configuration.getProperty("urbanisme.renseignUrbaTable"),
-                configuration.getProperty("urbanisme.tableTheme"),
-                configuration.getProperty("urbanisme.ordreTheme"),
-                configuration.getProperty("urbanisme.jdbcUrl"));
-
+        this.backend = new RenseignUrbaBackend(renseignUrbaTable,
+                tableTheme, ordreTheme, jdbcUrl);
     }
 
     /**
@@ -115,6 +111,26 @@ public class RenseignUrbaController {
         response.setContentType("application/json");
         response.getWriter().print(res.toString(4));
     }
+
+    public void setBackend(RenseignUrbaBackend backend) {
+		this.backend = backend;
+	}
+
+	public void setRenseignUrbaTable(String renseignUrbaTable) {
+		this.renseignUrbaTable = renseignUrbaTable;
+	}
+
+	public void setTableTheme(String tableTheme) {
+		this.tableTheme = tableTheme;
+	}
+
+	public void setOrdreTheme(String ordreTheme) {
+		this.ordreTheme = ordreTheme;
+	}
+
+	public void setJdbcUrl(String jdbcUrl) {
+		this.jdbcUrl = jdbcUrl;
+	}
 
 }
 
