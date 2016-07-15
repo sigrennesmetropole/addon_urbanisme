@@ -2,11 +2,25 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:util="http://www.springframework.org/schema/util"
   xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-  http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
-  http://www.springframework.org/schema/context
-  http://www.springframework.org/schema/context/spring-context-34.3.xsd">
+    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd">
 
   <context:annotation-config/>
+  <context:component-scan base-package="org.georchestra.urbanisme.*"/>
+
+    <util:properties id="urbaProps"  ignore-resource-not-found="true"
+      location="${cas.properties.config.location:/WEB-INF/urbanisme.properties},
+      file:#{systemProperties['georchestra.datadir']}/urbanisme/urbanisme.properties"/>
+
+    <context:property-placeholder properties-ref="urbaProps" />
+
+	<bean id="georchestraConfiguration" class="org.georchestra.commons.configuration.GeorchestraConfiguration">
+		<constructor-arg value="urbanisme" />
+	</bean>
 </beans>

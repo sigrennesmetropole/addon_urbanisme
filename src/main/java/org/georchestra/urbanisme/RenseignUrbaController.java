@@ -73,7 +73,7 @@ public class RenseignUrbaController {
      * @param response
      * @throws IOException
      */
-    @RequestMapping(value = "/urbanisme/about", method = RequestMethod.GET)
+    @RequestMapping(value = "/about", method = RequestMethod.GET)
     public void getAbout(HttpServletResponse response) throws IOException {
 
         JSONObject res = new JSONObject();
@@ -91,7 +91,7 @@ public class RenseignUrbaController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping(value = "/urbanisme/renseignUrba", method = RequestMethod.GET)
+    @RequestMapping(value = "/renseignUrba", method = RequestMethod.GET)
     public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RenseignUrba renseign = this.backend.getParcelle(request.getParameter("parcelle"));

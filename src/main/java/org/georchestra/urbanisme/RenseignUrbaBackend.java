@@ -79,13 +79,21 @@ public class RenseignUrbaBackend {
         libellesVal = new ArrayList<String>();
 
         connection = this.basicDataSource.getConnection();
-        String query = "SELECT libelle FROM " +
-                "(SELECT ru.libelle as libelle, theme.ventilation_ddc as ventilation_ddc " +
-                "FROM " + this.table + " as ru " +
-                "LEFT OUTER JOIN " + this.tableTheme + " as theme " +
-                "ON ru.nom_theme = theme.nom " +
-                "WHERE id_parc = ?) as libelles " +
-                "LEFT JOIN (VALUES " + this.ordreTheme + ") as ordre(code, priorite) " +
+        String query = "SELECT "
+        		+ "     libelle "
+        		+ "FROM " +
+                "(  SELECT "
+                + "       ru.libelle              AS libelle"
+                + "       , theme.ventilation_ddc AS ventilation_ddc " +
+                "   FROM "
+                + this.table + " AS ru " +
+                "LEFT OUTER JOIN "
+                + this.tableTheme + " AS theme " +
+                "ON "
+                + "  ru.nom_theme = theme.nom " +
+                "WHERE "
+                + "  id_parc = ?) AS libelles " +
+                "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) " +
                 "ON libelles.ventilation_ddc = ordre.code " +
                 "ORDER BY ordre.priorite;";
         queryLibellesByParcelle = connection.prepareStatement(query);
