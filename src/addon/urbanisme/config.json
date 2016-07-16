@@ -6,7 +6,7 @@
         "options": {
             "parcellesCadastralesLayer": "dept02:COLLEGES_AISNE",
             "zonesPluLayer": "dept60:Colleges_Publics_CG60",
-            "cadastrappUrl": "/cadastrapp/",
+            "cadastrappUrl": "/cadastrapp/services/",
             "printServerUrl": "/urbanisme/",
             "fileServerUrl": "https://portail.sig.rennesmetropole.fr/fichiers/index.php",
             "fileRepositoryId": "a00a272df0c4760a610ee97ca6f648fc"
