@@ -75,7 +75,7 @@ public class PrintController {
         }
     }
 
-    @RequestMapping("info.json")
+    @RequestMapping("capabilities.json")
     public void printCapabilities(HttpServletRequest request, HttpServletResponse response) throws IOException {
         StringWriter strw = new StringWriter();
         try {
