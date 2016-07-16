@@ -1,0 +1,22 @@
+proxy:
+  build: proxy
+  ports:
+    - "8080:8080"
+  links:
+    - mapfishapp
+    - urbanisme
+    - header
+  environment:
+    - XMX=512M
+mapfishapp:
+  environment:
+    - XMX=512M
+  build: mapfishapp
+
+urbanisme:
+  build: urbanisme
+
+header:
+  environment:
+    - XMX=512M
+  image: georchestra/header
