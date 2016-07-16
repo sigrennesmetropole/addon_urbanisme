@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -68,9 +69,10 @@ public class RenseignUrbaController {
      *
      * @param response
      * @throws IOException
+     * @throws JSONException 
      */
     @RequestMapping(value = "/about", method = RequestMethod.GET)
-    public void getAbout(HttpServletResponse response) throws IOException {
+    public void getAbout(HttpServletResponse response) throws IOException, JSONException {
 
         JSONObject res = new JSONObject();
 
