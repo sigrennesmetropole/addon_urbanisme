@@ -5,14 +5,14 @@
   xmlns:util="http://www.springframework.org/schema/util"
   xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
-    http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+    http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
     http://www.springframework.org/schema/context
-    http://www.springframework.org/schema/context/spring-context-4.3.xsd
+    http://www.springframework.org/schema/context/spring-context-4.2.xsd
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
 
   <context:annotation-config/>
-  <context:component-scan base-package="org.georchestra.urbanisme.*"/>
+  <context:component-scan base-package="org.georchestra.urbanisme"/>
 
     <util:properties id="urbaProps"  ignore-resource-not-found="true"
       location="/WEB-INF/urbanisme.properties,

@@ -16,7 +16,7 @@
 
     This module has been funded by Rennes-Métropole.</description>
   <properties>
-    <spring.version>4.3.1.RELEASE</spring.version>
+    <spring.version>4.2.5.RELEASE</spring.version>
     <spring.data.version>1.9.1.RELEASE</spring.data.version>
     <geotools.version>11.0</geotools.version>
     <metrics.version>3.0.2</metrics.version>
@@ -172,7 +172,7 @@
     <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20150729</version>
+      <version>20080701</version>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
@@ -180,9 +180,16 @@
       <version>2.1.1</version>
     </dependency>
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>1.0.13</version>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.1</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.2</version>
+      <scope>runtime</scope>
     </dependency>
   </dependencies>
   <repositories>

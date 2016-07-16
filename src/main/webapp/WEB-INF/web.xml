@@ -8,9 +8,7 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath*:mapfish-spring-application-context.xml,
-      classpath:mapfish-spring-security.xml,
-      classpath*:mapfish-spring-application-context-override.xml</param-value>
+    <param-value>urbanisme-servlet.xml</param-value>
   </context-param>
 
 
