@@ -5,6 +5,15 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" version="3.0">
   <distributable/>
+
+  <context-param>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>classpath*:mapfish-spring-application-context.xml,
+      classpath:mapfish-spring-security.xml,
+      classpath*:mapfish-spring-application-context-override.xml</param-value>
+  </context-param>
+
+
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -25,14 +34,14 @@
     <!-- used by mfpv3 -->
     <init-param>
       <param-name>config</param-name>
-      <param-value>classpath:/print/print-apps/urbanisme/config.yaml</param-value>
+      <param-value>classpath:/print/config.yaml</param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
   <servlet-mapping>
     <servlet-name>urbanisme</servlet-name>
-    <url-pattern>/urbanisme/*</url-pattern>
+    <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
 

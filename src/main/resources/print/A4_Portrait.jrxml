@@ -37,7 +37,7 @@
 			</staticText>
 			<image>
 				<reportElement x="60" y="8" width="90" height="31" uuid="4fc3c970-1761-4e33-8962-b10c72673334"/>
-				<imageExpression><![CDATA["https://raw.githubusercontent.com/sigrennesmetropole/images/master/logos/RM_quadriNOIR.png"]]></imageExpression>
+                                <imageExpression><![CDATA["./images/logos/RM_quadriNOIR.png"]]></imageExpression>
 			</image>
 		</band>
 	</pageHeader>
@@ -321,7 +321,7 @@
 			</staticText>
 			<image>
 				<reportElement x="10" y="6" width="30" height="30" uuid="5866bbe5-f7ea-4755-8266-e35aa0d3514f"/>
-				<imageExpression><![CDATA["https://raw.githubusercontent.com/sigrennesmetropole/images/master/logos/SIG_RM.png"]]></imageExpression>
+				<imageExpression><![CDATA["./images/logos/SIG_RM.png"]]></imageExpression>
 			</image>
 			<textField>
 				<reportElement x="40" y="0" width="160" height="60" uuid="14c2f179-8e30-4570-adf2-33d1dfb0279c"/>

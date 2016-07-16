@@ -15,7 +15,7 @@
   <context:component-scan base-package="org.georchestra.urbanisme.*"/>
 
     <util:properties id="urbaProps"  ignore-resource-not-found="true"
-      location="${cas.properties.config.location:/WEB-INF/urbanisme.properties},
+      location="/WEB-INF/urbanisme.properties,
       file:#{systemProperties['georchestra.datadir']}/urbanisme/urbanisme.properties"/>
 
     <context:property-placeholder properties-ref="urbaProps" />
