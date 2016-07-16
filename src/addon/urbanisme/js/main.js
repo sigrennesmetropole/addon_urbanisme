@@ -26,7 +26,7 @@ Ext.namespace("GEOR.data");
                     "codeProprio",
                     "nomProprio",
                     "adresseProprio"
-                    //libelles is note there because this is a one to many relationship
+                    //libelles is not in the list because this is a one to many relationship
                 ]
                 //Add proxy configuration here if we want to upload Note data to server
             }, config);
