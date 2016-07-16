@@ -1,3 +1,3 @@
-FROM camptocamp/georchestra_cadastrapp
+FROM camptocamp/georchestra_cadastrapp:master-2
 
 
