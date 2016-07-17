@@ -53,13 +53,15 @@ public class RenseignUrbaController {
 	private String ordreTheme;
 	@Value("${jdbcUrl}")
 	private String jdbcUrl;
+	@Value("${driverClassName}")
+	private String driverClassName;
 
     /**
      * This read configuration in datadir a create configured backend
      */
     @PostConstruct
     private void init() {
-        this.backend = new RenseignUrbaBackend(renseignUrbaTable,
+        this.backend = new RenseignUrbaBackend(driverClassName, renseignUrbaTable,
                 tableTheme, ordreTheme, jdbcUrl);
     }
 
@@ -103,9 +105,7 @@ public class RenseignUrbaController {
             libs.put(libelleRow);
         }
 
-
         JSONObject res = new JSONObject();
-
 
         res.put("parcelle", request.getParameter("parcelle"));
         res.put("libelles", libs);
@@ -113,26 +113,5 @@ public class RenseignUrbaController {
         response.setContentType("application/json");
         response.getWriter().print(res.toString(4));
     }
-
-    public void setBackend(RenseignUrbaBackend backend) {
-		this.backend = backend;
-	}
-
-	public void setRenseignUrbaTable(String renseignUrbaTable) {
-		this.renseignUrbaTable = renseignUrbaTable;
-	}
-
-	public void setTableTheme(String tableTheme) {
-		this.tableTheme = tableTheme;
-	}
-
-	public void setOrdreTheme(String ordreTheme) {
-		this.ordreTheme = ordreTheme;
-	}
-
-	public void setJdbcUrl(String jdbcUrl) {
-		this.jdbcUrl = jdbcUrl;
-	}
-
 }
 

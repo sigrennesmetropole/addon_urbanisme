@@ -33,6 +33,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
  */
 public class RenseignUrbaBackend {
 
+    private String driverClassName;
     private String table;
     private String tableTheme;
     private String ordreTheme;
@@ -47,14 +48,16 @@ public class RenseignUrbaBackend {
      * @param ordreTheme theme codes order
      * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
      */
-    public RenseignUrbaBackend(String table, String tableTheme, String ordreTheme, String jdbcUrl) {
+    public RenseignUrbaBackend(final String driverClassName,
+            final String table, final String tableTheme, final String ordreTheme,
+            final String jdbcUrl) {
         this.table = table;
         this.tableTheme = tableTheme;
         this.ordreTheme = ordreTheme;
         this.jdbcUrl = jdbcUrl;
 
         this.basicDataSource = new BasicDataSource();
-        this.basicDataSource.setDriverClassName("org.postgresql.Driver");
+        this.basicDataSource.setDriverClassName(driverClassName);
         this.basicDataSource.setTestOnBorrow(true);
         this.basicDataSource.setPoolPreparedStatements(true);
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
