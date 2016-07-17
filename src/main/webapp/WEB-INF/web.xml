@@ -8,11 +8,8 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>
-    	urbanisme-servlet.xml
-    </param-value>
+    <param-value>urbanisme-servlet.xml</param-value>
   </context-param>
-
 
   <filter>
     <filter-name>characterEncodingFilter</filter-name>
@@ -27,15 +24,9 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- servlets -->
   <servlet>
     <servlet-name>urbanisme</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <!-- used by mfpv3 -->
-    <init-param>
-      <param-name>config</param-name>
-      <param-value>classpath:/print/config.yaml</param-value>
-    </init-param>
     <load-on-startup>1</load-on-startup>
   </servlet>
 
@@ -43,6 +34,5 @@
     <servlet-name>urbanisme</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
-
 
 </web-app>
