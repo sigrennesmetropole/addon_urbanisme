@@ -11,14 +11,25 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util.xsd">
 
-  <context:annotation-config/>
-  <context:component-scan base-package="org.georchestra.urbanisme"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="org.georchestra.urbanisme"/>
+
+    <bean name="CurrentAPI" class="org.mapfish.print.servlet.MapPrinterServlet">
+        <property name="maxCreateAndGetWaitTimeInSeconds" value="30" />
+    </bean>
+
+    <bean id="mapPrinterFactory" class="org.mapfish.print.servlet.ServletMapPrinterFactory">
+        <property name="appsRootDirectory" value="${mapfishPrintDir}" />
+    </bean>
 
     <util:properties id="urbaProps"  ignore-resource-not-found="true"
-      location="/WEB-INF/urbanisme.properties,
+      location="classpath:mapfish-spring.properties,
+      /WEB-INF/urbanisme.properties,
       file:#{systemProperties['georchestra.datadir']}/urbanisme/urbanisme.properties"/>
 
     <context:property-placeholder properties-ref="urbaProps" />
 
+	<import resource="classpath:mapfish-spring-application-context.xml" />
+	
 
 </beans>

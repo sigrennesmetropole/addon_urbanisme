@@ -8,7 +8,9 @@
 
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>urbanisme-servlet.xml</param-value>
+    <param-value>
+    	urbanisme-servlet.xml
+    </param-value>
   </context-param>
 
 
