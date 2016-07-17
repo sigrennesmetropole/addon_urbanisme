@@ -63,4 +63,7 @@ Décompressez l'archive ZIP obtenue suite à la compilation dans le répertoire
 `mapfishapp/addons/` du `datadir` (ou dans le app/addons de la webapp déployée,
 dans le cas inverse).
 
+# Développement
+
+Pour faciliter le développement, une composition docker est intégrée aux sources, voir https://github.com/pmauduit/addon_urbanisme/blob/master/src/docker/README.md pour plus d'infos.
 
