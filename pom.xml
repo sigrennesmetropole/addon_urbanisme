@@ -331,6 +331,26 @@
               </resources>
             </configuration>
           </execution>
+          <execution>
+            <id>prepare-docker-urbanisme-datadir</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/docker/urbanisme/etc/georchestra/urbanisme</outputDirectory>
+              <resources>
+                <resource>
+                  <directory>${project.build.resources[0].directory}</directory>
+                  <includes>
+                    <include>**/*</include>
+                  </includes>
+                </resource>
+              </resources>
+            </configuration>
+          </execution>
+
+
         </executions>
       </plugin>
     </plugins>

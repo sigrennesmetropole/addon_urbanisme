@@ -19,6 +19,8 @@ cadastrapp:
     - XMX=512M
 urbanisme:
   build: urbanisme
+  environment:
+    - ADD_JAVA_OPTS=-Dgeorchestra.datadir=/etc/georchestra
 header:
   environment:
     - XMX=512M

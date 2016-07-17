@@ -24,7 +24,7 @@
 
     <util:properties id="urbaProps"  ignore-resource-not-found="true"
       location="classpath:mapfish-spring.properties,
-      /WEB-INF/urbanisme.properties,
+      classpath:urbanisme.properties,
       file:#{systemProperties['georchestra.datadir']}/urbanisme/urbanisme.properties"/>
 
     <context:property-placeholder properties-ref="urbaProps" />
