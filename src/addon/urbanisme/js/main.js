@@ -473,6 +473,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                         params = {
                             layout: "A4 portrait",
+                            outputFormat: "pdf",
                             attributes: {
                                 map: {
                                     scale: this.map.getScale(),
@@ -498,7 +499,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         };
 
                         Ext.Ajax.request({
-                            url: this.options.printServerUrl + "/print/" + this.options.printServerApp + "/report.pdf",
+                            url: this.options.printServerUrl + "/print/print",
                             method: 'POST',
                             jsonData: (new OpenLayers.Format.JSON()).write(params),
                             headers: {"Content-Type": "application/json; charset=" + this.encoding},
