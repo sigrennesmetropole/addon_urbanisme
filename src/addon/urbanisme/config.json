@@ -4,8 +4,8 @@
         "enabled": true,
         "name": "Urbanisme",
         "options": {
-            "parcellesCadastralesLayer": "dept02:COLLEGES_AISNE",
-            "zonesPluLayer": "dept60:Colleges_Publics_CG60",
+            "parcellesCadastralesLayer": "ref_cad:app_cadastrapp_parcelle",
+            "zonesPluLayer": "urba_fonc:plu_zone_urba",
             "cadastrappUrl": "/cadastrapp/services/",
             "printServerUrl": "/urbanisme/",
             "fileServerUrl": "https://portail.sig.rennesmetropole.fr/fichiers/index.php",
