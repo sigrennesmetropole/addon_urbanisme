@@ -45,16 +45,16 @@ public class RenseignUrbaController {
      */
     private RenseignUrbaBackend backend;
 
-	@Value("${renseignUrbaTable}")
-	private String renseignUrbaTable;
-	@Value("${tableTheme}")
-	private String tableTheme;
-	@Value("${ordreTheme}")
-	private String ordreTheme;
-	@Value("${jdbcUrl}")
-	private String jdbcUrl;
-	@Value("${driverClassName}")
-	private String driverClassName;
+    @Value("${renseignUrbaTable}")
+    private String renseignUrbaTable;
+    @Value("${tableTheme}")
+    private String tableTheme;
+    @Value("${ordreTheme}")
+    private String ordreTheme;
+    @Value("${jdbcUrl}")
+    private String jdbcUrl;
+    @Value("${driverClassName}")
+    private String driverClassName;
 
     /**
      * This read configuration in datadir a create configured backend
@@ -71,7 +71,7 @@ public class RenseignUrbaController {
      *
      * @param response
      * @throws IOException
-     * @throws JSONException 
+     * @throws JSONException
      */
     @RequestMapping(value = "/about", method = RequestMethod.GET)
     public void getAbout(HttpServletResponse response) throws IOException, JSONException {
@@ -80,9 +80,8 @@ public class RenseignUrbaController {
 
         res.put("msg", "Urbanisme web service");
 
-        response.setContentType("application/json");
+        response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res.toString(4));
-
     }
 
     /**
@@ -110,7 +109,7 @@ public class RenseignUrbaController {
         res.put("parcelle", request.getParameter("parcelle"));
         res.put("libelles", libs);
 
-        response.setContentType("application/json");
+        response.setContentType("application/json; charset=utf-8");
         response.getWriter().print(res.toString(4));
     }
 }
