@@ -36,6 +36,7 @@ Exemple:
 ```
 urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/rennes_urbanisme?user=www-data&password=www-data
 urbanisme.renseignUrbaTable=urba.renseign_urba
+urbanisme.tableTheme=app_plu.param_theme
 urbanisme.ordreTheme=('ZON', 1), ('SUP', 2), ('SAU', 3), ('PRE', 4), ('OPE', 5), ('PAR', 6), ('LOT', 7), ('TAX', 8)
 
 ```
