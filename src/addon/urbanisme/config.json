@@ -1,0 +1,27 @@
+[
+    {
+        "id": "urbanisme_0",
+        "enabled": true,
+        "name": "Urbanisme",
+        "options": {
+            "parcellesCadastralesLayer": "ref_cad:app_cadastrapp_parcelle",
+            "zonesPluLayer": "urba_fonc:plu_zone_urba",
+            "cadastrappUrl": "/cadastrapp/services/",
+            "printServerUrl": "/urbanisme/",
+            "fileServerUrl": "https://portail.sig.rennesmetropole.fr/fichiers/index.php",
+            "fileRepositoryId": "a00a272df0c4760a610ee97ca6f648fc"
+        },
+        "title": {
+            "en": "Land Planning",
+            "es": "Urbanisme",
+            "fr": "Urbanisme",
+            "de": "Urbanisme"
+        },
+        "description": {
+            "en": "Urban planning information",
+            "fr": "Information urbanistique",
+            "es": "...",
+            "de": "..."
+        }
+    }
+]

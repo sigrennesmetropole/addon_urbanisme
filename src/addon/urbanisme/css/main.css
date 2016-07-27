@@ -1,0 +1,81 @@
+.addon-urbanisme {
+    background-image: url(../img/town-hall-15_16px.png) !important;
+}
+
+.addon-urbanisme-i-button {
+    margin: auto !important;
+    color: orange !important;
+    font-family: "serif" !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+
+}
+
+.parcelle {
+    margin: 24px 12px 24px;
+}
+
+.parcelle h1 {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    font-size: 2em;
+}
+
+.parcelle h2 {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    font-size: 1.4em;
+}
+
+.table-parcelle tr td {
+    padding: 2px 4px;
+}
+
+.table-parcelle, .table-parcelle tr td {
+    border-collapse: collapse;
+    border: 1px solid grey;
+    margin-bottom: 16px;
+}
+
+.parcelle-table-label {
+    background-color: dimgrey;
+    color: lightgrey;
+    margin-bottom: 16px;
+    font-weight: bold;
+}
+
+.libelle {
+    margin-bottom: 6px;
+}
+
+.zonage h1 {
+    margin-top: 8px;
+    margin-bottom: 12px;
+    text-align: center;
+    font-size: 2.2em;
+}
+
+.zonage-attrib-label {
+    display: table-cell;
+    text-align: right;
+    font-family: serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    width: 160px;
+    padding: 4px;
+
+}
+
+.zonage-attrib-value {
+    display: table-cell;
+    font-size: 1.2em;
+    padding: 4px;
+    width: 360px;
+}
+
+.zonage-pair {
+    /* We need old browswer support*/
+    display: table;
+}
