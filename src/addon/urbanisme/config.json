@@ -6,8 +6,8 @@
         "options": {
             "parcellesCadastralesLayer": "ref_cad:app_cadastrapp_parcelle",
             "zonesPluLayer": "urba_fonc:plu_zone_urba",
-            "cadastrappUrl": "/cadastrapp/services/",
-            "printServerUrl": "/urbanisme/",
+            "cadastrappUrl": "http://urbanisme:8088/cadastrapp/services/",
+            "printServerUrl": "http://urbanisme:8088/urbanisme/",
             "fileServerUrl": "https://portail.sig.rennesmetropole.fr/fichiers/index.php",
             "fileRepositoryId": "a00a272df0c4760a610ee97ca6f648fc"
         },
