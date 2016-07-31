@@ -734,7 +734,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.noteStore.destroy();
         this.parcelleStore.destroy();
         this.proprioStore.destroy();
-        this.zonagePluData.destroy();
+        this.zonagePluData = null;
         GEOR.Addons.Base.prototype.destroy.call(this);
 
     }
