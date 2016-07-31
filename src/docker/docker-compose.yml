@@ -1,14 +1,27 @@
-mapfishapp:
+proxy:
+  build: proxy
   ports:
-   - "8080:8080"
+    - "8080:8080"
+  links:
+    - mapfishapp
+    - urbanisme
+    - header
+    - cadastrapp
+  environment:
+    - XMX=512M
+mapfishapp:
   environment:
     - XMX=512M
   build: mapfishapp
-  links:
-    - urbanisme
+cadastrapp:
+  build: cadastrapp
+  environment:
+    - XMX=512M
 urbanisme:
   build: urbanisme
-  ports:
-   - "8088:8088"
   environment:
     - ADD_JAVA_OPTS=-Dgeorchestra.datadir=/etc/georchestra
+header:
+  environment:
+    - XMX=512M
+  image: georchestra/header
