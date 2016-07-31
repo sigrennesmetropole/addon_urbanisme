@@ -698,5 +698,32 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             });
 
 
+    },
+
+    destroy: function () {
+        var layerManager = Ext.getCmp("geor-layerManager");
+        layerManager.root.eachChild(function(child) {
+            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
+                //TODO - Check if we remove the right component
+                child.component.getComponent(0).getComponent(0).destroy();
+            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
+                //TODO - Check if we remove the right component
+                child.component.getComponent(0).getComponent(0).destroy();
+            }
+
+        }, this);
+
+        this.components.destroy();
+        delete this.components2.destroy();
+
+        this.parcelleWindow = null;
+        this.zonagePluWindow = null;
+        this.libellesStore = null;
+        this.noteStore = null;
+        this.parcelleStore = null;
+        this.proprioStore = null;
+        this.zonagePluData = null;
+        GEOR.Addons.Base.prototype.destroy.call(this);
+
     }
 });
