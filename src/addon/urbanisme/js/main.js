@@ -542,38 +542,46 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 items: [
                     {
                         xtype: "dataview",
-                        height: 300, //TODO remove
-                        width: 530, //TODO remove
+                        //height: 300, //TODO remove
+                        //width: 530, //TODO remove
                         id: "zonage-plu-box",
                         data: this.zonagePluData,
                         tpl: new Ext.XTemplate(
                             '<div class="zonage">',
-                            '<tpl if="empty==false" >',
-                            '<h1>Information sur un zonage d\'un PLU</h1>',
-                            '<div class="zonage-attribs">',
-                            '<div id="commune" class="zonage-pair">',
-                            '<div class="zonage-attrib-label">Commune : </div>',
-                            '<div class="zonage-attrib-value">{values.commune}</div>',
-                            '</div>', // end of commune
-                            '<div id="type-libelle" class="zonage-pair">',
-                            '<div class="zonage-attrib-label">Type : </div>',
-                            '<div class="zonage-attrib-value"><a href="{values.url}">{values.feature.attributes.libelle}</a></div>',
-                            '</div>', // end of type-libelle
-                            '<div id="type-description" class="zonage-pair">',
-                            '<div class="zonage-attrib-label"></div>',
-                            '<div class="zonage-attrib-value"><a href="{values.url}">{values.feature.attributes.libelong}</a></div>',
-                            '</div>', // end of type-description
-                            '<div id="vocation-dominante" class="zonage-pair">',
-                            '<div class="zonage-attrib-label">Vocation dominante : </div>',
-                            '<div class="zonage-attrib-value">{values.feature.attributes.destdomi}</div>',
-                            '</div>', // end of vocation-dominante
-                            '<div id="date-plu-en-vigueur" class="zonage-pair">',
-                            '<div class="zonage-attrib-label">PLU en vigueur au : </div>',
-                            '<div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
-                            '</div>', // end of vocation-dominante
-                            '</div>', //end of zonage-attribs
+                            // start of if values.empty == false
+                            '<tpl if="values.empty==false" >',
+                            //start of zonage-attribs
+                            ' <div class="zonage-attribs">',
+                            // nom de la commune
+                            '    <div id="commune" class="zonage-pair">',
+                            '      <div class="zonage-attrib-label"></div>',
+                            '      <div class="zonage-attrib-commune">{values.commune}</div>',
+                            '    </div>',
+                            // date de validité
+                            '    <div id="date-plu-en-vigueur" class="zonage-pair">',
+                            '      <div class="zonage-attrib-label">PLU en vigueur au</div>',
+                            '      <div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
+                            '    </div>',
+                            // type du zonage + url to PDF + long label
+                            '    <div id="type-libelle" class="zonage-pair">',
+                            '      <div class="zonage-attrib-label">Type de la zone :</div>',
+                            '      <div class="zonage-attrib-zonage">',
+                            '        <a href="{values.url}" class="zonage-attrib-zonage">{values.feature.attributes.libelle}</a>',
+                            '        <br />{values.feature.attributes.libelong}',
+                            '      </div>',
+                            '    </div>',
+                            // vocation dominante
+                            '    <div id="vocation-dominante" class="zonage-pair">',
+                            '      <div class="zonage-attrib-label">Vocation dominante :</div>',
+                            '      <div class="zonage-attrib-value">08 : sans objet ou non encore définie dans le règlement</div>',
+                            '    </div>',
+                            '  </div>',
+                            //end of zonage-attribs
                             '</tpl>', // end of if values.empty == false
-                            '<tpl if="empty==true" ><p>Pas de PLU numérique disponible pour cette commune.</p></tpl>',
+                            
+                            // if no values / empty values
+                            '<tpl if="values.empty==true" >',
+                            ' <h1>Pas de PLU numérique disponible pour cette commune.</h1></tpl>',
                             '</div>'
                         )
                     }

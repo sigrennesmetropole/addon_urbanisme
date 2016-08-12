@@ -1,3 +1,12 @@
+
+
+body {
+  font-family: Tahoma, Arial, Helvetica, sans serif;
+  font-size: 11px;
+}
+
+
+
 .addon-urbanisme {
     background-image: url(../img/town-hall-15_16px.png) !important;
 }
@@ -54,25 +63,57 @@
     margin-top: 8px;
     margin-bottom: 12px;
     text-align: center;
-    font-size: 2.2em;
+    font-size: 1.5em;
+}
+
+#zonage-plu-box {
+  width: 500px;
+  height: auto;
+  padding: 10px;
+  border: 1px solid grey; /* for dev */
 }
 
 .zonage-attrib-label {
     display: table-cell;
     text-align: right;
-    font-family: serif;
     font-size: 1.2em;
-    font-weight: bold;
-    width: 160px;
-    padding: 4px;
-
+    font-weight: normal;
+    width: 140px;
+    padding-left: 4px;
+    padding-right: 10px;
+    padding-top: 6px;
+    padding-bottom: 0px;
 }
 
 .zonage-attrib-value {
     display: table-cell;
     font-size: 1.2em;
     padding: 4px;
-    width: 360px;
+}
+
+.zonage-attrib-commune{
+    display: table-cell;
+    font-size: 1.8em;
+    padding-bottom: 10px;
+}
+
+.zonage-attrib-zonage{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.zonage-attrib-zonage a:link, a:visited{
+    font-size: 1.4em;
+    padding: 0px;
+    color: #000000;
+    text-decoration: none;
+}
+.zonage-attrib-zonage a:hover{
+    font-size: 1.4em;
+    padding: 0px;
+    color: #000000;
+    text-decoration: none;
+    background-color: #ffeb40;
 }
 
 .zonage-pair {
