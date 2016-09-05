@@ -562,7 +562,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '      <div class="zonage-attrib-label">PLU en vigueur au</div>',
                             '      <div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
                             '    </div>',
-                            // type du zonage + url to PDF + long label
+                            // type du zonage (libelle) + url vers le PDF + label long
                             '    <div id="type-libelle" class="zonage-pair">',
                             '      <div class="zonage-attrib-label">Type de la zone :</div>',
                             '      <div class="zonage-attrib-zonage">',
@@ -570,10 +570,16 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '        <br />{values.feature.attributes.libelong}',
                             '      </div>',
                             '    </div>',
+                            // Type simplifié
+                            '    <div id="vocation-dominante" class="zonage-pair">',
+                            '      <div class="zonage-attrib-label">Type simplifié :</div>',
+                            '      <div class="zonage-attrib-value">{values.feature.attributes.typezone}</div>',
+                            '    </div>',
+                            '  </div>',
                             // vocation dominante
                             '    <div id="vocation-dominante" class="zonage-pair">',
                             '      <div class="zonage-attrib-label">Vocation dominante :</div>',
-                            '      <div class="zonage-attrib-value">08 : sans objet ou non encore définie dans le règlement</div>',
+                            '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi}</div>',
                             '    </div>',
                             '  </div>',
                             //end of zonage-attribs
