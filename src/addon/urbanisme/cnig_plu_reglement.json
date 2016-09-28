@@ -1,0 +1,66 @@
+{
+	"cnig_version": "octobre 2014",
+	"json_version": "2016-09-05",
+	"vocationdominante": [{
+		"code": "00",
+		"label": "sans objet ou non encore définie dans le règlement"
+	}, {
+		"code": "01",
+		"label": "habitat"
+	}, {
+    "code": "02",
+		"label": "activité"
+	}, {
+    "code": "03",
+		"label": "destination mixte habitat / activité"
+	}, {
+    "code": "04",
+		"label": "loisirs et tourisme"
+	}, {
+    "code": "05",
+		"label": "équipement public"
+	}, {
+    "code": "06",
+		"label": ""
+	}, {
+    "code": "07",
+		"label": "activité agricole"
+	}, {
+    "code": "08",
+		"label": "espace naturel"
+	}, {
+	  "code": "09",
+		"label": "espace remarquable (littoral L146-6 / montagne L145-7)"
+	}, {
+    "code": "10",
+		"label": "secteur de carrière"
+	}, {
+    "code": "99",
+		"label": "autre"
+	}],
+	"typezonesimplifie": [{
+		"code": "U",
+		"label": "urbanisé"
+	}, {
+    "code": "AUc",
+		"label": "à urbaniser alternatif"
+	}, {
+    "code": "AUs",
+		"label": "à urbaniser bloqué"
+	}, {
+    "code": "A",
+		"label": "agricole"
+	}, {
+    "code": "Ah",
+		"label": "agricole constructible"
+	}, {
+    "code": "N",
+		"label": "naturel"
+	}, {
+    "code": "Nh",
+		"label": "naturel constructible"
+	}, {
+    "code": "Nd",
+		"label": "naturel avec transfert de constructabilité"
+	}]
+}
