@@ -378,10 +378,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 if (this.empty) {
                     return "";
                 }
-                return addon.options.fileServerUrl + "?get_action=open_file&repository_id=" +
-                    addon.options.fileRepositoryId +
-                    "&file=" + encodeURI("/PLU : Plans locaux d'urbanisme/En vigueur/" + this.communeInsee + " " +
-                        this.commune + "/04_reglement_litteral/" + this.feature.attributes.urlfic);
+                return encodeURI(this.feature.attributes.urlfic);
             };
 
             this.url = this.getUrl();
