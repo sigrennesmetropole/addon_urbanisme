@@ -218,7 +218,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
                             if (resp.features.length === 0) {
-                                this.zonagePluData.empty = true;
+                                this.zonagePluData.update(null);
                             } else {
                                 this.zonagePluData.update(resp.features[0]);
                             }
@@ -349,9 +349,18 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
             this.update = function(feature) {
                 this.feature = feature;
-                this.empty = false;
-                this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
-                OpenLayers.Request.GET({
+                if (feature === null) {
+                    this.communeInsee = null;
+                    this.empty = true;
+                    //TODO Remove after check
+                    var zonagePluBox = Ext.getCmp("zonage-plu-box");
+                    if (zonagePluBox.el) {
+                        zonagePluBox.update(this);
+                    }
+                } else {
+                    this.empty = false;
+                    this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
+                    OpenLayers.Request.GET({
                     url: addon.options.cadastrappUrl + "getCommune",
                     params: {cgocommune: this.communeInsee},
                     callback: function(resp) {
@@ -362,7 +371,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     },
                     scope: this
                 });
-            }
+                }
+            };
 
             this.getUrl = function() {
                 if (this.empty) {
@@ -541,7 +551,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         data: this.zonagePluData,
                         tpl: new Ext.XTemplate(
                             '<div class="zonage">',
-                            '<tpl if="values.empty==false" >',
+                            '<tpl if="empty==false" >',
                             '<h1>Information sur un zonage d\'un PLU</h1>',
                             '<div class="zonage-attribs">',
                             '<div id="commune" class="zonage-pair">',
@@ -566,7 +576,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '</div>', // end of vocation-dominante
                             '</div>', //end of zonage-attribs
                             '</tpl>', // end of if values.empty == false
-                            '<tpl if="values.empty==true" ><p>Pas de PLU numérique disponible pour cette commune.</p></tpl>',
+                            '<tpl if="empty==true" ><p>Pas de PLU numérique disponible pour cette commune.</p></tpl>',
                             '</div>'
                         )
                     }
@@ -619,12 +629,14 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             scope: this
         });
         this.parcelleWindow.show();
+
         this.components.toggle(false);
     },
 
 
     showZonagePluWindow: function() {
         this.zonagePluWindow.show();
+        Ext.getCmp("zonage-plu-box").update(this.zonagePluData);
         this.components2.toggle(false);
     },
 
@@ -697,6 +709,33 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 interval: 3000
             });
 
+
+    },
+
+    destroy: function () {
+        var layerManager = Ext.getCmp("geor-layerManager");
+        layerManager.root.eachChild(function(child) {
+            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
+                //TODO - Check if we remove the right component
+                child.component.getComponent(0).getComponent(0).destroy();
+            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
+                //TODO - Check if we remove the right component
+                child.component.getComponent(0).getComponent(0).destroy();
+            }
+
+        }, this);
+
+        this.components.destroy();
+        delete this.components2.destroy();
+
+        this.parcelleWindow.destroy();
+        this.zonagePluWindow.destroy();
+        this.libellesStore.destroy();
+        this.noteStore.destroy();
+        this.parcelleStore.destroy();
+        this.proprioStore.destroy();
+        this.zonagePluData = null;
+        GEOR.Addons.Base.prototype.destroy.call(this);
 
     }
 });
