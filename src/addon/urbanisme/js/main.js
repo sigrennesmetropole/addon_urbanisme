@@ -566,7 +566,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             '    <div id="type-libelle" class="zonage-pair">',
                             '      <div class="zonage-attrib-label">Type de la zone :</div>',
                             '      <div class="zonage-attrib-zonage">',
-                            '        <a href="{values.url}" class="zonage-attrib-zonage">{values.feature.attributes.libelle}</a>',
+                            '        <a href="{values.url}" target="_blank" class="zonage-attrib-zonage">{values.feature.attributes.libelle}</a>',
                             '        <br />{values.feature.attributes.libelong}',
                             '      </div>',
                             '    </div>',
