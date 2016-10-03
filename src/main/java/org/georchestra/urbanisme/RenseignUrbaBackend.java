@@ -33,7 +33,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
  */
 public class RenseignUrbaBackend {
 
-    private String driverClassName;
     private String table;
     private String tableTheme;
     private String ordreTheme;
@@ -81,35 +80,43 @@ public class RenseignUrbaBackend {
         List<String> libellesVal;
         libellesVal = new ArrayList<String>();
 
-        connection = this.basicDataSource.getConnection();
-        String query = "SELECT "
-        		+ "     libelle "
-        		+ "FROM " +
-                "(  SELECT "
+        try {
+            connection = this.basicDataSource.getConnection();
+            String query = "SELECT "
+                + "     libelle "
+                + "FROM "
+                + "(  SELECT "
                 + "       ru.libelle              AS libelle"
-                + "       , theme.ventilation_ddc AS ventilation_ddc " +
-                "   FROM "
-                + this.table + " AS ru " +
-                "LEFT OUTER JOIN "
-                + this.tableTheme + " AS theme " +
-                "ON "
-                + "  ru.nom_theme = theme.nom " +
-                "WHERE "
-                + "  id_parc = ?) AS libelles " +
-                "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) " +
-                "ON libelles.ventilation_ddc = ordre.code " +
-                "ORDER BY ordre.priorite;";
-        queryLibellesByParcelle = connection.prepareStatement(query);
-        queryLibellesByParcelle.setString(1, parcelle);
-        ResultSet rs = queryLibellesByParcelle.executeQuery();
+                + "       , theme.ventilation_ddc AS ventilation_ddc "
+                + "   FROM "
+                + this.table + " AS ru "
+                + "LEFT OUTER JOIN "
+                + this.tableTheme + " AS theme "
+                + "ON "
+                + "  ru.nom_theme = theme.nom "
+                + "WHERE "
+                + "  id_parc = ?) AS libelles "
+                + "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) "
+                + "ON libelles.ventilation_ddc = ordre.code "
+                + "ORDER BY ordre.priorite;";
 
-        while (rs.next()) {
-            String libelle = rs.getString("libelle");
-            libellesVal.add(libelle);
+            queryLibellesByParcelle = connection.prepareStatement(query);
+            queryLibellesByParcelle.setString(1, parcelle);
+            ResultSet rs = queryLibellesByParcelle.executeQuery();
+
+            while (rs.next()) {
+                String libelle = rs.getString("libelle");
+                libellesVal.add(libelle);
+            }
+            RenseignUrba renseign = new RenseignUrba(parcelle, libellesVal);
+            return renseign;
+        } finally {
+            if ((queryLibellesByParcelle != null) && (!queryLibellesByParcelle.isClosed())) {
+                queryLibellesByParcelle.close();
+            }
+            if ((connection != null) && (!connection.isClosed())) {
+                connection.close();
+            }
         }
-
-        RenseignUrba renseign = new RenseignUrba(parcelle, libellesVal);
-
-        return renseign;
     }
 }
