@@ -4,7 +4,7 @@
         "enabled": true,
         "name": "Urbanisme",
         "options": {
-            "parcellesCadastralesLayer": "ref_cad:app_cadastrapp_parcelle",
+            "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
             "zonesPluLayer": "urba_docs:plu_zone_urba",
             "cadastrappUrl": "/cadastrapp/services/",
             "printServerUrl": "/urbanisme/"
