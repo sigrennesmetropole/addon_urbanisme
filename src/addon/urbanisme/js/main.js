@@ -1,10 +1,7 @@
 /*global
  Ext, GeoExt, OpenLayers, GEOR
  */
-
-Ext.namespace("GEOR.Addons");
-
-Ext.namespace("GEOR.data");
+Ext.namespace("GEOR.Addons", "GEOR.data");
 
 
 /**
@@ -17,18 +14,18 @@ Ext.namespace("GEOR.data");
             config = Ext.apply({
                 root: "",
                 fields: ["parcelle",
-                    "commune",
-                    "codeSection",
-                    "numero",
-                    "adresseCadastrale",
-                    "contenanceDGFiP",
-                    "surfaceSIG",
-                    "codeProprio",
-                    "nomProprio",
-                    "adresseProprio"
-                    //libelles is not in the list because this is a one to many relationship
-                ]
-                //Add proxy configuration here if we want to upload Note data to server
+                        "commune",
+                        "codeSection",
+                        "numero",
+                        "adresseCadastrale",
+                        "contenanceDGFiP",
+                        "surfaceSIG",
+                        "codeProprio",
+                        "nomProprio",
+                        "adresseProprio"
+                        //libelles is not in the list because this is a one to many relationship
+                    ]
+                    //Add proxy configuration here if we want to upload Note data to server
             }, config);
 
             NoteStore.superclass.constructor.call(this, config);
@@ -251,7 +248,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         });
 
         //We load an empty note record, we will update it with the different requests
-        this.noteStore.loadData([{"parcelle": 0}]);
+        this.noteStore.loadData([{
+            "parcelle": 0
+        }]);
 
         this.communeStore = new Ext.data.JsonStore({
             idProperty: "cgocommune",
@@ -343,7 +342,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             })
         });
 
-        this.zonagePluData = new (function(addon) {
+        this.zonagePluData = new(function(addon) {
             this.empty = true;
             this.feature = null;
 
@@ -361,16 +360,18 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     this.empty = false;
                     this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
                     OpenLayers.Request.GET({
-                    url: addon.options.cadastrappUrl + "/getCommune",
-                    params: {cgocommune: this.communeInsee},
-                    callback: function(resp) {
-                        //We assume that we will get one and only one result
-                        this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
-                        this.url = this.getUrl();
-                        Ext.getCmp("zonage-plu-box").update(this);
-                    },
-                    scope: this
-                });
+                        url: addon.options.cadastrappUrl + "/getCommune",
+                        params: {
+                            cgocommune: this.communeInsee
+                        },
+                        callback: function(resp) {
+                            //We assume that we will get one and only one result
+                            this.commune = (new OpenLayers.Format.JSON()).read(resp.responseText)[0]["libcom_min"];
+                            this.url = this.getUrl();
+                            Ext.getCmp("zonage-plu-box").update(this);
+                        },
+                        scope: this
+                    });
                 }
             };
 
@@ -395,142 +396,140 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             autoScroll: true,
             items: [{
                 xtype: "panel",
-                items: [
-                    {
-                        xtype: "dataview",
-                        id: "parcelle-panel",
-                        store: this.noteStore,
-                        tpl: new Ext.XTemplate(
-                            '<tpl for=".">',
-                            '<div class="parcelle">',
-                            '<h1>Réglementation applicable à la parcelle cadastrale</h1>',
-                            '<h2>{parcelle}</h2>',
-                            '<table class="table-parcelle">',
-                            '<tr>',
-                            '<td class="parcelle-table-label">commune</td>',
-                            '<td>{commune}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">code section</td>',
-                            '<td>{codeSection}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">numéro parcelle</td>',
-                            '<td>{numero}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">adresse du terrain</td>',
-                            '<td>{adresseCadastrale}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">code Rivoli (Fantoir)</td>',
-                            '<td>{contenanceDGFiP}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">surface cadastrale (m²)</td>',
-                            '<td>{surfaceSIG}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">code propriétaire</td>',
-                            '<td>{codeProprio}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">nom propriétaire</td>',
-                            '<td>{nomProprio}</td>',
-                            '</tr>',
-                            '<tr>',
-                            '<td class="parcelle-table-label">adresse propriétaire</td>',
-                            '<td>{adresseProprio}</td>',
-                            '</tr>',
-                            '</table>',
-                            '</div>',
-                            '</tpl>'
-                        )
-                    }, {
-                        xtype: "dataview",
-                        id: "parcelle-libelles",
-                        store: this.libellesStore,
-                        tpl: new Ext.XTemplate(
-                            '<div class="parcelle">',
-                            '<tpl for=".">',
-                            '<p class="libelle">{libelle}</p>',
-                            '</tpl>',
-                            '</div>'
-                        )
-                    }
-                ]
-            }],
-            buttons: [
-                {
-                    //TODO tr
-                    text: "Imprimer",
-                    iconCls: 'mf-print-action',
-                    handler: function() {
-                        var params, centerLonLat, libellesArray, libellesAsString;
-
-                        centerLonLat = this.map.getCenter();
-                        libellesArray = [];
-
-                        this.libellesStore.each(function(record) {
-                            libellesArray.push(record.get("libelle"));
-
-                        });
-
-                        libellesAsString = libellesArray.join("\n\n");
-
-                        params = {
-                            layout: "A4 portrait",
-                            attributes: {
-                                map: {
-                                    scale: this.map.getScale(),
-                                    center: [centerLonLat.lon, centerLonLat.lat],
-                                    //TODO improve for production
-                                    dpi: 72,
-                                    layers: this.baseLayers(),
-                                    projection: this.map.getProjection()
-                                },
-                                parcelle: this.noteStore.getAt(0).get("parcelle"),
-                                commune: this.noteStore.getAt(0).get("commune"),
-                                codeSection: this.noteStore.getAt(0).get("codeSection"),
-                                numero: this.noteStore.getAt(0).get("numero"),
-                                adresseCadastrale: this.noteStore.getAt(0).get("adresseCadastrale"),
-                                contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
-                                surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
-                                codeProprio: this.noteStore.getAt(0).get("codeProprio"),
-                                nomProprio: this.noteStore.getAt(0).get("nomProprio"),
-                                adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
-                                libelles: libellesAsString
-
-                            }
-                        };
-
-                        Ext.Ajax.request({
-                            url: this.options.printServerUrl + "/print/report.pdf",
-                            method: 'POST',
-                            jsonData: (new OpenLayers.Format.JSON()).write(params),
-                            headers: {"Content-Type": "application/json; charset=" + this.encoding},
-                            success: function(response) {
-                                this._retrievePdf(Ext.decode(response.responseText));
-                            },
-                            failure: function(response) {
-                                //TODO Manage this case
-                                this.fireEvent("printexception", this, response);
-                            },
-                            params: this.baseParams,
-                            scope: this
-                        });
-                    },
-                    scope: this
+                items: [{
+                    xtype: "dataview",
+                    id: "parcelle-panel",
+                    store: this.noteStore,
+                    tpl: new Ext.XTemplate(
+                        '<tpl for=".">',
+                        '<div class="parcelle">',
+                        '<h1>Réglementation applicable à la parcelle cadastrale</h1>',
+                        '<h2>{parcelle}</h2>',
+                        '<table class="table-parcelle">',
+                        '<tr>',
+                        '<td class="parcelle-table-label">commune</td>',
+                        '<td>{commune}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">code section</td>',
+                        '<td>{codeSection}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">numéro parcelle</td>',
+                        '<td>{numero}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">adresse du terrain</td>',
+                        '<td>{adresseCadastrale}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">code Rivoli (Fantoir)</td>',
+                        '<td>{contenanceDGFiP}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">surface cadastrale (m²)</td>',
+                        '<td>{surfaceSIG}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">code propriétaire</td>',
+                        '<td>{codeProprio}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">nom propriétaire</td>',
+                        '<td>{nomProprio}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">adresse propriétaire</td>',
+                        '<td>{adresseProprio}</td>',
+                        '</tr>',
+                        '</table>',
+                        '</div>',
+                        '</tpl>'
+                    )
                 }, {
+                    xtype: "dataview",
+                    id: "parcelle-libelles",
+                    store: this.libellesStore,
+                    tpl: new Ext.XTemplate(
+                        '<div class="parcelle">',
+                        '<tpl for=".">',
+                        '<p class="libelle">{libelle}</p>',
+                        '</tpl>',
+                        '</div>'
+                    )
+                }]
+            }],
+            buttons: [{
+                //TODO tr
+                text: "Imprimer",
+                iconCls: 'mf-print-action',
+                handler: function() {
+                    var params, centerLonLat, libellesArray, libellesAsString;
 
-                    text: "Fermer",
-                    handler: function() {
-                        this.parcelleWindow.hide();
-                    },
-                    scope: this
-                }
-            ]
+                    centerLonLat = this.map.getCenter();
+                    libellesArray = [];
+
+                    this.libellesStore.each(function(record) {
+                        libellesArray.push(record.get("libelle"));
+
+                    });
+
+                    libellesAsString = libellesArray.join("\n\n");
+
+                    params = {
+                        layout: "A4 portrait",
+                        attributes: {
+                            map: {
+                                scale: this.map.getScale(),
+                                center: [centerLonLat.lon, centerLonLat.lat],
+                                //TODO improve for production
+                                dpi: 72,
+                                layers: this.baseLayers(),
+                                projection: this.map.getProjection()
+                            },
+                            parcelle: this.noteStore.getAt(0).get("parcelle"),
+                            commune: this.noteStore.getAt(0).get("commune"),
+                            codeSection: this.noteStore.getAt(0).get("codeSection"),
+                            numero: this.noteStore.getAt(0).get("numero"),
+                            adresseCadastrale: this.noteStore.getAt(0).get("adresseCadastrale"),
+                            contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
+                            surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
+                            codeProprio: this.noteStore.getAt(0).get("codeProprio"),
+                            nomProprio: this.noteStore.getAt(0).get("nomProprio"),
+                            adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
+                            libelles: libellesAsString
+
+                        }
+                    };
+
+                    Ext.Ajax.request({
+                        url: this.options.printServerUrl + "/print/report.pdf",
+                        method: 'POST',
+                        jsonData: (new OpenLayers.Format.JSON()).write(params),
+                        headers: {
+                            "Content-Type": "application/json; charset=" + this.encoding
+                        },
+                        success: function(response) {
+                            this._retrievePdf(Ext.decode(response.responseText));
+                        },
+                        failure: function(response) {
+                            //TODO Manage this case
+                            this.fireEvent("printexception", this, response);
+                        },
+                        params: this.baseParams,
+                        scope: this
+                    });
+                },
+                scope: this
+            }, {
+
+                text: "Fermer",
+                handler: function() {
+                    this.parcelleWindow.hide();
+                },
+                scope: this
+            }]
         });
 
         this.zonagePluWindow = new Ext.Window({
@@ -540,70 +539,66 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             closeAction: "hide",
             items: [{
                 xtype: "panel",
-                items: [
-                    {
-                        xtype: "dataview",
-                        //height: 300, //TODO remove
-                        //width: 530, //TODO remove
-                        id: "zonage-plu-box",
-                        data: this.zonagePluData,
-                        tpl: new Ext.XTemplate(
-                            '<div class="zonage">',
-                            // start of if values.empty == false
-                            '<tpl if="values.empty==false" >',
-                            //start of zonage-attribs
-                            ' <div class="zonage-attribs">',
-                            // nom de la commune
-                            '    <div id="commune" class="zonage-pair">',
-                            '      <div class="zonage-attrib-label"></div>',
-                            '      <div class="zonage-attrib-commune">{values.commune}</div>',
-                            '    </div>',
-                            // date de validité
-                            '    <div id="date-plu-en-vigueur" class="zonage-pair">',
-                            '      <div class="zonage-attrib-label">PLU en vigueur au</div>',
-                            '      <div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
-                            '    </div>',
-                            // type du zonage (libelle) + url vers le PDF + label long
-                            '    <div id="type-libelle" class="zonage-pair">',
-                            '      <div class="zonage-attrib-label">Type de la zone :</div>',
-                            '      <div class="zonage-attrib-zonage">',
-                            '        <a href="{values.url}" target="_blank" class="zonage-attrib-zonage">{values.feature.attributes.libelle}</a>',
-                            '        <br />{values.feature.attributes.libelong}',
-                            '      </div>',
-                            '    </div>',
-                            // Type simplifié
-                            '    <div id="vocation-dominante" class="zonage-pair">',
-                            '      <div class="zonage-attrib-label">Type simplifié :</div>',
-                            '      <div class="zonage-attrib-value">{values.feature.attributes.typezone}</div>',
-                            '    </div>',
-                            '  </div>',
-                            // vocation dominante
-                            '    <div id="vocation-dominante" class="zonage-pair">',
-                            '      <div class="zonage-attrib-label">Vocation dominante :</div>',
-                            '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi}</div>',
-                            '    </div>',
-                            '  </div>',
-                            //end of zonage-attribs
-                            '</tpl>', // end of if values.empty == false
-                            
-                            // if no values / empty values
-                            '<tpl if="values.empty==true" >',
-                            ' <h1>Pas de PLU numérique disponible pour cette commune.</h1></tpl>',
-                            '</div>'
-                        )
-                    }
-                ]
+                items: [{
+                    xtype: "dataview",
+                    //height: 300, //TODO remove
+                    //width: 530, //TODO remove
+                    id: "zonage-plu-box",
+                    data: this.zonagePluData,
+                    tpl: new Ext.XTemplate(
+                        '<div class="zonage">',
+                        // start of if values.empty == false
+                        '<tpl if="values.empty==false" >',
+                        //start of zonage-attribs
+                        ' <div class="zonage-attribs">',
+                        // nom de la commune
+                        '    <div id="commune" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label"></div>',
+                        '      <div class="zonage-attrib-commune">{values.commune}</div>',
+                        '    </div>',
+                        // date de validité
+                        '    <div id="date-plu-en-vigueur" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label">PLU en vigueur au</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
+                        '    </div>',
+                        // type du zonage (libelle) + url vers le PDF + label long
+                        '    <div id="type-libelle" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label">Type de la zone :</div>',
+                        '      <div class="zonage-attrib-zonage">',
+                        '        <a href="{values.url}" target="_blank" class="zonage-attrib-zonage">{values.feature.attributes.libelle}</a>',
+                        '        <br />{values.feature.attributes.libelong}',
+                        '      </div>',
+                        '    </div>',
+                        // Type simplifié
+                        '    <div id="vocation-dominante" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label">Type simplifié :</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.typezone}</div>',
+                        '    </div>',
+                        '  </div>',
+                        // vocation dominante
+                        '    <div id="vocation-dominante" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label">Vocation dominante :</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi}</div>',
+                        '    </div>',
+                        '  </div>',
+                        //end of zonage-attribs
+                        '</tpl>', // end of if values.empty == false
+
+                        // if no values / empty values
+                        '<tpl if="values.empty==true" >',
+                        ' <h1>Pas de PLU numérique disponible pour cette commune.</h1></tpl>',
+                        '</div>'
+                    )
+                }]
             }],
-            buttons: [
-                {
-                    //TODO tr
-                    text: "Fermer",
-                    handler: function() {
-                        this.zonagePluWindow.hide();
-                    },
-                    scope: this
-                }
-            ]
+            buttons: [{
+                //TODO tr
+                text: "Fermer",
+                handler: function() {
+                    this.zonagePluWindow.hide();
+                },
+                scope: this
+            }]
         })
     },
 
@@ -697,7 +692,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     Ext.Ajax.request({
                         url: addon.options.printServerUrl + statusURL,
                         method: 'GET',
-                        headers: {"Content-Type": "application/json; charset=" + this.encoding},
+                        headers: {
+                            "Content-Type": "application/json; charset=" + this.encoding
+                        },
                         success: function(response) {
                             var resp = Ext.decode(response.responseText);
                             if (resp.done) {
@@ -724,7 +721,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
     },
 
-    destroy: function () {
+    destroy: function() {
         var layerManager = Ext.getCmp("geor-layerManager");
         layerManager.root.eachChild(function(child) {
             if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
@@ -748,6 +745,5 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.proprioStore.destroy();
         this.zonagePluData = null;
         GEOR.Addons.Base.prototype.destroy.call(this);
-
     }
 });
