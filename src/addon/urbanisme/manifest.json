@@ -8,6 +8,6 @@
     ],
     "default_options": {
         "target": "tbar_4",
-        "cadastrappUrl": "https://georchestra.example.com/cadastrapp/services/"
+        "cadastrappUrl": "/cadastrapp/services"
     }
 }

@@ -262,7 +262,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.cadastrappUrl + "getCommune"
+                url: this.options.cadastrappUrl + "/getCommune"
             }),
             listeners: {
                 "load": {
@@ -292,7 +292,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.cadastrappUrl + "getParcelle"
+                url: this.options.cadastrappUrl + "/getParcelle"
             }),
             listeners: {
                 "load": {
@@ -318,7 +318,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.cadastrappUrl + "getFIC"
+                url: this.options.cadastrappUrl + "/getFIC"
             }),
             listeners: {
                 "load": {
@@ -339,7 +339,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
-                url: this.options.printServerUrl + "renseignUrba"
+                url: this.options.printServerUrl + "/renseignUrba"
             })
         });
 
@@ -361,7 +361,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     this.empty = false;
                     this.communeInsee = this.feature.attributes.id_docurba.slice(4, 9);
                     OpenLayers.Request.GET({
-                    url: addon.options.cadastrappUrl + "getCommune",
+                    url: addon.options.cadastrappUrl + "/getCommune",
                     params: {cgocommune: this.communeInsee},
                     callback: function(resp) {
                         //We assume that we will get one and only one result
@@ -630,7 +630,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         });
         //No store because getInfoBulle don't return an array
         OpenLayers.Request.GET({
-            url: this.options.cadastrappUrl + "getInfoBulle",
+            url: this.options.cadastrappUrl + "/getInfoBulle",
             params: {
                 parcelle: parcelle
             },
