@@ -1,25 +1,21 @@
-[
-    {
-        "id": "urbanisme_0",
-        "enabled": true,
-        "name": "Urbanisme",
-        "options": {
-            "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
-            "zonesPluLayer": "urba_docs:plu_zone_urba",
-            "cadastrappUrl": "/cadastrapp/services",
-            "printServerUrl": "/urbanisme"
-        },
-        "title": {
-            "en": "Land Planning",
-            "es": "Urbanisme",
-            "fr": "Urbanisme",
-            "de": "Urbanisme"
-        },
-        "description": {
-            "en": "Urban planning information",
-            "fr": "Information urbanistique",
-            "es": "...",
-            "de": "..."
-        }
+[{
+    "id": "urbanisme_0",
+    "enabled": true,
+    "name": "Urbanisme",
+    "options": {
+        "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
+        "zonesPluLayer": "urba_docs:plu_zone_urba"
+    },
+    "title": {
+        "en": "Land Planning",
+        "es": "Land Planning",
+        "fr": "Urbanisme",
+        "de": "Land Planning"
+    },
+    "description": {
+        "en": "Urban planning information",
+        "fr": "Information urbanistique",
+        "es": "Urban planning information",
+        "de": "Urban planning information"
     }
-]
+}]

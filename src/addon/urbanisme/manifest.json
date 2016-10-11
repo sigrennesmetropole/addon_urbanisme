@@ -7,7 +7,7 @@
         "css/main.css"
     ],
     "default_options": {
-        "target": "tbar_4",
-        "cadastrappUrl": "/cadastrapp/services"
+        "cadastrappUrl": "/cadastrapp/services",
+        "printServerUrl": "/urbanisme"
     }
 }
