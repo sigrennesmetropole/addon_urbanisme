@@ -29,7 +29,6 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             }, config);
 
             NoteStore.superclass.constructor.call(this, config);
-
         },
         updateCommune: function(communeResp) {
             var noteRecord = this.getAt(0).copy();
@@ -654,32 +653,27 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      * @returns {Array}
      */
     baseLayers: function() {
-
-        var encodedLayer = null,
-            encodedLayers = [];
-        this.mapPanel.layers.each(function(layerRecord) {
-            if (layerRecord.get("layer").visibility) {
-
-                if (layerRecord.get("layer").name !== "__georchestra_print_bounds_") {
-                    encodedLayer = this.printProvider.encodeLayer(layerRecord.get("layer"), this.map.getMaxExtent());
+        var encodedLayers = [],
+            wmsc2wms = this.options.wmsc2wms;
+        this.mapPanel.layers.each(function(r) {
+            var encodedLayer,
+                l = r.getLayer();
+            // loop on all visible layers
+            // not the vector layers used by addons (matching "__georchestra")
+            if (l.getVisibility() && !/^__georchestra/.test(l.name)) {
+                // use print provider to encode
+                encodedLayer = this.printProvider.encodeLayer(l, this.map.getMaxExtent());
+                // substitute known WMS-C instances by WMS instances serving same layers:
+                if (wmsc2wms && wmsc2wms.hasOwnProperty(encodedLayer.baseURL)) {
+                    encodedLayer.baseURL = wmsc2wms[encodedLayer.baseURL];
                 }
-
-
-                if (encodedLayer) {
-
-                    if (encodedLayer.maxScaleDenominator) {
-                        delete encodedLayer.maxScaleDenominator;
-                    }
-                    if (encodedLayer.minScaleDenominator) {
-                        delete encodedLayer.minScaleDenominator;
-                    }
-
-                    encodedLayers.push(encodedLayer);
-                }
+                // we get rid of scale limits, 
+                // since they are already taken care of by the current layer style
+                delete encodedLayer.maxScaleDenominator;
+                delete encodedLayer.minScaleDenominator;
+                encodedLayers.push(encodedLayer);
             }
         }, this);
-
-
         return encodedLayers;
     },
 
