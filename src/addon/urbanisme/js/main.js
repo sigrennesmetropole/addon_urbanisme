@@ -465,6 +465,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 {
                     //TODO tr
                     text: "Imprimer",
+                    iconCls: 'mf-print-action',
                     handler: function() {
                         var params, centerLonLat, libellesArray, libellesAsString;
 
