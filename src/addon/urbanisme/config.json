@@ -5,6 +5,7 @@
     "options": {
         "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
         "zonesPluLayer": "urba_docs:plu_zone_urba",
+        "target": "tbar_12",
         "wmsc2wms": {
             "https://portail-test.sig.rennesmetropole.fr/geowebcache/service/wms": "https://portail-test.sig.rennesmetropole.fr/geoserver/wms",
             "https://portail-test.sig.rennesmetropole.fr/geowebcache/service/wmts": "https://portail-test.sig.rennesmetropole.fr/geoserver/wms",
