@@ -151,6 +151,15 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         }, this);
 
+        this.vectorLayer = new OpenLayers.Layer.Vector("__georchestra_"+record.get("id"), {
+            displayInLayerSwitcher: false,
+            styleMap: GEOR.util.getStyleMap({
+                "default": {
+                    strokeWidth: 3,
+                    fillOpacity: 0
+                }
+            })
+        });
 
         this.createRenseignUrbaAction = function(layer) {
             return new GeoExt.Action({
@@ -161,7 +170,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     infoFormat: "application/vnd.ogc.gml",
                     eventListeners: {
                         "getfeatureinfo": function(resp) {
-                            this.showParcelleWindow(resp.features[0].attributes.id_parc);
+                            var f = resp.features[0];
+                            if (!f) {
+                                return;
+                            }
+                            this.map.addLayer(this.vectorLayer);
+                            this.vectorLayer.addFeatures([f]);
+                            this.showParcelleWindow(f.attributes.id_parc);
                         },
                         scope: this
                     }
@@ -497,9 +512,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 },
                 scope: this
             }, {
-
                 text: "Fermer",
                 handler: function() {
+                    this.map.removeLayer(this.vectorLayer);
+                    this.vectorLayer.destroyFeatures();
                     this.parcelleWindow.hide();
                 },
                 scope: this
@@ -700,6 +716,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
 
         }, this);
+        
+        this.map.removeLayer(this.vectorLayer);
+        this.vectorLayer.destroyFeatures();
 
         this.parcelleWindow.destroy();
         this.zonagePluWindow.destroy();
