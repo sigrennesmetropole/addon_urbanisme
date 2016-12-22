@@ -639,7 +639,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 encodedLayers.push(encodedLayer);
             }
         }, this);
-        return encodedLayers;
+        return encodedLayers.reverse();
     },
 
     _retrievePdf: function(resp) {
