@@ -138,37 +138,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     encoding: document.charset || document.characterSet || "UTF-8",
 
     init: function(record) {
-        //TODO - Remove buttons from toolbar when testing is done
-        if (this.target) {
-            this.components = this.target.insertButton(this.position, {
-                xtype: "button",
-                enableToggle: true,
-                tooltip: this.getTooltip(record),
-                iconCls: "addon-urbanisme",
-                listeners: {
-                    "toggle": function() {
-                        //TEST : "350238000BX0285"
-                        //TEST : "350281000AA0001"
-                        this.showParcelleWindow("350281000AA0001");
-                    },
-                    scope: this
-                }
-            });
-            this.components2 = this.target.insertButton(this.position, {
-                xtype: "button",
-                enableToggle: true,
-                tooltip: "Zonage d'un PLU",
-                iconCls: "addon-urbanisme",
-                listeners: {
-                    "toggle": function() {
-                        this.showZonagePluWindow();
-                    },
-                    scope: this
-                }
-            });
-
-            this.target.doLayout();
-        }
 
         Ext.each(this.map.layers, function(layer) {
             if (layer.params === undefined) {
@@ -636,14 +605,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         });
         this.parcelleWindow.show();
 
-        this.components.toggle(false);
     },
 
 
     showZonagePluWindow: function() {
         this.zonagePluWindow.show();
         Ext.getCmp("zonage-plu-box").update(this.zonagePluData);
-        this.components2.toggle(false);
     },
 
 
@@ -727,9 +694,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
 
         }, this);
-
-        this.components.destroy();
-        delete this.components2.destroy();
 
         this.parcelleWindow.destroy();
         this.zonagePluWindow.destroy();
