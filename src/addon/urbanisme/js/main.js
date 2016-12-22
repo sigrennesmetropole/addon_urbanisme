@@ -156,7 +156,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             return new GeoExt.Action({
                 map: this.map,
                 text: "i",
-                iconCls: "addon-urbanisme-i-button",
+                iconCls: "urbanisme-btn-red-info",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
                     infoFormat: "application/vnd.ogc.gml",
@@ -176,7 +176,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             return new GeoExt.Action({
                 map: this.map,
                 text: "i",
-                iconCls: "addon-urbanisme-i-button",
+                iconCls: "urbanisme-btn-red-info",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
                     infoFormat: "application/vnd.ogc.gml",

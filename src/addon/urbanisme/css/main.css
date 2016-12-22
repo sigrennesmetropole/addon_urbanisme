@@ -1,25 +1,9 @@
-
-
-body {
-  font-family: Tahoma, Arial, Helvetica, sans serif;
-  font-size: 11px;
-}
-
-
-
 .addon-urbanisme {
     background-image: url(../img/town-hall-15_16px.png) !important;
 }
 
-.addon-urbanisme-i-button {
-    margin: auto !important;
-    color: orange !important;
-    font-family: "serif" !important;
-    font-weight: bold !important;
-    text-align: left !important;
-    padding-left: 6px !important;
-    padding-right: 6px !important;
-
+.x-btn-icon .urbanisme-btn-red-info {
+    background: transparent url(../img/information_red.png);
 }
 
 .parcelle {
