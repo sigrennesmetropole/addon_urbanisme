@@ -183,6 +183,14 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             if (resp.features.length === 0) {
                                 this.zonagePluData.update(null);
                             } else {
+                                // modification du format date, cf https://github.com/sigrennesmetropole/addon_urbanisme/issues/17
+                                var f = resp.features[0],
+                                    d = f.attributes.datvalid,
+                                    year = d.substr(0,4),
+                                    month = d.substr(4,2),
+                                    day = d.substr(6,2);
+                                f.attributes.datvalid = [day, month, year].join('/');
+                                // fin modification datvalid
                                 this.zonagePluData.update(resp.features[0]);
                             }
                             this.showZonagePluWindow();
