@@ -155,7 +155,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.createRenseignUrbaAction = function(layer) {
             return new GeoExt.Action({
                 map: this.map,
-                text: "i",
                 iconCls: "urbanisme-btn-red-info",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
@@ -175,7 +174,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.createZonagePluAction = function(layer) {
             return new GeoExt.Action({
                 map: this.map,
-                text: "i",
                 iconCls: "urbanisme-btn-red-info",
                 control: new OpenLayers.Control.WMSGetFeatureInfo({
                     layers: [layer],
