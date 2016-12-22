@@ -174,7 +174,27 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             if (!f) {
                                 return;
                             }
-                            this.map.addLayer(this.vectorLayer);
+                            // reproject features if needed
+                            var r =  /.+srsName=\"(.+?)\".+/.exec(resp.text);
+                            if (r && r[1]) {
+                                var srsString = r[1],
+                                    srsName = srsString.replace(/.+[#:\/](\d+)$/, "EPSG:$1");
+                                if (this.map.getProjection() !== srsName) {
+                                    var sourceSRS = new OpenLayers.Projection(srsName),
+                                        destSRS = this.map.getProjectionObject();
+                                    if (f.geometry && !!f.geometry.transform) {
+                                        f.geometry.transform(sourceSRS, destSRS);
+                                    }
+                                    if (f.bounds && !!f.bounds.transform) {
+                                        f.bounds.transform(sourceSRS, destSRS);
+                                    }
+                                }
+                            }
+                            if (this.map.layers.indexOf(this.vectorLayer) == -1) {
+                                this.map.addLayer(this.vectorLayer);
+                            } else {
+                                this.vectorLayer.destroyFeatures();
+                            }
                             this.vectorLayer.addFeatures([f]);
                             this.showParcelleWindow(f.attributes.id_parc);
                         },
@@ -649,7 +669,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 l = r.getLayer();
             // loop on all visible layers
             // not the vector layers used by addons (matching "__georchestra")
-            if (l.getVisibility() && !/^__georchestra/.test(l.name)) {
+            // but ... print the vector layer used by this addon (matching __georchestra_urbanisme)
+            if ((l.getVisibility() && !/^__georchestra/.test(l.name)) || /^__georchestra_urbanisme/.test(l.name)) {
                 // use print provider to encode
                 encodedLayer = this.printProvider.encodeLayer(l, this.map.getMaxExtent());
                 // substitute known WMS-C instances by WMS instances serving same layers:
