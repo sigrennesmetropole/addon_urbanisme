@@ -66,8 +66,8 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
             noteRecord.set("nomProprio", proprioRecord.get("ddenom"));
-            noteRecord.set("adresseProprio", proprioRecord.get("dlign4") + " " + proprioRecord.get("dlign5") + " " +
-                proprioRecord.get("dlign6"));
+            noteRecord.set("adresseProprio", proprioRecord.get("dlign4").trim() + " " + proprioRecord.get("dlign5").trim() + " " +
+                proprioRecord.get("dlign6").trim());
             this.add([noteRecord]);
         }
     });
