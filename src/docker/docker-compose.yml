@@ -11,7 +11,7 @@ proxy:
     - XMX=512M
 mapfishapp:
   environment:
-    - XMX=512M
+    - XMX=1024M
   build: mapfishapp
 cadastrapp:
   build: cadastrapp
