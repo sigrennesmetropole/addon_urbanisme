@@ -3,6 +3,7 @@
     "enabled": true,
     "name": "Urbanisme",
     "options": {
+        "service": "https://portail-test.sig.rennesmetropole.fr/geoserver/wms/",
         "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
         "zonesPluLayer": "urba_docs:plu_zone_urba",
         "wmsc2wms": {
