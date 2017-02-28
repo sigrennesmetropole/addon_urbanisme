@@ -225,8 +225,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                     month = d.substr(4,2),
                                     day = d.substr(6,2);
                                 f.attributes.datvalid = [day, month, year].join('/');
+                                // convert vocation dominante & typezone codes
+                                // to human readable label
+                                // See config.json
+                                f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
+                                f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
                                 // fin modification datvalid
-                                this.zonagePluData.update(resp.features[0]);
+                                this.zonagePluData.update(f);
                             }
                             this.showZonagePluWindow();
                         },
@@ -582,13 +587,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         // Type simplifié
                         '    <div id="vocation-dominante" class="zonage-pair">',
                         '      <div class="zonage-attrib-label">Type simplifié :</div>',
-                        '      <div class="zonage-attrib-value">{values.feature.attributes.typezone}</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.typezone} - {values.feature.attributes.typezoneI18n}</div>',
                         '    </div>',
                         '  </div>',
                         // vocation dominante
                         '    <div id="vocation-dominante" class="zonage-pair">',
                         '      <div class="zonage-attrib-label">Vocation dominante :</div>',
-                        '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi}</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi} - {values.feature.attributes.destdomiI18n}</div>',
                         '    </div>',
                         '  </div>',
                         //end of zonage-attribs
