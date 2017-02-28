@@ -755,7 +755,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 if (wmsc2wms && wmsc2wms.hasOwnProperty(encodedLayer.baseURL)) {
                     encodedLayer.baseURL = wmsc2wms[encodedLayer.baseURL];
                 }
-                // we get rid of scale limits, 
+                // we get rid of scale limits,
                 // since they are already taken care of by the current layer style
                 delete encodedLayer.maxScaleDenominator;
                 delete encodedLayer.minScaleDenominator;
