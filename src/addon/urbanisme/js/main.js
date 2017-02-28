@@ -351,16 +351,26 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             this.components = this.target.insertButton(this.position, {
                 xtype: 'button',
                 tooltip: this.getTooltip(record),
+                iconCls: "addon-urbanisme",
                 handler: this._onCheckchange,
-                scope: this
+                scope: this,
+                listeners: {
+                    "afterrender": function() {
+                        if (this.options.openToolbarOnLoad) {
+                            this._onCheckchange(this.item, true);
+                        }
+                    },
+                    delay: 500,
+                    scope: this
+                }
             });
             this.target.doLayout();
-        } else {
+
             // create a menu item for the "tools" menu:
             this.item = new Ext.menu.CheckItem({
                 text: this.getText(record),
                 qtip: this.getQtip(record),
-                iconCls: "addon-measurements",
+                iconCls: "addon-urbanisme",
                 checked: false,
                 listeners: {
                     "checkchange": this._onCheckchange,
