@@ -855,8 +855,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
     destroy: function() {
-        this.map.removeLayer(this.vectorLayer);
-        this.vectorLayer.destroyFeatures();
+        // FIXME: uncommenting below lines raises errors
+        //this.map.removeLayer(this.vectorLayer);
+        //this.vectorLayer.destroyFeatures();
 
         this.parcelleWindow.destroy();
         this.zonagePluWindow.destroy();
@@ -865,6 +866,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.parcelleStore.destroy();
         this.proprioStore.destroy();
         this.zonagePluData = null;
+        this.window.hide();
         GEOR.Addons.Base.prototype.destroy.call(this);
     },
 
