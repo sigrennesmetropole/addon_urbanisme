@@ -201,7 +201,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         scope: this
                     }
                 }),
+                width: 50,
                 toggleGroup: "map",
+                iconAlign: 'top',
+                text: "Parcelle",
                 tooltip: "Renseignement d'urbanisme sur la parcelle"
             });
         };
@@ -238,22 +241,75 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         scope: this
                     }
                 }),
+                width: 50,
                 toggleGroup: "map",
-                tooltip: "Zonage d'un PLU"
+                iconAlign: 'top',
+                text: "PLU",
+                tooltip: "Information sur un zonage d'un PLU"
             });
         };
 
-        var layerManager = Ext.getCmp("geor-layerManager");
-        layerManager.root.eachChild(function(child) {
-            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                child.component.getComponent(0).insert(0, this.createRenseignUrbaAction(this.parcellesCadastralesLayer));
-                child.component.doLayout();
-            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
-                child.component.getComponent(0).insert(0, this.createZonagePluAction(this.zonesPluLayer));
-                child.component.doLayout();
+        var helpAction = {
+            tooltip : OpenLayers.i18n("Help"),
+            iconCls : "help-button",
+            iconAlign : 'top',
+            helpUrl: this.options.helpUrl,
+            text : OpenLayers.i18n("Help"),
+            handler: function() {
+                if (Ext.isIE) {
+                    window.open(this.helpUrl);
+                } else {
+                    window.open(this.helpUrl, OpenLayers.i18n("Help"), "menubar=no,status=no,scrollbars=yes");
+                }
             }
+        };
 
-        }, this);
+        this.window = new Ext.Window({
+            title: this.getText(record),
+            closable: true,
+            closeAction: "hide",
+            resizable: false,
+            border: false,
+            cls: 'measurements',
+            items: [{
+                xtype: 'toolbar',
+                border: false,
+                items: [
+                    this.createRenseignUrbaAction(this.parcellesCadastralesLayer),
+                    this.createZonagePluAction(this.zonesPluLayer)
+                ]
+            }],
+            listeners: {
+                hide: function() {
+                    this.item && this.item.setChecked(false);
+                    this.components && this.components.toggle(false);
+                },
+                scope: this
+            }
+        });
+
+        if (this.target) {
+            // create a button to be inserted in toolbar:
+            this.components = this.target.insertButton(this.position, {
+                xtype: 'button',
+                tooltip: this.getTooltip(record),
+                handler: this._onCheckchange,
+                scope: this
+            });
+            this.target.doLayout();
+        } else {
+            // create a menu item for the "tools" menu:
+            this.item = new Ext.menu.CheckItem({
+                text: this.getText(record),
+                qtip: this.getQtip(record),
+                iconCls: "addon-measurements",
+                checked: false,
+                listeners: {
+                    "checkchange": this._onCheckchange,
+                    scope: this
+                }
+            });
+        }
 
 
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
@@ -731,18 +787,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
     destroy: function() {
-        var layerManager = Ext.getCmp("geor-layerManager");
-        layerManager.root.eachChild(function(child) {
-            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                //TODO - Check if we remove the right component
-                child.component.getComponent(0).getComponent(0).destroy();
-            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
-                //TODO - Check if we remove the right component
-                child.component.getComponent(0).getComponent(0).destroy();
-            }
-
-        }, this);
-        
         this.map.removeLayer(this.vectorLayer);
         this.vectorLayer.destroyFeatures();
 
@@ -754,5 +798,24 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.proprioStore.destroy();
         this.zonagePluData = null;
         GEOR.Addons.Base.prototype.destroy.call(this);
+    },
+
+
+    /**
+     * Method: _onCheckchange
+     * Callback on checkbox state changed
+     */
+    _onCheckchange: function(item, checked) {
+        if (checked) {
+            this.window.show();
+            this.window.alignTo(
+                Ext.get(this.map.div),
+                "t-t",
+                [0, 5],
+                true
+            );
+        } else {
+            this.window.hide();
+        }
     }
 });
