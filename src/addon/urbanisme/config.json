@@ -3,6 +3,8 @@
     "enabled": true,
     "name": "Urbanisme",
     "options": {
+        "target": "tbar_12",
+        "service": "https://portail-test.sig.rennesmetropole.fr/geoserver/wms/",
         "parcellesCadastralesLayer": "ref_cad:app_urbanisme_parcelle",
         "zonesPluLayer": "urba_docs:plu_zone_urba",
         "wmsc2wms": {
@@ -34,7 +36,8 @@
             "N": "naturel",
             "Nh": "naturel constructible",
             "Nd": "naturel avec transfert de constructabilité"
-        }
+        },
+        "helpUrl": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur"
     },
     "title": {
         "en": "Land Planning",

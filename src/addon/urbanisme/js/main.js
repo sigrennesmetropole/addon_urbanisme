@@ -161,99 +161,223 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             })
         });
 
-        this.createRenseignUrbaAction = function(layer) {
-            return new GeoExt.Action({
-                map: this.map,
-                iconCls: "urbanisme-btn-red-info",
-                control: new OpenLayers.Control.WMSGetFeatureInfo({
-                    layers: [layer],
-                    infoFormat: "application/vnd.ogc.gml",
-                    eventListeners: {
-                        "getfeatureinfo": function(resp) {
-                            var f = resp.features[0];
-                            if (!f) {
-                                return;
-                            }
-                            // reproject features if needed
-                            var r =  /.+srsName=\"(.+?)\".+/.exec(resp.text);
-                            if (r && r[1]) {
-                                var srsString = r[1],
-                                    srsName = srsString.replace(/.+[#:\/](\d+)$/, "EPSG:$1");
-                                if (this.map.getProjection() !== srsName) {
-                                    var sourceSRS = new OpenLayers.Projection(srsName),
-                                        destSRS = this.map.getProjectionObject();
-                                    if (f.geometry && !!f.geometry.transform) {
-                                        f.geometry.transform(sourceSRS, destSRS);
-                                    }
-                                    if (f.bounds && !!f.bounds.transform) {
-                                        f.bounds.transform(sourceSRS, destSRS);
-                                    }
-                                }
-                            }
-                            if (this.map.layers.indexOf(this.vectorLayer) == -1) {
-                                this.map.addLayer(this.vectorLayer);
-                            } else {
-                                this.vectorLayer.destroyFeatures();
-                            }
-                            this.vectorLayer.addFeatures([f]);
-                            this.showParcelleWindow(f.attributes.id_parc);
-                        },
-                        scope: this
+        // reference to the get feature info control
+        var renseignUrbaControl = new OpenLayers.Control.WMSGetFeatureInfo({
+            // empty list of layers to be filled when layer is found or created
+            layers: [],
+            infoFormat: "application/vnd.ogc.gml",
+            eventListeners: {
+                "getfeatureinfo": function(resp) {
+                    var f = resp.features[0];
+                    if (!f) {
+                        return;
                     }
-                }),
-                toggleGroup: "map",
-                tooltip: "Renseignement d'urbanisme sur la parcelle"
-            });
-        };
-
-        this.createZonagePluAction = function(layer) {
-            return new GeoExt.Action({
-                map: this.map,
-                iconCls: "urbanisme-btn-red-info",
-                control: new OpenLayers.Control.WMSGetFeatureInfo({
-                    layers: [layer],
-                    infoFormat: "application/vnd.ogc.gml",
-                    eventListeners: {
-                        "getfeatureinfo": function(resp) {
-                            if (resp.features.length === 0) {
-                                this.zonagePluData.update(null);
-                            } else {
-                                // modification du format date, cf https://github.com/sigrennesmetropole/addon_urbanisme/issues/17
-                                var f = resp.features[0],
-                                    d = f.attributes.datvalid,
-                                    year = d.substr(0,4),
-                                    month = d.substr(4,2),
-                                    day = d.substr(6,2);
-                                f.attributes.datvalid = [day, month, year].join('/');
-                                // convert vocation dominante & typezone codes
-                                // to human readable label
-                                // See config.json
-                                f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
-                                f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
-                                // fin modification datvalid
-                                this.zonagePluData.update(f);
+                    // reproject features if needed
+                    var r =  /.+srsName=\"(.+?)\".+/.exec(resp.text);
+                    if (r && r[1]) {
+                        var srsString = r[1],
+                            srsName = srsString.replace(/.+[#:\/](\d+)$/, "EPSG:$1");
+                        if (this.map.getProjection() !== srsName) {
+                            var sourceSRS = new OpenLayers.Projection(srsName),
+                                destSRS = this.map.getProjectionObject();
+                            if (f.geometry && !!f.geometry.transform) {
+                                f.geometry.transform(sourceSRS, destSRS);
                             }
-                            this.showZonagePluWindow();
-                        },
-                        scope: this
+                            if (f.bounds && !!f.bounds.transform) {
+                                f.bounds.transform(sourceSRS, destSRS);
+                            }
+                        }
                     }
-                }),
-                toggleGroup: "map",
-                tooltip: "Zonage d'un PLU"
-            });
-        };
-
-        var layerManager = Ext.getCmp("geor-layerManager");
-        layerManager.root.eachChild(function(child) {
-            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                child.component.getComponent(0).insert(0, this.createRenseignUrbaAction(this.parcellesCadastralesLayer));
-                child.component.doLayout();
-            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
-                child.component.getComponent(0).insert(0, this.createZonagePluAction(this.zonesPluLayer));
-                child.component.doLayout();
+                    if (this.map.layers.indexOf(this.vectorLayer) == -1) {
+                        this.map.addLayer(this.vectorLayer);
+                    } else {
+                        this.vectorLayer.destroyFeatures();
+                    }
+                    this.vectorLayer.addFeatures([f]);
+                    this.showParcelleWindow(f.attributes.id_parc);
+                },
+                scope: this
             }
+        });
+        var renseignUrbaAction = new GeoExt.Action({
+            map: this.map,
+            iconCls: "urbanisme-btn-red-info",
+            control: renseignUrbaControl,
+            listeners: {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        this._addLayer(
+                            this.options.parcellesCadastralesLayer,
+                            function(layer) {
+                                renseignUrbaControl.layers = [layer];
+                                layer.events.register('removed', null, function() {
+                                    renseignUrbaControl.deactivate();
+                                });
+                            }
+                        );
+                    } else {
+                        // unset feature info
+                        renseignUrbaControl.layers = [];
+                    }
+                },
+                scope: this
+            },
+            width: 50,
+            toggleGroup: "map",
+            iconAlign: 'top',
+            text: "Parcelle",
+            tooltip: "Renseignement d'urbanisme sur la parcelle"
+        });
 
-        }, this);
+        var zonagePluControl = new OpenLayers.Control.WMSGetFeatureInfo({
+            // empty list of layers to be filled when layer is found or created
+            layers: [],
+            infoFormat: "application/vnd.ogc.gml",
+            eventListeners: {
+                "getfeatureinfo": function(resp) {
+                    if (resp.features.length === 0) {
+                        this.zonagePluData.update(null);
+                    } else {
+                        // modification du format date, cf https://github.com/sigrennesmetropole/addon_urbanisme/issues/17
+                        var f = resp.features[0],
+                            d = f.attributes.datvalid,
+                            year = d.substr(0,4),
+                            month = d.substr(4,2),
+                            day = d.substr(6,2);
+                        f.attributes.datvalid = [day, month, year].join('/');
+                        // convert vocation dominante & typezone codes
+                        // to human readable label
+                        // See config.json
+                        f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
+                        f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
+                        // fin modification attributs
+                        this.zonagePluData.update(resp.features[0]);
+                    }
+                    this.showZonagePluWindow();
+                },
+                scope: this
+            }
+        });
+        var zonagePluAction = new GeoExt.Action({
+            map: this.map,
+            iconCls: "urbanisme-btn-red-info",
+            control: zonagePluControl,
+            listeners: {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        this._addLayer(
+                            this.options.zonesPluLayer,
+                            function(layer) {
+                                zonagePluControl.layers = [layer];
+                                layer.events.register('removed', null, function() {
+                                    zonagePluControl.deactivate();
+                                });
+                            }
+                        );
+                    } else {
+                        // unset feature info
+                        zonagePluControl.layers = [];
+                    }
+                },
+                scope: this
+            },
+            width: 50,
+            toggleGroup: "map",
+            iconAlign: 'top',
+            text: "PLU",
+            tooltip: "Information sur un zonage d'un PLU"
+        });
+
+        var helpAction = {
+            tooltip : OpenLayers.i18n("Help"),
+            iconCls : "help-button",
+            iconAlign : 'top',
+            helpUrl: this.options.helpUrl,
+            text : OpenLayers.i18n("Help"),
+            handler: function() {
+                if (Ext.isIE) {
+                    window.open(this.helpUrl);
+                } else {
+                    window.open(this.helpUrl, OpenLayers.i18n("Help"), "menubar=no,status=no,scrollbars=yes");
+                }
+            }
+        };
+
+        var helpAction = {
+            tooltip : OpenLayers.i18n("Help"),
+            iconCls : "help-button",
+            iconAlign : 'top',
+            helpUrl: this.options.helpUrl,
+            text : OpenLayers.i18n("Help"),
+            handler: function() {
+                if (Ext.isIE) {
+                    window.open(this.helpUrl);
+                } else {
+                    window.open(this.helpUrl, OpenLayers.i18n("Help"), "menubar=no,status=no,scrollbars=yes");
+                }
+            }
+        };
+
+        this.window = new Ext.Window({
+            title: this.getText(record),
+            closable: true,
+            closeAction: "hide",
+            resizable: false,
+            border: false,
+            cls: 'measurements',
+            items: [{
+                xtype: 'toolbar',
+                border: false,
+                items: [
+                    renseignUrbaAction,
+                    zonagePluAction,
+                    '-',
+                    helpAction
+                ]
+            }],
+            listeners: {
+                hide: function() {
+                    this.item && this.item.setChecked(false);
+                    this.components && this.components.toggle(false);
+                    renseignUrbaAction.control.deactivate();
+                    zonagePluAction.control.deactivate();
+                },
+                scope: this
+            }
+        });
+
+        if (this.target) {
+            // create a button to be inserted in toolbar:
+            this.components = this.target.insertButton(this.position, {
+                xtype: 'button',
+                tooltip: this.getTooltip(record),
+                iconCls: "addon-urbanisme",
+                handler: this._onCheckchange,
+                scope: this,
+                listeners: {
+                    "afterrender": function() {
+                        if (this.options.openToolbarOnLoad) {
+                            this._onCheckchange(this.item, true);
+                        }
+                    },
+                    delay: 500,
+                    scope: this
+                }
+            });
+            this.target.doLayout();
+
+            // create a menu item for the "tools" menu:
+            this.item = new Ext.menu.CheckItem({
+                text: this.getText(record),
+                qtip: this.getQtip(record),
+                iconCls: "addon-urbanisme",
+                checked: false,
+                listeners: {
+                    "checkchange": this._onCheckchange,
+                    scope: this
+                }
+            });
+        }
 
 
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
@@ -682,7 +806,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 if (wmsc2wms && wmsc2wms.hasOwnProperty(encodedLayer.baseURL)) {
                     encodedLayer.baseURL = wmsc2wms[encodedLayer.baseURL];
                 }
-                // we get rid of scale limits, 
+                // we get rid of scale limits,
                 // since they are already taken care of by the current layer style
                 delete encodedLayer.maxScaleDenominator;
                 delete encodedLayer.minScaleDenominator;
@@ -731,20 +855,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     },
 
     destroy: function() {
-        var layerManager = Ext.getCmp("geor-layerManager");
-        layerManager.root.eachChild(function(child) {
-            if (child.layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                //TODO - Check if we remove the right component
-                child.component.getComponent(0).getComponent(0).destroy();
-            } else if (child.layer.params.LAYERS === this.options.zonesPluLayer) {
-                //TODO - Check if we remove the right component
-                child.component.getComponent(0).getComponent(0).destroy();
-            }
-
-        }, this);
-        
-        this.map.removeLayer(this.vectorLayer);
-        this.vectorLayer.destroyFeatures();
+        // FIXME: uncommenting below lines raises errors
+        //this.map.removeLayer(this.vectorLayer);
+        //this.vectorLayer.destroyFeatures();
 
         this.parcelleWindow.destroy();
         this.zonagePluWindow.destroy();
@@ -753,6 +866,73 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.parcelleStore.destroy();
         this.proprioStore.destroy();
         this.zonagePluData = null;
+        this.window.hide();
         GEOR.Addons.Base.prototype.destroy.call(this);
+    },
+
+    /**
+     * Method: add the layer to be used to to the getFeatureInfo query
+     *
+     * Params:
+     *  - layerName: the layer name
+     *  - callback: the function to call once the layer is added
+     */
+    _addLayer: function(layerName, callback) {
+        // add the layer in the layer manager if it isn't there already
+        var layerManager = Ext.getCmp("geor-layerManager");
+        var found = layerManager.root.findChildBy(function(child) {
+            return child.layer.params.LAYERS === layerName;
+        }, this, true);
+        if (!found) {
+            var u = GEOR.util.splitURL(this.options.service);
+            GEOR.ows.WMSCapabilities({
+                storeOptions: {
+                    url: u.serviceURL,
+                    layerOptions: {}
+                },
+                baseParams: u.params,
+                success: function(store) {
+                    // extract layer which is expected
+                    var record = store.queryBy(function(r) {
+                        return (r.get("name") == layerName);
+                    }).first();
+                    if (record) {
+                        this.layerRecord = record;
+                        // enforce format:
+                        record.getLayer().params.FORMAT = "image/png";
+                        // add to map:
+                        this.mapPanel.layers.addSorted(record);
+                        callback && callback.call(this, record.getLayer());
+                    } else {
+                        console.error("Couldn't find layer");
+                    }
+                    // else silently ignore it
+                },
+                failure: function() {
+                    // silently ignore it
+                },
+                scope: this
+            });
+        } else {
+            callback && callback.call(this, found.layer);
+        }
+    },
+
+    /**
+     * Method: _onCheckchange
+     * Callback on checkbox state changed
+     */
+    _onCheckchange: function(item, checked) {
+        if (checked) {
+            this.window.show();
+            this.window.alignTo(
+                Ext.get(this.map.div),
+                "t-t",
+                [0, 5],
+                true
+            );
+        } else {
+            this.window.hide();
+        }
     }
 });
