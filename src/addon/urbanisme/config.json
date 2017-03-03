@@ -10,6 +10,30 @@
             "https://portail-test.sig.rennesmetropole.fr/geowebcache/service/wmts": "https://portail-test.sig.rennesmetropole.fr/geoserver/wms",
             "https://portail.sig.rennesmetropole.fr/geowebcache/service/wms": "https://portail.sig.rennesmetropole.fr/geoserver/wms",
             "https://portail.sig.rennesmetropole.fr/geowebcache/service/wmts": "https://portail.sig.rennesmetropole.fr/geoserver/wms"
+        },
+        "vocationdominante": {
+            "0": "sans objet ou non encore définie dans le règlement",
+            "1": "habitat",
+            "2": "activité",
+            "3": "destination mixte habitat / activité",
+            "4": "loisirs et tourisme",
+            "5": "équipement public",
+            "6": "",
+            "7": "activité agricole",
+            "8": "espace naturel",
+            "9": "espace remarquable (littoral L146-6 / montagne L145-7)",
+            "10": "secteur de carrière",
+            "99": "autre"
+        },
+        "typezonesimplifie": {
+            "U": "urbanisé",
+            "AUc": "à urbaniser alternatif",
+            "AUs": "à urbaniser bloqué",
+            "A": "agricole",
+            "Ah": "agricole constructible",
+            "N": "naturel",
+            "Nh": "naturel constructible",
+            "Nd": "naturel avec transfert de constructabilité"
         }
     },
     "title": {
