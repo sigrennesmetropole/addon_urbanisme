@@ -57,6 +57,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
                 noteRecord = this.getAt(0).copy();
             noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
+            noteRecord.set("nomProprio", infoBulleJson.proprietaires[0].app_nom_usage);
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
