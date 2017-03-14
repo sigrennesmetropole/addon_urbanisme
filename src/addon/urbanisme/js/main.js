@@ -303,21 +303,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         };
 
-        var helpAction = {
-            tooltip : OpenLayers.i18n("Help"),
-            iconCls : "help-button",
-            iconAlign : 'top',
-            helpUrl: this.options.helpUrl,
-            text : OpenLayers.i18n("Help"),
-            handler: function() {
-                if (Ext.isIE) {
-                    window.open(this.helpUrl);
-                } else {
-                    window.open(this.helpUrl, OpenLayers.i18n("Help"), "menubar=no,status=no,scrollbars=yes");
-                }
-            }
-        };
-
         this.window = new Ext.Window({
             title: this.getText(record),
             closable: true,
