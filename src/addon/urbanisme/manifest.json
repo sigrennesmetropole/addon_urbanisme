@@ -32,6 +32,7 @@
             "N": "naturel",
             "Nh": "naturel constructible",
             "Nd": "naturel avec transfert de constructabilité"
-        }
+        },
+        "helpUrl": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur"
     }
 }
