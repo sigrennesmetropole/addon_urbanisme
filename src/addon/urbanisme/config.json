@@ -13,6 +13,7 @@
             "https://portail.sig.rennesmetropole.fr/geowebcache/service/wms": "https://portail.sig.rennesmetropole.fr/geoserver/wms",
             "https://portail.sig.rennesmetropole.fr/geowebcache/service/wmts": "https://portail.sig.rennesmetropole.fr/geoserver/wms"
         },
+        "zipBaseURL": "http://public.sig.rennesmetropole.fr/ressources/donnees/plu",
         "helpUrl": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur"
     },
     "title": {

@@ -9,6 +9,7 @@
     "default_options": {
         "cadastrappUrl": "/cadastrapp/services",
         "printServerUrl": "/urbanisme",
+        "zipBaseURL": "/ressources/donnees/plu/",
         "vocationdominante": {
             "0": "sans objet ou non encore définie dans le règlement",
             "1": "habitat",

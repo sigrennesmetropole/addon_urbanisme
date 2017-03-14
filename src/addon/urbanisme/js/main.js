@@ -241,6 +241,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         // modification du format date, cf https://github.com/sigrennesmetropole/addon_urbanisme/issues/17
                         var f = resp.features[0],
                             d = f.attributes.datvalid,
+                            nomfic = f.attributes.nomfic,
                             year = d.substr(0,4),
                             month = d.substr(4,2),
                             day = d.substr(6,2);
@@ -250,6 +251,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         // See config.json
                         f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
                         f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
+                        f.attributes.zipfile = nomfic.substr(0, 5) + '_PLU_' + d + '.zip';
+                        f.attributes.zipurl = this.options.zipBaseURL + '/' + nomfic.substr(0, 5) + '/' + f.attributes.zipfile;
                         // fin modification attributs
                         this.zonagePluData.update(resp.features[0]);
                     }
@@ -705,6 +708,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '      <div class="zonage-attrib-value">{values.feature.attributes.destdomi} - {values.feature.attributes.destdomiI18n}</div>',
                         '    </div>',
                         '  </div>',
+                        // dossier du document d'urbanisme
+                        '    <div id="vocation-dominante" class="zonage-pair">',
+                        '      <div class="zonage-attrib-label">Dossier du document d\'urbanisme :</div>',
+                        '      <div class="zonage-attrib-value"><a href="{values.feature.attributes.zipurl}" target="_blank">{values.feature.attributes.zipfile}</a></div>',
+                        '    </div>',
+                        '  </div>',
                         //end of zonage-attribs
                         '</tpl>', // end of if values.empty == false
 
@@ -716,7 +725,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 }]
             }],
             buttons: [{
-                //TODO tr
                 text: "Fermer",
                 handler: function() {
                     this.zonagePluWindow.hide();
