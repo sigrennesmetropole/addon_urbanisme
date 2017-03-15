@@ -355,27 +355,26 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 }
             });
             this.target.doLayout();
-
-            // create a menu item for the "tools" menu:
-            this.item = new Ext.menu.CheckItem({
-                text: this.getText(record),
-                qtip: this.getQtip(record),
-                iconCls: "addon-urbanisme",
-                checked: false,
-                listeners: {
-                    "checkchange": this._onCheckchange,
-                    scope: this
-                }
-            });
         }
 
+        // create a menu item for the "tools" menu:
+        this.item = new Ext.menu.CheckItem({
+            text: this.getText(record),
+            qtip: this.getQtip(record),
+            iconCls: "addon-urbanisme",
+            checked: false,
+            listeners: {
+                "checkchange": this._onCheckchange,
+                scope: this
+            }
+        });
 
         this.printProvider = new GeoExt.data.MapFishPrintv3Provider({
             method: "POST",
             url: this.options.printServerUrl + "/print/"
         });
 
-        //We load an empty note record, we will update it with the different requests
+        // We load an empty note record, we will update it with the different requests
         this.noteStore.loadData([{
             "parcelle": 0
         }]);
