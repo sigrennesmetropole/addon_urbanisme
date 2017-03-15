@@ -207,7 +207,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 toggle: function(button, pressed) {
                     if (pressed) {
                         this._addLayer(
-                            this.options.parcellesCadastralesLayer,
+                            this.options.cadastrale.layer,
+                            this.options.cadastrale.service,
                             function(layer) {
                                 renseignUrbaControl.layers = [layer];
                                 layer.events.register('removed', null, function() {
@@ -269,7 +270,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 toggle: function(button, pressed) {
                     if (pressed) {
                         this._addLayer(
-                            this.options.zonesPluLayer,
+                            this.options.plu.layer,
+                            this.options.plu.service,
                             function(layer) {
                                 zonagePluControl.layers = [layer];
                                 layer.events.register('removed', null, function() {
@@ -295,7 +297,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             tooltip : OpenLayers.i18n("Help"),
             iconCls : "help-button",
             iconAlign : 'top',
-            helpUrl: this.options.helpUrl,
+            helpUrl: this.options.helpURL,
             text : OpenLayers.i18n("Help"),
             handler: function() {
                 if (Ext.isIE) {
@@ -344,7 +346,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 scope: this,
                 listeners: {
                     "afterrender": function() {
-                        if (this.options.openToolbarOnLoad) {
+                        if (this.options.openToolbarOnLoad) { // ???
                             this._onCheckchange(this.item, true);
                         }
                     },
@@ -785,7 +787,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      */
     baseLayers: function() {
         var encodedLayers = [],
-            wmsc2wms = this.options.wmsc2wms;
+            wmsc2wms = GEOR.config.WMSC2WMS;
         this.mapPanel.layers.each(function(r) {
             var encodedLayer,
                 l = r.getLayer();
@@ -870,14 +872,14 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      *  - layerName: the layer name
      *  - callback: the function to call once the layer is added
      */
-    _addLayer: function(layerName, callback) {
+    _addLayer: function(layerName, serviceURL, callback) {
         // add the layer in the layer manager if it isn't there already
         var layerManager = Ext.getCmp("geor-layerManager");
         var found = layerManager.root.findChildBy(function(child) {
             return child.layer.params.LAYERS === layerName;
         }, this, true);
         if (!found) {
-            var u = GEOR.util.splitURL(this.options.service);
+            var u = GEOR.util.splitURL(serviceURL);
             GEOR.ows.WMSCapabilities({
                 storeOptions: {
                     url: u.serviceURL,
