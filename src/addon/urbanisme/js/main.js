@@ -548,10 +548,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '</tpl>',
                         '</td>',
                         '</tr>',
-                        '<tr>',
-                        '<td class="parcelle-table-label">Adresse propriétaire</td>',
-                        '<td>{adresseProprio}</td>',
-                        '</tr>',
                         '</table>',
                         '</div>',
                         '</tpl>'
