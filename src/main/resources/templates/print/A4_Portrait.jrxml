@@ -82,7 +82,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[code section]]></text>
+					<text><![CDATA[Section]]></text>
 				</staticText>
 				<line>
 					<reportElement x="230" y="0" width="1" height="194" uuid="3179be3a-9aa9-480b-95e1-dff68c779f67">
@@ -102,7 +102,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[numéro parcelle]]></text>
+					<text><![CDATA[Numéro parcelle]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="62" width="556" height="1" uuid="476d3628-df03-4d44-b469-bfbca19b1e9b">
@@ -116,7 +116,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[surface calculée de la parcelle (m²)]]></text>
+					<text><![CDATA[Surface calculée de la parcelle (m²)]]></text>
 				</staticText>
 				<textField>
 					<reportElement x="236" y="22" width="317" height="12" uuid="b738a496-4952-494b-92d0-c3361ab9832c">
@@ -134,7 +134,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[adresse du terrain]]></text>
+					<text><![CDATA[Adresse cadastrale]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="84" width="556" height="1" uuid="315feba2-423f-4446-9875-dd0c0eaa26bf">
@@ -148,7 +148,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[code Rivoli (Fantoir)]]></text>
+					<text><![CDATA[code Fantoir]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="106" width="556" height="1" uuid="1f95605e-0a26-4b69-92c7-6247a29e1718">
@@ -167,7 +167,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[nom propriétaire]]></text>
+					<text><![CDATA[Propriétaire(s)]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="150" width="556" height="1" uuid="ced87a8d-1870-43ef-88f8-ec8aabe5dee8">
@@ -182,7 +182,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[code propriétaire]]></text>
+					<text><![CDATA[Compte propriétaire]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="10" y="177" width="218" height="12" forecolor="#E6E6E6" uuid="ba2c2cad-3f21-46dd-99cf-229684d17a7c">
@@ -191,7 +191,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[adresse propriétaire]]></text>
+					<text><![CDATA[Adresse propriétaire]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="172" width="556" height="1" uuid="f8a35ffa-21eb-43e8-b374-a4a190cc6c4f">
