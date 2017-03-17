@@ -57,6 +57,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
                 noteRecord = this.getAt(0).copy();
             noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
+            noteRecord.set("nomProprio", infoBulleJson.proprietaires);
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
@@ -65,7 +66,6 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             }
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
-            noteRecord.set("nomProprio", proprioRecord.get("ddenom"));
             noteRecord.set("adresseProprio", proprioRecord.get("dlign4").trim() + " " + proprioRecord.get("dlign5").trim() + " " +
                 proprioRecord.get("dlign6").trim());
             this.add([noteRecord]);
@@ -562,10 +562,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '<td class="parcelle-table-label">code propriétaire</td>',
                         '<td>{codeProprio}</td>',
                         '</tr>',
-                        '<tr>',
-                        '<td class="parcelle-table-label">nom propriétaire</td>',
-                        '<td>{nomProprio}</td>',
-                        '</tr>',
+                        '<tpl for="./nomProprio">',
+                            '<tr>',
+                            '<td class="parcelle-table-label">nom propriétaire</td>',
+                            '<td>{app_nom_usage}</td>',
+                            '</tr>',
+                        '</tpl>',
                         '<tr>',
                         '<td class="parcelle-table-label">adresse propriétaire</td>',
                         '<td>{adresseProprio}</td>',
@@ -623,7 +625,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
                             surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
                             codeProprio: this.noteStore.getAt(0).get("codeProprio"),
-                            nomProprio: this.noteStore.getAt(0).get("nomProprio"),
+                            nomProprio: Ext.pluck(this.noteStore.getAt(0).get("nomProprio"), "app_nom_usage").join(", "),
                             adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
                             libelles: libellesAsString
 
