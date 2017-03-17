@@ -148,7 +148,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[code Fantoir]]></text>
+					<text><![CDATA[Contenance DGFiP (m²)]]></text>
 				</staticText>
 				<line>
 					<reportElement x="0" y="106" width="556" height="1" uuid="1f95605e-0a26-4b69-92c7-6247a29e1718">
