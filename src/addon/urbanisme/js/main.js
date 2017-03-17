@@ -119,16 +119,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      */
     zonagePluData: null,
 
-    /**
-     * WMS layer of « cadastre » - {OpenLayers.Layer.WMS}
-     */
-    parcellesCadastralesLayer: null,
-
-    /**
-     * WMS layer of « zones d'un Plan local d'urbanisme  » - {OpenLayers.Layer.WMS}
-     */
-    zonesPluLayer: null,
-
     /** api: config[encoding]
      * ``String`` The encoding to set in the headers when requesting the print
      * service. Prevent character encoding issues, especially when using IE.
@@ -138,18 +128,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     encoding: document.charset || document.characterSet || "UTF-8",
 
     init: function(record) {
-
-        Ext.each(this.map.layers, function(layer) {
-            if (layer.params === undefined) {
-                return;
-            }
-            if (layer.params.LAYERS === this.options.parcellesCadastralesLayer) {
-                this.parcellesCadastralesLayer = layer;
-            }
-            if (layer.params.LAYERS === this.options.zonesPluLayer) {
-                this.zonesPluLayer = layer;
-            }
-        }, this);
 
         this.vectorLayer = new OpenLayers.Layer.Vector("__georchestra_"+record.get("id"), {
             displayInLayerSwitcher: false,
@@ -207,8 +185,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 toggle: function(button, pressed) {
                     if (pressed) {
                         this._addLayer(
-                            this.options.cadastrale.layer,
-                            this.options.cadastrale.service,
+                            this.options.cadastre.layer,
+                            this.options.cadastre.service,
                             function(layer) {
                                 renseignUrbaControl.layers = [layer];
                                 layer.events.register('removed', null, function() {
@@ -562,7 +540,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '<td class="parcelle-table-label">code propriétaire</td>',
                         '<td>{codeProprio}</td>',
                         '</tr>',
-                        '<tpl for="./nomProprio">',
+                        '<tpl for="nomProprio">',
                             '<tr>',
                             '<td class="parcelle-table-label">nom propriétaire</td>',
                             '<td>{app_nom_usage}</td>',
