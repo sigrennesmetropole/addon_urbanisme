@@ -51,12 +51,12 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
                 " " + parcelleRecord.get("dvoilib"));
             //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
             noteRecord.set("contenanceDGFiP", ("0000" + parcelleRecord.get("dcntpa")).slice(-4));
+            noteRecord.set("surfaceSIG", ("0000" + parcelleRecord.get("surfc")).slice(-4));
             this.add([noteRecord]);
         },
         updateInfoBulle: function(infoBulleResp) {
             var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
                 noteRecord = this.getAt(0).copy();
-            noteRecord.set("surfaceSIG", infoBulleJson.surfc.toFixed(1));
             noteRecord.set("nomProprio", infoBulleJson.proprietaires);
             this.add([noteRecord]);
         },
