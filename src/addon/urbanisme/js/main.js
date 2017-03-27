@@ -57,7 +57,6 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
         updateInfoBulle: function(infoBulleResp) {
             var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
                 noteRecord = this.getAt(0).copy();
-            noteRecord.set("nomProprio", infoBulleJson.proprietaires);
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
@@ -65,6 +64,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
                 return;
             }
             var noteRecord = this.getAt(0).copy();
+            noteRecord.set("nomProprio", proprioRecord.get("app_nom_usage"));
             noteRecord.set("codeProprio", proprioRecord.get("comptecommunal"));
             noteRecord.set("adresseProprio", proprioRecord.get("dlign4").trim() + " " + proprioRecord.get("dlign5").trim() + " " +
                 proprioRecord.get("dlign6").trim());
@@ -418,7 +418,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 "ddenom",
                 "dlign4",
                 "dlign5",
-                "dlign6"
+                "dlign6",
+                "app_nom_usage"
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
@@ -427,7 +428,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             listeners: {
                 "load": {
                     fn: function(store, records) {
-                        //We assume there is only 1 returned record
+                        //We assume there is only 1 returned record // NOPE !
+                        // multiple records if several propriétaires
+                        var app_nom_usage = [];
+                        Ext.each(records, function(r) {
+                            app_nom_usage.push(r.get("app_nom_usage"));
+                        });
+                        records[0].set("app_nom_usage", app_nom_usage.join(", "))
                         this.noteStore.updateProprio(records[0]);
                     },
                     scope: this
@@ -542,11 +549,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '</tr>',
                         '<tr>',
                         '<td class="parcelle-table-label">Propriétaire(s)</td>',
-                        '<td>',
-                        '<tpl for="nomProprio">',
-                            '{app_nom_usage}<br />',
-                        '</tpl>',
-                        '</td>',
+                        '<td>{nomProprio}</td>',
                         '</tr>',
                         '</table>',
                         '</div>',
@@ -601,10 +604,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
                             surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
                             codeProprio: this.noteStore.getAt(0).get("codeProprio"),
-                            nomProprio: Ext.pluck(this.noteStore.getAt(0).get("nomProprio"), "app_nom_usage").join(", "),
+                            nomProprio: this.noteStore.getAt(0).get("app_nom_usage"),
                             adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
                             libelles: libellesAsString
-
                         }
                     };
 
