@@ -54,11 +54,6 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             noteRecord.set("surfaceSIG", ("0000" + parcelleRecord.get("surfc")).slice(-4));
             this.add([noteRecord]);
         },
-        updateInfoBulle: function(infoBulleResp) {
-            var infoBulleJson = (new OpenLayers.Format.JSON()).read(infoBulleResp),
-                noteRecord = this.getAt(0).copy();
-            this.add([noteRecord]);
-        },
         updateProprio: function(proprioRecord) {
             if (proprioRecord === undefined) {
                 return;
@@ -736,17 +731,6 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 parcelle: parcelle,
                 onglet: 1
             }
-        });
-        //No store because getInfoBulle don't return an array
-        OpenLayers.Request.GET({
-            url: this.options.cadastrappUrl + "/getInfoBulle",
-            params: {
-                parcelle: parcelle
-            },
-            callback: function(resp) {
-                this.noteStore.updateInfoBulle(resp.responseText);
-            },
-            scope: this
         });
         this.parcelleWindow.show();
 
