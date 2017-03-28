@@ -98,7 +98,7 @@ public class RenseignUrbaBackend {
                 + "  id_parc = ?) AS libelles "
                 + "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) "
                 + "ON libelles.ventilation_ddc = ordre.code "
-                + "ORDER BY ordre.priorite;";
+                + "ORDER BY ordre.priorite ASC, ru.ordre ASC;";
 
             queryLibellesByParcelle = connection.prepareStatement(query);
             queryLibellesByParcelle.setString(1, parcelle);
