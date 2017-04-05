@@ -86,8 +86,8 @@ public class RenseignUrbaBackend {
                 + "     libelle "
                 + "FROM "
                 + "(  SELECT "
-                + "       ru.libelle              AS libelle"
-                + "       , theme.ventilation_ddc AS ventilation_ddc "
+                + "       ru.libelle AS libelle,"
+                + "       theme.ventilation_ddc AS ventilation_ddc "
                 + "   FROM "
                 + this.table + " AS ru "
                 + "LEFT OUTER JOIN "
@@ -98,7 +98,7 @@ public class RenseignUrbaBackend {
                 + "  id_parc = ?) AS libelles "
                 + "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) "
                 + "ON libelles.ventilation_ddc = ordre.code "
-                + "ORDER BY ordre.priorite ASC, ru.ordre ASC;";
+                + "ORDER BY ordre.priorite ASC, numero ASC ;";
 
             queryLibellesByParcelle = connection.prepareStatement(query);
             queryLibellesByParcelle.setString(1, parcelle);
