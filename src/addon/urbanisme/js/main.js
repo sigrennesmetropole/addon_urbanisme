@@ -50,8 +50,8 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             noteRecord.set("adresseCadastrale", parcelleRecord.get("dnvoiri") + " " + parcelleRecord.get("cconvo") +
                 " " + parcelleRecord.get("dvoilib"));
             //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
-            noteRecord.set("contenanceDGFiP", ("0000" + parcelleRecord.get("dcntpa")).slice(-4));
-            noteRecord.set("surfaceSIG", ("0000" + parcelleRecord.get("surfc")).slice(-4));
+            noteRecord.set("contenanceDGFiP", (parcelleRecord.get("dcntpa")));
+            noteRecord.set("surfaceSIG", (parcelleRecord.get("surfc")));
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
