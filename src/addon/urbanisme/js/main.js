@@ -599,7 +599,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             contenanceDGFiP: this.noteStore.getAt(0).get("contenanceDGFiP"),
                             surfaceSIG: this.noteStore.getAt(0).get("surfaceSIG"),
                             codeProprio: this.noteStore.getAt(0).get("codeProprio"),
-                            nomProprio: this.noteStore.getAt(0).get("app_nom_usage"),
+                            nomProprio: this.noteStore.getAt(0).get("nomProprio"),
                             adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
                             libelles: libellesAsString
                         }
