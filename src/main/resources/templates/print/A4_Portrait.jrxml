@@ -282,7 +282,7 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[commune]]></text>
+					<text><![CDATA[Commune]]></text>
 				</staticText>
 			</frame>
 			<frame>
