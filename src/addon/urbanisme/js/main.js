@@ -387,7 +387,8 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 "dnvoiri",
                 "cconvo",
                 "dvoilib",
-                "dcntpa"
+                "dcntpa",
+                "surfc"
             ],
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
