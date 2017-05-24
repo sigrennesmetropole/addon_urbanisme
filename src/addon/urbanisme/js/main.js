@@ -216,16 +216,21 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         var f = resp.features[0],
                             d = f.attributes.datvalid,
                             nomfic = f.attributes.nomfic,
-                            year = d.substr(0,4),
-                            month = d.substr(4,2),
-                            day = d.substr(6,2);
-                        f.attributes.datvalid = [day, month, year].join('/');
+                            yearValid = d.substr(0,4),
+                            monthValid = d.substr(4,2),
+                            dayValid = d.substr(6,2),
+                            p = f.attributes.id_docurba,
+                            yearAppro = p.substr(-8,4),
+                            monthAppro = p.substr(-4,2),
+                            dayAppro = p.substr(-2,2);
+                        f.attributes.datappro = [dayAppro, monthAppro, yearAppro].join('/');
+                        f.attributes.datvalid = [dayValid, monthValid, yearValid].join('/');
                         // convert vocation dominante & typezone codes
                         // to human readable label
                         // See config.json
                         f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
                         f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
-                        f.attributes.zipfile = nomfic.substr(0, 5) + '_PLU_' + d + '.zip';
+                        f.attributes.zipfile = nomfic.substr(0, 5) + '_PLU_' + p.substr(-8,8) + '.zip';
                         f.attributes.zipurl = this.options.zipBaseURL + '/' + nomfic.substr(0, 5) + '/' + f.attributes.zipfile;
                         // fin modification attributs
                         this.zonagePluData.update(resp.features[0]);
@@ -663,7 +668,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         // date de validité
                         '    <div id="date-plu-en-vigueur" class="zonage-pair">',
                         '      <div class="zonage-attrib-label">PLU en vigueur au</div>',
-                        '      <div class="zonage-attrib-value">{values.feature.attributes.datvalid}</div>',
+                        '      <div class="zonage-attrib-value">{values.feature.attributes.datappro}</div>',
                         '    </div>',
                         // type du zonage (libelle) + url vers le PDF + label long
                         '    <div id="type-libelle" class="zonage-pair">',
