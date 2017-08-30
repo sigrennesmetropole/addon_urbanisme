@@ -576,7 +576,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 handler: function() {
                     var params, centerLonLat, libellesArray, libellesAsString;
 
-                    centerLonLat = this.map.getCenter();
+                    centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
 
                     this.libellesStore.each(function(record) {
