@@ -373,6 +373,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     fn: function(store, records) {
                         //We assume there is only 1 returned record
                         this.noteStore.updateCommune(records[0]);
+                        this.checkRemainingXHRs();
                     },
                     scope: this
                 }
@@ -404,6 +405,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     fn: function(store, records) {
                         //We assume there is only 1 returned record
                         this.noteStore.updateParcelle(records[0]);
+                        this.checkRemainingXHRs();
                     },
                     scope: this
                 }
@@ -437,6 +439,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         });
                         records[0].set("app_nom_usage", app_nom_usage.join(", "))
                         this.noteStore.updateProprio(records[0]);
+                        this.checkRemainingXHRs();
                     },
                     scope: this
                 }
@@ -452,7 +455,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             proxy: new Ext.data.HttpProxy({
                 method: "GET",
                 url: this.options.printServerUrl + "/renseignUrba"
-            })
+            }),
+            listeners: {
+                "load": {
+                    fn: this.checkRemainingXHRs,
+                    scope: this
+                }
+            }
         });
 
         this.zonagePluData = new(function(addon) {
@@ -572,7 +581,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             buttons: [{
                 //TODO tr
                 text: "Imprimer",
+                itemId: "print",
                 iconCls: 'mf-print-action',
+                //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, libellesArray, libellesAsString;
 
@@ -715,7 +726,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         })
     },
 
+    checkRemainingXHRs: function() {
+        this.remainingXHRs -= 1;
+        if (this.remainingXHRs == 0) {
+            //this.parcelleWindow.getFooterToolbar().getComponent('print').enable();
+            this.mask.hide();
+        }
+    },
+
     showParcelleWindow: function(parcelle) {
+        this.remainingXHRs = 4;
+        //this.parcelleWindow.getFooterToolbar().getComponent('print').disable();
         this.communeStore.load({
             params: {
                 cgocommune: parcelle.slice(0, 6)
@@ -738,7 +759,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
         this.parcelleWindow.show();
-
+        if (!this.mask) {
+            this.mask = new Ext.LoadMask(this.parcelleWindow.bwrap.dom, {
+                msg: tr("Loading...")
+            });
+        }
+        this.mask.show();
     },
 
 
