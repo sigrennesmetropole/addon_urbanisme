@@ -592,8 +592,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             map: {
                                 scale: this.map.getScale(),
                                 center: [centerLonLat.lon, centerLonLat.lat],
-                                //TODO improve for production
-                                dpi: 72,
+                                dpi: 91,
                                 layers: this.baseLayers(),
                                 projection: this.map.getProjection()
                             },
