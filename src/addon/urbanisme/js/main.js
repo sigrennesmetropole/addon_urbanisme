@@ -437,8 +437,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         Ext.each(records, function(r) {
                             app_nom_usage.push(r.get("app_nom_usage"));
                         });
-                        records[0].set("app_nom_usage", app_nom_usage.join(", "))
-                        this.noteStore.updateProprio(records[0]);
+                        if (records.length) {
+                            records[0].set("app_nom_usage", app_nom_usage.join(", "))
+                            this.noteStore.updateProprio(records[0]);
+                        }
                         this.checkRemainingXHRs();
                     },
                     scope: this
