@@ -47,8 +47,15 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
                 noteRecord.set("codeSection", parcelleRecord.get("ccosec"));
             }
             noteRecord.set("numero", parcelleRecord.get("dnupla"));
-            noteRecord.set("adresseCadastrale", parcelleRecord.get("dnvoiri") + " " + parcelleRecord.get("cconvo") +
-                " " + parcelleRecord.get("dvoilib"));
+            if (parcelleRecord.get("dnvoiri") || parcelleRecord.get("cconvo")
+                || parcelleRecord.get("dvoilib")) {
+                noteRecord.set("adresseCadastrale", parcelleRecord.get("dnvoiri")
+                    + " " + parcelleRecord.get("cconvo")
+                    + " " + parcelleRecord.get("dvoilib")
+                );
+            } else {
+                noteRecord.set("adresseCadastrale", "");
+            }
             //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
             noteRecord.set("contenanceDGFiP", (parcelleRecord.get("dcntpa")));
             noteRecord.set("surfaceSIG", (parcelleRecord.get("surfc")));
