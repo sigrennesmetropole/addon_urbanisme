@@ -12,7 +12,7 @@
             "layer": "plu_zone_urba",
             "service": "/geoserver/urba_docs/wms"
         },
-        "zipBaseURL": "http://public.sig.rennesmetropole.fr/ressources/donnees/plu",
+        "zipBaseURL": "http://public.sig.rennesmetropole.fr/ressources/donnees/urbanisme/plu",
         "helpURL": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur"
     },
     "title": {
