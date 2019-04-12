@@ -238,7 +238,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         f.attributes.typezoneI18n = this.options['typezonesimplifie'][f.attributes.typezone];
                         f.attributes.destdomiI18n = this.options['vocationdominante'][f.attributes.destdomi];
                         f.attributes.zipfile = nomfic.substr(0, 5) + '_PLU_' + p.substr(-8,8) + '.zip';
-                        f.attributes.zipurl = this.options.zipBaseURL + '/' + nomfic.substr(0, 5) + '/' + f.attributes.zipfile;
+                        f.attributes.zipurl = this.options.zipBaseURL + '/' + nomfic.substr(0, 5) + '/envigueur/' + f.attributes.zipfile;
                         // fin modification attributs
                         this.zonagePluData.update(resp.features[0]);
                     }
