@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme;
+package org.georchestra.urbanisme.RenseignUrba;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
