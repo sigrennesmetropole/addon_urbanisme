@@ -17,35 +17,38 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme;
-
-import java.util.List;
+package org.georchestra.urbanisme.RenseignUrbaInfos;
 
 /**
  * This class hold informations about renseignement d'urbanisme.
  */
-public class RenseignUrba {
-
-    private String parcelle;
-    private List<String> libelles;
+public class RenseignUrbaInfos {
+    private String code_commune;
+    private String date_ru;
+    private String date_pci;
 
     /**
      * Create a new instance of renseignUrban
      *
-     * @param parcelle Parcelle ID.
-     * @param libelles List of libelle string
+     * @param code_commune code commune
+     * @param date_ru date de production des RU
+     * @param date_pci 	Le millésime du cadastre
      */
-    public RenseignUrba(String parcelle, List<String> libelles) {
-        this.parcelle = parcelle;
-        this.libelles = libelles;
+    public RenseignUrbaInfos(String code_commune, String date_ru, String date_pci) {
+        this.code_commune = code_commune;
+        this.date_ru = date_ru;
+        this.date_pci = date_pci;
     }
 
-   public String getParcelle() {
-        return parcelle;
+    public String getCode_commune() {
+        return code_commune;
     }
 
-   public List<String> getLibelles() {
-        return libelles;
+    public String getDate_ru() {
+        return date_ru;
     }
 
+    public String getDate_pci() {
+        return date_pci;
+    }
 }

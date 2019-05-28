@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme;
+package org.georchestra.urbanisme.RenseignUrba;
 
 import java.io.IOException;
 
@@ -25,6 +25,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.georchestra.urbanisme.RenseignUrba.RenseignUrbaBackend;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
