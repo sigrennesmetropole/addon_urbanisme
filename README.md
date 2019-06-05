@@ -44,9 +44,9 @@ urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/rennes_urbanisme?user=www-dat
 urbanisme.renseignUrbaTable=urba.renseign_urba
 urbanisme.tableTheme=app_plu.param_theme
 urbanisme.ordreTheme=('ZON', 1), ('SUP', 2), ('SAU', 3), ('PRE', 4), ('OPE', 5), ('PAR', 6), ('LOT', 7), ('TAX', 8)
-adsAutorisationFunction=urba_foncier.intersect_EdiParc_VAdsAutorisation
-adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
-quartierFunction=limite_admin.intersect_EdiParc_Quartier
+urbanisme.adsAutorisationFunction=urba_foncier.intersect_EdiParc_VAdsAutorisation
+urbanisme.adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
+urbanisme.quartierFunction=limite_admin.intersect_EdiParc_Quartier
 
 ```
 
