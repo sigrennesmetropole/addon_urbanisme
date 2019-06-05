@@ -30,9 +30,9 @@ Les paramètres suivants dans le fichier properties sont requis:
 `urbanisme.renseignUrbaTable`. Le nom de la table peut contenir l'information sur le schéma.
 * nom de la table de base de données contenant la description des thèmes : `urbanisme.tableTheme`
 * ordre selon lequel les libelles doivent être affichés selon leur code de thèmes : `urbanisme.ordreTheme`
-* schéma et nom de la fonction récupérant les dossiers ADS intersectés avec la parcelle : `adsAutorisationFunction`
-* schéma et nom de la fonction récupérant le secteur d'instruction intersecté avec la parcelle : `adsSecteurInstructionFunction`
-* schéma et nom de la fonction récupérant le quartier intersecté avec la parcelle : `quartierFunction`
+* schéma et nom de la fonction récupérant les dossiers ADS intersectés avec la parcelle : `urbanisme.adsAutorisationFunction`
+* schéma et nom de la fonction récupérant le secteur d'instruction intersecté avec la parcelle : `urbanisme.adsSecteurInstructionFunction`
+* schéma et nom de la fonction récupérant le quartier intersecté avec la parcelle : `urbanisme.quartierFunction`
 
 
 
