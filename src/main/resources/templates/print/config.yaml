@@ -37,8 +37,7 @@ templates:
         reportTemplate: A4_Portrait_ADS.jrxml
         attributes:
             parcelle: !string {}
-            nom: !string {}
-            iniInstru: !string {}
+            instruction: !string {}
             numNom: !string {}
             numDossier: !string {}
             legendURL: !string

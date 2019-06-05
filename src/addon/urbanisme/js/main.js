@@ -105,7 +105,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             }
             var noteRecord = this.getAt(0).copy();
 
-            var ads= "aucun ADS trouvé pour la parcelle";
+            var ads= "Aucun ADS trouvé pour la parcelle";
 
             var arr=adsAutorisationRecord.get("numdossier");
             var AdsArray = new Array();
@@ -894,7 +894,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: 'mf-print-action',
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
-                    var params, centerLonLat, libellesArray, libellesAsString;
+                    var params, centerLonLat, libellesArray, libellesAsString, parcelle;
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
@@ -906,8 +906,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     libellesAsString = libellesArray.join("\n\n");
 
+                    parcelle = this.noteStore.getAt(0).get("parcelle");
+
                     params = {
                         layout: "A4 portrait",
+                        outputFilename:"NRU_"+parcelle,
                         attributes: {
                             map: {
                                 scale: this.map.getScale(),
@@ -916,7 +919,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 layers: this.baseLayers(),
                                 projection: this.map.getProjection()
                             },
-                            parcelle: this.noteStore.getAt(0).get("parcelle"),
+                            parcelle: parcelle,
                             commune: this.noteStore.getAt(0).get("commune"),
                             codeSection: this.noteStore.getAt(0).get("codeSection"),
                             numero: this.noteStore.getAt(0).get("numero"),
@@ -1054,7 +1057,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '<div class="parcelle">',
                         '<h1>Eléments d\'informations applicables à la parcelle cadastrale</h1>',
                         '<h2>{id_parcelle}</h2>',
-                        '<h2>Secteur d\'instruction :</h2> {nom} / {ini_instru}',
+                        '<h2>Secteur d\'instruction :</h2> ',
+                        '<tpl if=" nom == \'\' && ini_instru == \'\'">',
+                        'Aucun secteur d\'instruction ne correspond à la localisation de la parcelle',
+                        '</tpl>',
+                        '<tpl if=" nom != \'\' && ini_instru != \'\' ">',
+                        '{nom} / {ini_instru}',
+                        '</tpl>',
                         '<h2>Liste des ADS :</h2>',
                         '<tpl for="num_dossier">',
                         '<ul>',
@@ -1062,7 +1071,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '</ul>',
                         '</tpl>',
                         '<h2>Quartier :</h2>',
+                        '<tpl if=" num_nom == \'\'">',
+                        'Aucun quartier ne correspond à la localisation de la parcelle',
+                        '</tpl>',
+                        '<tpl if=" num_nom != \'\'">',
                         '<p>{num_nom}</p>',
+                        '</tpl>',
                         '</div>',
                         '</tpl>'
                     )
@@ -1075,15 +1089,32 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: 'mf-print-action',
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
-                    var params, centerLonLat, NumDossierAsString;
+                    var params, centerLonLat, NumDossierAsString, parcelle, instruction, num_nom;
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
 
 
                     NumDossierAsString= this.noteStore.getAt(0).get("num_dossier").join("\n\n");
 
+                    parcelle=this.noteStore.getAt(0).get("id_parcelle");
+
+                    //dans le cas ou nom et ini_instruction sont vide
+                    if(this.noteStore.getAt(0).get("nom") =='' || this.noteStore.getAt(0).get("ini_instru") == ''){
+                        instruction="Aucun secteur d'instruction ne correspond à la localisation de la parcelle";
+                    }else{
+                        instruction=this.noteStore.getAt(0).get("nom") +" / "+ this.noteStore.getAt(0).get("ini_instru");
+                    }
+
+                    //dans le cas où num_nom est vide
+                    if(this.noteStore.getAt(0).get("num_nom") ==''){
+                        num_nom="Aucun quartier ne correspond à la localisation de la parcelle";
+                    }else{
+                        num_nom=this.noteStore.getAt(0).get("num_nom");
+                    }
+
                     params = {
                         layout: "A4 portrait ADS",
+                        outputFilename:"ADS_"+parcelle,
                         attributes: {
                             map: {
                                 scale: this.map.getScale(),
@@ -1092,10 +1123,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 layers: this.baseLayers(),
                                 projection: this.map.getProjection()
                             },
-                            parcelle: this.noteStore.getAt(0).get("id_parcelle"),
-                            nom: this.noteStore.getAt(0).get("nom"),
-                            iniInstru: this.noteStore.getAt(0).get("ini_instru"),
-                            numNom: this.noteStore.getAt(0).get("num_nom"),
+                            parcelle: parcelle,
+                            instruction: instruction,
+                            numNom: num_nom,
                             numDossier: NumDossierAsString
                         }
                     };
