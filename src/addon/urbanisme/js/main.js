@@ -22,7 +22,15 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
                         "surfaceSIG",
                         "codeProprio",
                         "nomProprio",
-                        "adresseProprio"
+                        "adresseProprio",
+                        "dateRU",
+                        "datePCI",
+                        "num_dossier",
+                        "nom",
+                        "ini_instru",
+                        "num_nom",
+                        "id_parcelle"
+
                         //libelles is not in the list because this is a one to many relationship
                     ]
                     //Add proxy configuration here if we want to upload Note data to server
@@ -58,7 +66,6 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             }
             //padding idea comes from http://gugod.org/2007/09/padding-zero-in-javascript.html
             noteRecord.set("contenanceDGFiP", (parcelleRecord.get("dcntpa")));
-            noteRecord.set("surfaceSIG", (parcelleRecord.get("surfc")));
             this.add([noteRecord]);
         },
         updateProprio: function(proprioRecord) {
@@ -71,7 +78,71 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             noteRecord.set("adresseProprio", proprioRecord.get("dlign4").trim() + " " + proprioRecord.get("dlign5").trim() + " " +
                 proprioRecord.get("dlign6").trim());
             this.add([noteRecord]);
-        }
+        },
+        updateProprioSurf: function(proprioSurfRecord) {
+            if (proprioSurfRecord === undefined) {
+                return;
+            }
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("surfaceSIG", (proprioSurfRecord.get("surfc")));
+            this.add([noteRecord]);
+        },
+
+        updateDate: function(dateRecord) {
+            if (dateRecord === undefined) {
+                return;
+            }
+            var date_Pci = dateRecord.get("date_pci").slice(3, 10);
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("dateRU", dateRecord.get("date_ru"));
+            noteRecord.set("datePCI",date_Pci);
+            this.add([noteRecord]);
+        },
+
+        updateAdsAutorisation: function(adsAutorisationRecord) {
+            if (adsAutorisationRecord === undefined) {
+                return;
+            }
+            var noteRecord = this.getAt(0).copy();
+
+            var ads= "Aucun ADS trouvé pour la parcelle";
+
+            var arr=adsAutorisationRecord.get("numdossier");
+            var AdsArray = new Array();
+            if(arr.length == 0){
+                AdsArray.push(ads);
+            }else {
+                for (var i in arr) {
+                    AdsArray.push(arr[i].numdossier)
+                }
+            }
+
+            noteRecord.set("num_dossier",AdsArray);
+
+
+            this.add([noteRecord]);
+        },
+
+        updateAdsInstruction: function(adsInstructionRecord) {
+            if (adsInstructionRecord === undefined) {
+                return;
+            }
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("nom", adsInstructionRecord.get("nom"));
+            noteRecord.set("ini_instru", adsInstructionRecord.get("ini_instru"));
+
+            this.add([noteRecord]);
+        },
+
+        updateReferentQuartier: function(referentQuartierRecord) {
+            if (referentQuartierRecord === undefined) {
+                return;
+            }
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("num_nom", referentQuartierRecord.get("numnom"));
+            noteRecord.set("id_parcelle", referentQuartierRecord.get("parcelle"));
+            this.add([noteRecord]);
+        },
     });
 
     GEOR.data.NoteStore = NoteStore;
@@ -94,6 +165,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     zonagePluWindow: null,
 
     /**
+     * Window containing information about « ADS » - {Ext.Window}
+     */
+    ficheAdsWindow: null,
+
+    /**
      * Informations retrieved from addon server about « libelles
      */
     libellesStore: null,
@@ -102,6 +178,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      * Data representing a Note de renseignement d'urbanisme - {Object}
      */
     noteStore: new GEOR.data.NoteStore(),
+
 
     /**
      * Informations retrieved from cadastrapp about « parcelle cadastrale » - {Ext.data.JsonStore}
@@ -113,6 +190,31 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      * Informations retrived from cadastrapp about owners - {Ext.data.JsonStore}
      */
     proprioStore: null,
+
+    /**
+     * Informations retrived from cadastrapp about surfaceSIG - {Ext.data.JsonStore}
+     */
+    proprioStoreSurf: null,
+
+    /**
+     * Informations retrieved from addon server about « date
+     */
+    dateStore: null,
+
+    /**
+     * Informations retrieved from addon server about « adsInstruction
+     */
+    adsInstructionStore: null,
+
+    /**
+     * Informations retrieved from addon server about « adsAutorisation
+     */
+    adsAutorisationStore: null,
+
+    /**
+     * Informations retrieved from addon server about « referentQuartier
+     */
+    referentQuartierStore: null,
 
     /**
      * Information about PLU - {Object}
@@ -206,7 +308,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             width: 50,
             toggleGroup: "map",
             iconAlign: 'top',
-            text: "Parcelle",
+            text: "NRU",
             tooltip: "Renseignement d'urbanisme sur la parcelle"
         });
 
@@ -278,6 +380,76 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             tooltip: "Information sur un zonage d'un PLU"
         });
 
+        // reference to the get feature info control
+        var ficheAdsControl = new OpenLayers.Control.WMSGetFeatureInfo({
+            // empty list of layers to be filled when layer is found or created
+            layers: [],
+            infoFormat: "application/vnd.ogc.gml",
+            eventListeners: {
+                "getfeatureinfo": function(resp) {
+                    var f = resp.features[0];
+                    if (!f) {
+                        return;
+                    }
+                    // reproject features if needed
+                    var r =  /.+srsName=\"(.+?)\".+/.exec(resp.text);
+                    if (r && r[1]) {
+                        var srsString = r[1],
+                            srsName = srsString.replace(/.+[#:\/](\d+)$/, "EPSG:$1");
+                        if (this.map.getProjection() !== srsName) {
+                            var sourceSRS = new OpenLayers.Projection(srsName),
+                                destSRS = this.map.getProjectionObject();
+                            if (f.geometry && !!f.geometry.transform) {
+                                f.geometry.transform(sourceSRS, destSRS);
+                            }
+                            if (f.bounds && !!f.bounds.transform) {
+                                f.bounds.transform(sourceSRS, destSRS);
+                            }
+                        }
+                    }
+                    if (this.map.layers.indexOf(this.vectorLayer) == -1) {
+                        this.map.addLayer(this.vectorLayer);
+                    } else {
+                        this.vectorLayer.destroyFeatures();
+                    }
+                    this.vectorLayer.addFeatures([f]);
+                    this.showAdsWindow(f.attributes.id_parc);
+                },
+                scope: this
+            }
+        });
+
+        var ficheAdsAction = new GeoExt.Action({
+            map: this.map,
+            iconCls: "urbanisme-btn-red-info",
+            control: ficheAdsControl,
+            listeners: {
+                toggle: function(button, pressed) {
+                    if (pressed) {
+                        this._addLayer(
+                            this.options.cadastre.layer,
+                            this.options.cadastre.service,
+                            function(layer) {
+                                ficheAdsControl.layers = [layer];
+                                layer.events.register('removed', null, function() {
+                                    ficheAdsControl.deactivate();
+                                });
+                            }
+                        );
+                    } else {
+                        // unset feature info
+                        ficheAdsControl.layers = [];
+                    }
+                },
+                scope: this
+            },
+            width: 50,
+            toggleGroup: "map",
+            iconAlign: 'top',
+            text: "ADS",
+            tooltip: "Renseignement d'urbanisme sur la fiche ADS"
+        });
+
         var helpAction = {
             tooltip : OpenLayers.i18n("Help"),
             iconCls : "help-button",
@@ -293,6 +465,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         };
 
+        var maskPdf = new Ext.LoadMask(Ext.getBody(),{
+            msg: tr("Loading...")
+        });
+
         this.window = new Ext.Window({
             title: this.getText(record),
             closable: true,
@@ -306,6 +482,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 items: [
                     renseignUrbaAction,
                     zonagePluAction,
+                    ficheAdsAction,
                     '-',
                     helpAction
                 ]
@@ -316,6 +493,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     this.components && this.components.toggle(false);
                     renseignUrbaAction.control.deactivate();
                     zonagePluAction.control.deactivate();
+                    ficheAdsAction.control.deactivate();
                 },
                 scope: this
             }
@@ -455,6 +633,28 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
+        this.proprioStoreSurf = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "surfc"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.cadastrappUrl + "/getFIC"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateProprioSurf(records[0]);
+                        this.checkRemainingXHRs();
+                    },
+                    scope: this
+                }
+            }
+        });
+
         this.libellesStore = new Ext.data.JsonStore({
             root: "libelles",
             //TODO add better id
@@ -468,6 +668,97 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             listeners: {
                 "load": {
                     fn: this.checkRemainingXHRs,
+                    scope: this
+                }
+            }
+        });
+
+        this.dateStore = new Ext.data.JsonStore({
+            idProperty: "code_commune",
+            root: "",
+            fields: [
+                "date_ru",
+                "date_pci"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.printServerUrl + "/renseignUrbaInfos"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateDate(records[0]);
+                        this.checkRemainingXHRs();
+                    },
+                    scope: this
+                }
+            }
+        });
+
+        this.adsAutorisationStore = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "numdossier"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.printServerUrl + "/adsAutorisation"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateAdsAutorisation(records[0]);
+                        this.checkRemainingXHRs();
+                    },
+                    scope: this
+                }
+            }
+        });
+
+        this.adsInstructionStore = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "nom",
+                "ini_instru"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.printServerUrl + "/adsSecteurInstruction"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateAdsInstruction(records[0]);
+                        this.checkRemainingXHRs();
+                    },
+                    scope: this
+                }
+            }
+        });
+
+        this.referentQuartierStore = new Ext.data.JsonStore({
+            idProperty: "parcelle",
+            root: "",
+            fields: [
+                "numnom",
+                "parcelle"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.printServerUrl + "/quartier"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateReferentQuartier(records[0]);
+                        this.checkRemainingXHRs();
+                    },
                     scope: this
                 }
             }
@@ -570,11 +861,20 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '<td class="parcelle-table-label">Propriétaire(s)</td>',
                         '<td>{nomProprio}</td>',
                         '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">Date de production des RU</td>',
+                        '<td>{dateRU}</td>',
+                        '</tr>',
+                        '<tr>',
+                        '<td class="parcelle-table-label">Millésime du cadastre</td>',
+                        '<td>{datePCI}</td>',
+                        '</tr>',
                         '</table>',
                         '</div>',
                         '</tpl>'
                     )
-                }, {
+                },
+                    {
                     xtype: "dataview",
                     id: "parcelle-libelles",
                     store: this.libellesStore,
@@ -594,7 +894,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 iconCls: 'mf-print-action',
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
-                    var params, centerLonLat, libellesArray, libellesAsString;
+                    var params, centerLonLat, libellesArray, libellesAsString, parcelle;
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
@@ -606,8 +906,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     libellesAsString = libellesArray.join("\n\n");
 
+                    parcelle = this.noteStore.getAt(0).get("parcelle");
+
                     params = {
                         layout: "A4 portrait",
+                        outputFilename:"NRU_"+parcelle,
                         attributes: {
                             map: {
                                 scale: this.map.getScale(),
@@ -616,7 +919,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 layers: this.baseLayers(),
                                 projection: this.map.getProjection()
                             },
-                            parcelle: this.noteStore.getAt(0).get("parcelle"),
+                            parcelle: parcelle,
                             commune: this.noteStore.getAt(0).get("commune"),
                             codeSection: this.noteStore.getAt(0).get("codeSection"),
                             numero: this.noteStore.getAt(0).get("numero"),
@@ -626,9 +929,13 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             codeProprio: this.noteStore.getAt(0).get("codeProprio"),
                             nomProprio: this.noteStore.getAt(0).get("nomProprio"),
                             adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
+                            dateRU: this.noteStore.getAt(0).get("dateRU"),
+                            datePCI: this.noteStore.getAt(0).get("datePCI"),
                             libelles: libellesAsString
                         }
                     };
+
+                    maskPdf.show();
 
                     Ext.Ajax.request({
                         url: this.options.printServerUrl + "/print/report.pdf",
@@ -638,7 +945,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             "Content-Type": "application/json; charset=" + this.encoding
                         },
                         success: function(response) {
-                            this._retrievePdf(Ext.decode(response.responseText));
+                            this._retrievePdf(Ext.decode(response.responseText),maskPdf);
                         },
                         failure: function(response) {
                             //TODO Manage this case
@@ -733,6 +1040,127 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 scope: this
             }]
         })
+        this.ficheAdsWindow = new Ext.Window({
+            title: this.getText(record),
+            width: 640,
+            height: 380,
+            closeAction: "hide",
+            autoScroll: true,
+            items: [{
+                xtype: "panel",
+                items: [{
+                    xtype: "dataview",
+                    id: "ads-panel",
+                    store: this.noteStore,
+                    tpl: new Ext.XTemplate(
+                        '<tpl for=".">',
+                        '<div class="parcelle">',
+                        '<h1>Eléments d\'informations applicables à la parcelle cadastrale</h1>',
+                        '<h2>{id_parcelle}</h2>',
+                        '<h2>Secteur d\'instruction :</h2> ',
+                        '<tpl if=" nom == \'\' && ini_instru == \'\'">',
+                        'Aucun secteur d\'instruction ne correspond à la localisation de la parcelle',
+                        '</tpl>',
+                        '<tpl if=" nom != \'\' && ini_instru != \'\' ">',
+                        '{nom} / {ini_instru}',
+                        '</tpl>',
+                        '<h2>Liste des ADS :</h2>',
+                        '<tpl for="num_dossier">',
+                        '<ul>',
+                        '<li>{.}</li>',
+                        '</ul>',
+                        '</tpl>',
+                        '<h2>Quartier :</h2>',
+                        '<tpl if=" num_nom == \'\'">',
+                        'Aucun quartier ne correspond à la localisation de la parcelle',
+                        '</tpl>',
+                        '<tpl if=" num_nom != \'\'">',
+                        '<p>{num_nom}</p>',
+                        '</tpl>',
+                        '</div>',
+                        '</tpl>'
+                    )
+                }]
+            }],
+            buttons: [{
+                //TODO tr
+                text: "Imprimer",
+                itemId: "print",
+                iconCls: 'mf-print-action',
+                //disabled: true, // only activate when all XHRs are finished
+                handler: function() {
+                    var params, centerLonLat, NumDossierAsString, parcelle, instruction, num_nom;
+
+                    centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
+
+
+                    NumDossierAsString= this.noteStore.getAt(0).get("num_dossier").join("\n\n");
+
+                    parcelle=this.noteStore.getAt(0).get("id_parcelle");
+
+                    //dans le cas ou nom et ini_instruction sont vide
+                    if(this.noteStore.getAt(0).get("nom") =='' || this.noteStore.getAt(0).get("ini_instru") == ''){
+                        instruction="Aucun secteur d'instruction ne correspond à la localisation de la parcelle";
+                    }else{
+                        instruction=this.noteStore.getAt(0).get("nom") +" / "+ this.noteStore.getAt(0).get("ini_instru");
+                    }
+
+                    //dans le cas où num_nom est vide
+                    if(this.noteStore.getAt(0).get("num_nom") ==''){
+                        num_nom="Aucun quartier ne correspond à la localisation de la parcelle";
+                    }else{
+                        num_nom=this.noteStore.getAt(0).get("num_nom");
+                    }
+
+                    params = {
+                        layout: "A4 portrait ADS",
+                        outputFilename:"ADS_"+parcelle,
+                        attributes: {
+                            map: {
+                                scale: this.map.getScale(),
+                                center: [centerLonLat.lon, centerLonLat.lat],
+                                dpi: 91,
+                                layers: this.baseLayers(),
+                                projection: this.map.getProjection()
+                            },
+                            parcelle: parcelle,
+                            instruction: instruction,
+                            numNom: num_nom,
+                            numDossier: NumDossierAsString
+                        }
+                    };
+
+                    maskPdf.show();
+
+                    Ext.Ajax.request({
+                        url: this.options.printServerUrl + "/print/report.pdf",
+                        method: 'POST',
+                        jsonData: (new OpenLayers.Format.JSON()).write(params),
+                        headers: {
+                            "Content-Type": "application/json; charset=" + this.encoding
+                        },
+                        success: function(response) {
+                            this._retrievePdf(Ext.decode(response.responseText),maskPdf);
+                        },
+                        failure: function(response) {
+                            //TODO Manage this case
+                            this.fireEvent("printexception", this, response);
+                        },
+                        params: this.baseParams,
+                        scope: this
+                    });
+                },
+                scope: this
+            }, {
+                text: "Fermer",
+                handler: function() {
+                    this.map.removeLayer(this.vectorLayer);
+                    this.vectorLayer.destroyFeatures();
+                    this.ficheAdsWindow.hide();
+                },
+                scope: this
+            }]
+        });
     },
 
     checkRemainingXHRs: function() {
@@ -767,6 +1195,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 onglet: 1
             }
         });
+        this.proprioStoreSurf.load({
+            params: {
+                parcelle: parcelle,
+                onglet: 0
+            }
+        });
+        this.dateStore.load({
+            params: {
+                code_commune: parcelle.slice(0, 6).substr(0,2) + parcelle.slice(0, 6).substr(3,6)
+            }
+        });
         this.parcelleWindow.show();
         if (!this.mask) {
             this.mask = new Ext.LoadMask(this.parcelleWindow.bwrap.dom, {
@@ -780,6 +1219,30 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     showZonagePluWindow: function() {
         this.zonagePluWindow.show();
         Ext.getCmp("zonage-plu-box").update(this.zonagePluData);
+    },
+
+    showAdsWindow: function(parcelle) {
+        this.remainingXHRs = 4;
+
+        this.adsInstructionStore.load({
+            params: {
+                parcelle: parcelle
+            }
+        });
+
+        this.adsAutorisationStore.load({
+            params: {
+                parcelle: parcelle
+            }
+        });
+        this.referentQuartierStore.load({
+            params: {
+                parcelle: parcelle
+            }
+        });
+
+        this.ficheAdsWindow.show();
+
     },
 
 
@@ -814,7 +1277,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         return encodedLayers.reverse();
     },
 
-    _retrievePdf: function(resp) {
+    _retrievePdf: function(resp,maskPdf) {
         var addon = this,
             downloadURL = resp.downloadURL,
             statusURL = resp.statusURL,
@@ -832,6 +1295,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                                 if (resp.status === "finished") {
                                     window.location.href = addon.options.printServerUrl + downloadURL;
                                     Ext.TaskMgr.stop(task);
+                                    maskPdf.hide();
                                 }
                             }
                         },
@@ -859,10 +1323,16 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
         this.parcelleWindow.destroy();
         this.zonagePluWindow.destroy();
+        this.ficheAdsWindow.destroy();
         this.libellesStore.destroy();
         this.noteStore.destroy();
         this.parcelleStore.destroy();
         this.proprioStore.destroy();
+        this.proprioStoreSurf.destroy();
+        this.dateStore.destroy();
+        this.adsInstructionStore.destroy();
+        this.adsAutorisationStore.destroy();
+        this.referentQuartierStore.destroy();
         this.zonagePluData = null;
         this.window.hide();
         GEOR.Addons.Base.prototype.destroy.call(this);

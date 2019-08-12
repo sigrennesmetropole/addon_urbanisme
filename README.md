@@ -30,6 +30,12 @@ Les paramètres suivants dans le fichier properties sont requis:
 `urbanisme.renseignUrbaTable`. Le nom de la table peut contenir l'information sur le schéma.
 * nom de la table de base de données contenant la description des thèmes : `urbanisme.tableTheme`
 * ordre selon lequel les libelles doivent être affichés selon leur code de thèmes : `urbanisme.ordreTheme`
+* schéma et nom de la fonction récupérant les dossiers ADS intersectés avec la parcelle : `urbanisme.adsAutorisationFunction`
+* schéma et nom de la fonction récupérant le secteur d'instruction intersecté avec la parcelle : `urbanisme.adsSecteurInstructionFunction`
+* schéma et nom de la fonction récupérant le quartier intersecté avec la parcelle : `urbanisme.quartierFunction`
+
+
+
 
 Exemple:
 
@@ -38,6 +44,9 @@ urbanisme.jdbcUrl=jdbc:postgresql://localhost:5432/rennes_urbanisme?user=www-dat
 urbanisme.renseignUrbaTable=urba.renseign_urba
 urbanisme.tableTheme=app_plu.param_theme
 urbanisme.ordreTheme=('ZON', 1), ('SUP', 2), ('SAU', 3), ('PRE', 4), ('OPE', 5), ('PAR', 6), ('LOT', 7), ('TAX', 8)
+urbanisme.adsAutorisationFunction=urba_foncier.intersect_EdiParc_VAdsAutorisation
+urbanisme.adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
+urbanisme.quartierFunction=limite_admin.intersect_EdiParc_Quartier
 
 ```
 
@@ -51,6 +60,23 @@ La table de renseignement d'urbanisme doit contenir les colonnes suivantes:
 La table des thèmes doit contenir les colonnes suivantes :
 * `nom` : code spécifique du thème
 * `ventilation_ddc` : Code du thème à des fins de classification.
+
+Les 3 fonctions d'intersection réalisent une intersection avec une table contenant les parcelles et notamment les champs suivants : 
+* Le code de la parcelle
+* La géométrie de la parcelle
+
+La fonction de récupération des dossiers ADS intersecte la table des parcelles avec une table contenant les informations suivantes : 
+* Un numéro de dossier ADS
+* Un champ de géométrie
+
+La fonction de récupération du secteur d'instruction intersecte la table des parcelles avec une table contenant les informations suivantes : 
+* Un nom
+* Les initiales de l'instructeur
+* Un champ de géométrie
+
+La fonction de récupération du quartier intersecte la table des parcelles avec une table contenant les informations suivantes : 
+* Le nom du quartier
+* Un champ de géométrie
 
 ## Génération du PDF
 
