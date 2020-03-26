@@ -349,7 +349,9 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 scope: this
             }
         });
-        var zonagePluAction = new GeoExt.Action({
+     
+     // Désactivation du bouton PLU suite au passage au PLUi #60
+        /* var zonagePluAction = new GeoExt.Action({
             map: this.map,
             iconCls: "urbanisme-btn-red-info",
             control: zonagePluControl,
@@ -379,6 +381,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             text: "PLU",
             tooltip: "Information sur un zonage d'un PLU"
         });
+        */
 
         // reference to the get feature info control
         var ficheAdsControl = new OpenLayers.Control.WMSGetFeatureInfo({
@@ -481,7 +484,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 border: false,
                 items: [
                     renseignUrbaAction,
-                    zonagePluAction,
+                    //zonagePluAction,
                     ficheAdsAction,
                     '-',
                     helpAction
@@ -492,7 +495,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     this.item && this.item.setChecked(false);
                     this.components && this.components.toggle(false);
                     renseignUrbaAction.control.deactivate();
-                    zonagePluAction.control.deactivate();
+                    //zonagePluAction.control.deactivate();
                     ficheAdsAction.control.deactivate();
                 },
                 scope: this
