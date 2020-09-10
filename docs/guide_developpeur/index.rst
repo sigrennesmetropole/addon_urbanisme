@@ -7,11 +7,5 @@ Guide développeur
    :caption: Contents:
 
  
- loremp ipsum
- 
+Pour faciliter le développement, une composition docker est intégrée aux sources, voir https://github.com/pmauduit/addon_urbanisme/blob/master/src/docker/README.md pour plus d'infos.
 
-titre 1
-^^^^^^^
-
-titre 2
-^^^^^^^

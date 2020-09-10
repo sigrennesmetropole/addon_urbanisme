@@ -15,8 +15,8 @@ Table des matières
 ==================
 
 .. toctree::
-   :maxdepth: 3
-   
+   :maxdepth: 1
+
    guide_utilisateur/index
    guide_administrateur/index
    guide_developpeur/index

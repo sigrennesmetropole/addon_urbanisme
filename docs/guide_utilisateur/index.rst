@@ -7,11 +7,5 @@ Guide utilisateur
    :caption: Contents:
 
  
- loremp ipsum
- 
+À faire…
 
-titre 1
-^^^^^^^
-
-titre 2
-^^^^^^^
