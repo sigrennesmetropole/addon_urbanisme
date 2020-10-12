@@ -16,15 +16,22 @@ Matrice des fonctionnalités
 * {0|1} = liste de valeurs autorisées
 
 
-Configuration / préférences
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Configuration / préférences /dépendances
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
         Attention !!! L'application urbanisme est dépendante et fait appel à certains services de `cadastrapp <http://docs.georchestra.org/cadastrapp/>`_.
 
 
+Les tables indispensables au bon fonctionnement de l'API sont à minima : 
+ - renseign_urba
+ - renseign_urba_infos
+ - v_croiseplu_param_theme
+
+Les contraintes de structuration de ces tables sont décrites {ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
+
 Affichage de la note de renseignement d'urbanisme (NRU)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: ../_images/NRU.jpg
    :scale: 80 %
@@ -40,11 +47,16 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
 |  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
 +=============================+===============================================================+====================================================================================================+
 |                             | Récupérer l'ID de la parcelle  cadastrale  depuis la carte    | GET  /geoserver/app/ows?SERVICE=WMS&LAYERS='{ws:name}                                              |
-|                             |                                                               |                         &QUERY_LAYERS={ws:name}&STYLES=&SERVICE=WMS&VERSION=1.3.0                  |
-|                             |                                                               |                         &REQUEST=GetFeatureInfo&EXCEPTIONS=XML&BBOX={code}                         |
-|                             |                                                               |                         &FEATURE_COUNT={code}&HEIGHT={code}&WIDTH={code}                           |
-|                             |                                                               |                         &FORMAT=image%2Fpng&INFO_FORMAT=application%2Fvnd.ogc.gml                  |
-|                             |                                                               |                         &CRS=EPSG%3A3857&I=1065&J=432                                              |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &QUERY_LAYERS={ws:name}&STYLES=&SERVICE=WMS&VERSION=1.3.0                                          |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &REQUEST=GetFeatureInfo&EXCEPTIONS=XML&BBOX={code}                                                 |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &FEATURE_COUNT={code}&HEIGHT={code}&WIDTH={code}                                                   |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &FORMAT=image%2Fpng&INFO_FORMAT=application%2Fvnd.ogc.gml                                          |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &CRS=EPSG%3A3857&I=1065&J=432                                                                      |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupérer la commune via cadastrapp                           | GET /cadastrapp/services/getCommune?_dc={code}&cgocommune={code}                                   |
 |    Afficher la fiche NRU    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
@@ -102,7 +114,9 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
         }'
 
 Génération du pdf de la note de renseignement d'urbanisme (NRU)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La génération du pdf utilise le moteur mapfishprint qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
 
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
