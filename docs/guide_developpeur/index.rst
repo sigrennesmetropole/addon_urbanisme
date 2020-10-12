@@ -20,13 +20,13 @@ Configuration / préférences
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning::
-        Attention !!! cette application nécessite l'application backend cadastrapp car elle fait appel à ses services.
+        Attention !!! cette application nécessite l'application backend `cadastrapp <http://docs.georchestra.org/cadastrapp/>` car elle fait appel à ses services.
 
 
 Affichage de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: ./_images/NRU.jpg
+.. image:: ../_images/NRU.jpg
    :scale: 80 %
    :align: center
 
