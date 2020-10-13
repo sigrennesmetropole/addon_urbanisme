@@ -25,15 +25,16 @@ Configuration / préférences /dépendances
 
 
 Les tables indispensables au bon fonctionnement de l'API sont à minima : 
+
  - renseign_urba
  - renseign_urba_infos
  - v_croiseplu_param_theme
 
-Les contraintes de structuration de ces tables sont décrites `{ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
+Les contraintes de structuration de ces tables sont décrites `ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
 
 Affichage de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-La description côté client est basée sur `{l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
+La description côté client est basée sur `l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
 
 .. image:: ../_images/NRU.jpg
    :scale: 80 %
