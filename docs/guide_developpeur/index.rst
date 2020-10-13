@@ -23,15 +23,17 @@ Configuration / préférences /dépendances
         Attention !!! L'application urbanisme est dépendante et fait appel à certains services de `cadastrapp <http://docs.georchestra.org/cadastrapp/>`_.
 
 
+
 Les tables indispensables au bon fonctionnement de l'API sont à minima : 
  - renseign_urba
  - renseign_urba_infos
  - v_croiseplu_param_theme
 
-Les contraintes de structuration de ces tables sont décrites {ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
+Les contraintes de structuration de ces tables sont décrites `{ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
 
 Affichage de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+La description côté client est basée sur `{l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
 
 .. image:: ../_images/NRU.jpg
    :scale: 80 %
@@ -39,9 +41,11 @@ Affichage de la note de renseignement d'urbanisme (NRU)
 
 Le module "NRU" permet d'afficher une note de renseignement d'urbanisme concernant la parcelle pointée sur la carte.
 L'activation du bouton NRU charge la couche des parcelles  publiée sur geoserver et paramétrée `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json#L7-L9>`_.
-Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp utilisées sont décrites ci-dessous.
+Afin de disposer de fiches complètes, l'application cliente fait appel à des méthodes de`{l'API cadastrapp<http://docs.georchestra.org/cadastrapp/guide_developpeur/index.html>}`_. 
 
 
+Côté Client
+>>>>>>>>>>>>
 
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
@@ -62,19 +66,20 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
 |    Afficher la fiche NRU    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupération des informations parcellaires                    | GET /cadastrapp/services/getParcelle?parcelle={code}                                    |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération de la liste des mentions(Ex1)                    | GET /urbanisme/renseignUrba?parcelle={code}                                             |
+|                             | Récupération de la liste des mentions                         | GET /urbanisme/renseignUrba?parcelle={code}                                             |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=1                                |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=0                                |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires sur les RU (Ex2)           | GET /urbanisme/renseignUrbaInfos?code_commune={code}                                    |
+|                             | Récupération infos complémentaires sur les RU                 | GET /urbanisme/renseignUrbaInfos?code_commune={code}                                    |
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
  
- Exemples:
+Coté serveur 
+>>>>>>>>>>>>
+
  
- 
-**Ex1** 
+**Exemple GET /urbanisme/renseignUrba?parcelle={code}** 
 ::
 
         >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrba?parcelle=350238000AC1122
@@ -103,7 +108,7 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
            "parcelle": "350238000AC1122"
         }'
 
-**Ex2**
+**Exemple GET /urbanisme/renseignUrbaInfos?code_commune={code}**
 ::
 
         >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrbaInfos?code_commune=35238
@@ -113,10 +118,14 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
             "date_ru": "21/07/2020"
         }'
 
+
 Génération du pdf de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-La génération du pdf utilise le moteur mapfishprint qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
+La génération du pdf utilise le moteur mapfishprintV3 qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
+
+Côté Client
+>>>>>>>>>>>>
 
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
@@ -128,9 +137,6 @@ La génération du pdf utilise le moteur mapfishprint qui est paramétré et con
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 
 
-
-
-
-
-
+Côté Serveur
+>>>>>>>>>>>>
 
