@@ -58,17 +58,17 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
 |                             |                                                               |                                                                                                    |
 |                             |                                                               | &CRS=EPSG%3A3857&I=1065&J=432                                                                      |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupérer la commune via cadastrapp                           | GET /cadastrapp/services/getCommune?_dc={code}&cgocommune={code}                                   |
+|                             | Récupérer la commune via cadastrapp                           | GET /cadastrapp/services/getCommune?cgocommune={code}                                   |
 |    Afficher la fiche NRU    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération des informations parcellaires                    | GET /cadastrapp/services/getParcelle?_dc={code}&parcelle={code}                                    |
+|                             | Récupération des informations parcellaires                    | GET /cadastrapp/services/getParcelle?parcelle={code}                                    |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération de la liste des mentions(Ex1)                    | GET /urbanisme/renseignUrba?_dc={code}&parcelle={code}                                             |
+|                             | Récupération de la liste des mentions(Ex1)                    | GET /urbanisme/renseignUrba?parcelle={code}                                             |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?_dc={code}&parcelle={code}&onglet=1                                |
+|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=1                                |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?_dc={code}&parcelle={code}&onglet=0                                |
+|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=0                                |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires sur les RU (Ex2)           | GET /urbanisme/renseignUrbaInfos?_dc={code}&code_commune={code}                                    |
+|                             | Récupération infos complémentaires sur les RU (Ex2)           | GET /urbanisme/renseignUrbaInfos?code_commune={code}                                    |
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
  
  Exemples:
@@ -77,7 +77,7 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
 **Ex1** 
 ::
 
-        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrba?_dc=1602146201488&parcelle=350238000AC1122
+        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrba?parcelle=350238000AC1122
         '{
            "libelles": [
                {"libelle": "Terrain concerné par la servitude de dégagement contre les obstacles à la navigation aérienne (T7) ."},
@@ -106,7 +106,7 @@ Cette fonctionnalité fait appel à l'API cadastrapp, les méthodes cadastrapp u
 **Ex2**
 ::
 
-        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrbaInfos?_dc=1602146201491&code_commune=35238
+        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/renseignUrbaInfos?code_commune=35238
         '{
             "code_commune": "35238",
             "date_pci": "01/10/2019",
