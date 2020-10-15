@@ -340,7 +340,50 @@ Côté Client
 		}'
 
 
-Côté Serveur
+
+
+Affichage des dossiers d'Autorisation de Droit des Sols (ADS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La description côté client est basée sur `l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
+
+.. image:: ../_images/ADS.png
+   :scale: 80 %
+   :align: center
+
+Le module "ADS" permet d'afficher la liste des dossiers d'instruction de Droits des Sols liés à la parcelle.
+L'activation du bouton ADS charge la couche des parcelles  publiée sur geoserver et paramétrée `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json#L7-L9>`_.
+Afin de disposer de fiches complètes, l'application cliente fait appel à des méthodes de`{l'API cadastrapp<http://docs.georchestra.org/cadastrapp/guide_developpeur/index.html>}`_. 
+
+
+Côté Client
 >>>>>>>>>>>>
 
+ 
+Coté serveur 
+>>>>>>>>>>>>
+
+ 
+
+Génération du pdf de la liste des dossiers d'Aurorisation de Droit des Sols (ADS)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La génération du pdf utilise le moteur mapfishprintV3 qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
+
+Côté Client
+>>>>>>>>>>>>
+
++-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
++=============================+===============================================================+====================================================================================================+
+|                             | Génération                                                    | POST  /urbanisme/print/report.pdf                                                                  | 
+|                             |                                                               |                                                                                                    |
+| Génération du fichier pdf   +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|                             | Téléchargement                                                | GET  /urbanisme/urbanisme/report/{code}                                                            |
++-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+
+**Exemple de paramètres POST**
+::
+		>>>> https://portail.sig.rennesmetropole.fr/urbanisme/print/report.pdf 
+		''
 
