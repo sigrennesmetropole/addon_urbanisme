@@ -63,18 +63,19 @@ Côté Client
 |                             |                                                               |                                                                                                    |
 |                             |                                                               | &CRS=EPSG%3A3857&I=1065&J=432                                                                      |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupérer la commune via cadastrapp                           | GET /cadastrapp/services/getCommune?cgocommune={code}                                   |
+|                             | Récupérer la commune via cadastrapp                           | GET /cadastrapp/services/getCommune?cgocommune={code}                                              |
 |    Afficher la fiche NRU    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération des informations parcellaires                    | GET /cadastrapp/services/getParcelle?parcelle={code}                                    |
+|                             | Récupération des informations parcellaires                    | GET /cadastrapp/services/getParcelle?parcelle={code}                                               |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération de la liste des mentions                         | GET /urbanisme/renseignUrba?parcelle={code}                                             |
+|                             | Récupération de la liste des mentions                         | GET /urbanisme/renseignUrba?parcelle={code}                                                        |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=1                                |
+|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=1                                           |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=0                                |
+|                             | Récupération infos complémentaires parcelle                   | GET /cadastrapp/services/getFIC?parcelle={code}&onglet=0                                           |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération infos complémentaires sur les RU                 | GET /urbanisme/renseignUrbaInfos?code_commune={code}                                    |
+|                             | Récupération infos complémentaires sur les RU                 | GET /urbanisme/renseignUrbaInfos?code_commune={code}                                               |
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+ 
  
 Coté serveur 
 >>>>>>>>>>>>
