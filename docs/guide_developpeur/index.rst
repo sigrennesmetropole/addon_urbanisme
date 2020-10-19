@@ -254,8 +254,13 @@ Ces fonctions s'appuient sur les tables et vues
 
 Côté Services OGC (front)
 >>>>>>>>>>>>>>>>>
-- service wms/wfs  des parcelles cadastrales au format cadastre_qgis.
 
+Configurable `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json>`_. 
+
+- service wms  des parcelles cadastrales au format cadastre_qgis
+- service wms du zonage du PLU (fonction désactivée du front depuis le tag v2.1)
+- URL du zip à télécherger pourles PLU (fonction désactivée du front depuis le tag v2.1)
+- URL  de l'aide en ligne
 
 Coté Moteur d'impression
 >>>>>>>>>>>>>>>>>>>>>>>>>
@@ -265,7 +270,7 @@ MapfishPrint V3 doit être paramétré dans https://github.com/sigrennesmetropol
 
 Affichage de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-La description côté client est basée sur `l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
+La description côté client est basée sur `l'addon de mapfishapp <https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
 
 .. image:: ../_images/NRU.jpg
    :scale: 80 %
