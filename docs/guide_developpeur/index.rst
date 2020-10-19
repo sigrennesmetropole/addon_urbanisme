@@ -169,6 +169,8 @@ Ces fonctions s'appuient sur les tables
 
 **Exemple:**
 
+::
+
 
 		objectid		1
 		nom				F
@@ -230,6 +232,7 @@ Ces fonctions s'appuient sur les tables
 
 
 **Exemple:**
+::
 
 
 		id				1
@@ -594,7 +597,7 @@ Côté Client
 |                             |                                                               | &CRS=EPSG%3A3857&I=1065&J=432                                                                      |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupérer les informations sur le secteur d'instruction et    | GET /urbanisme/adsSecteurInstruction&parcelle={code}                                               |
-|                             |                             l'instructeur                     |                                                                                                    |
+|                             | sur l'instructeur                                             |                                                                                                    |
 |    Afficher la fiche ADS    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |                             | Récupération de la liste des ADS présents sur la parcelle     | GET /urbanisme/adsAutorisation&parcelle={code}                                                     |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
