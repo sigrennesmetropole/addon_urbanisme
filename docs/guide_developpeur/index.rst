@@ -22,15 +22,45 @@ Configuration / préférences /dépendances
 .. warning::
         Attention !!! L'application urbanisme est dépendante et fait appel à certains services de `cadastrapp <http://docs.georchestra.org/cadastrapp/>`_.
 
+Coté base de données (back)
+>>>>>>>>>>>>>>>>>>>>>
 
+Paramétrage sur https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/urbanisme.properties 
 
-Les tables indispensables au bon fonctionnement de l'API sont à minima : 
+Les tables indispensables au bon fonctionnement de l'API sont : 
 
  - renseign_urba
  - renseign_urba_infos
  - v_croiseplu_param_theme
 
-Les contraintes de structuration de ces tables sont décrites `ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_
+Les contraintes de structuration de ces tables sont décrites `ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_.
+
+3 Fonctions sont nécessaires pourla génération des ADS :
+
+- adsAutorisationFunction=urba_foncier.intersect_EdiParc_VAdsAutorisation
+- adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
+- quartierFunction
+
+Elles sont récupérables ici`<https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
+
+Ces fonctions s'appuient sur les tables 
+
+- parcelles cadastrales
+- quartier
+- ads_secteur_instruction
+- v_ads_autorisation
+
+
+Côté Services OGC (front)
+>>>>>>>>>>>>>>>>>
+- service wms/wfs  des parcelles cadastrales au format cadastre_qgis.
+- 
+
+Coté Moteur d'impressions
+>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+MapfishPrint V3 instancié dans 
+
 
 Affichage de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
