@@ -35,20 +35,50 @@ Les tables indispensables au bon fonctionnement de l'API sont :
 
 Les contraintes de structuration de ces tables sont décrites `ici <http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_.
 
-3 Fonctions sont nécessaires pourla génération des ADS :
+3 Fonctions sont nécessaires pour la génération des ADS :
 
 - adsAutorisationFunction=urba_foncier.intersect_EdiParc_VAdsAutorisation
 - adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
 - quartierFunction
 
+
+CREATE OR REPLACE FUNCTION limite_admin.rm_intersect_ediparc_quartier(IN idparc character varying)
+  RETURNS TABLE(numnom character varying) AS
+$BODY$
+BEGIN
+    RETURN QUERY SELECT b.numnom
+        FROM  cadastre_qgis.geo_parcelle AS a , limite_admin.quartier AS b
+      WHERE a.geo_parcelle = idParc AND st_intersects(a.geom, b.shape);
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100
+  ROWS 1000;
+ALTER FUNCTION limite_admin.rm_intersect_ediparc_quartier(character varying)
+  OWNER TO limite_admin;
+
+
 Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
 
 Ces fonctions s'appuient sur les tables 
 
-- parcelles cadastrales
-- quartier
-- ads_secteur_instruction
-- v_ads_autorisation
+::
+		>>>>>>>>>>parcelles cadastrales : cadastre_qgis.geo_parcelle
+		''
+		
+
+::
+		>>>>>>>>>>quartier : limite_admin.quartier
+		''
+
+::
+		>>>>>>>>>>ads_secteur_instruction : 
+		''		
+
+::
+		>>>>>>>>>>v_ads_autorisation : 
+		''
+
 
 
 Côté Services OGC (front)
