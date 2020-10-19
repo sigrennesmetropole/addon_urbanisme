@@ -33,7 +33,7 @@ Les tables indispensables au bon fonctionnement de l'API sont :
  - renseign_urba_infos
  - v_croiseplu_param_theme
 
-Les contraintes de structuration de ces tables sont décrites `ici<http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_.
+Les contraintes de structuration de ces tables sont décrites `ici <http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_.
 
 3 Fonctions sont nécessaires pourla génération des ADS :
 
