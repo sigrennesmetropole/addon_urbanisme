@@ -359,13 +359,71 @@ Afin de disposer de fiches complètes, l'application cliente fait appel à des m
 
 Côté Client
 >>>>>>>>>>>>
-
++-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
++=============================+===============================================================+====================================================================================================+
+|                             | Récupérer l'ID de la parcelle  cadastrale  depuis la carte    | GET  /geoserver/app/ows?SERVICE=WMS&LAYERS='{ws:name}                                              |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &QUERY_LAYERS={ws:name}&STYLES=&SERVICE=WMS&VERSION=1.3.0                                          |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &REQUEST=GetFeatureInfo&EXCEPTIONS=XML&BBOX={code}                                                 |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &FEATURE_COUNT={code}&HEIGHT={code}&WIDTH={code}                                                   |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &FORMAT=image%2Fpng&INFO_FORMAT=application%2Fvnd.ogc.gml                                          |
+|                             |                                                               |                                                                                                    |
+|                             |                                                               | &CRS=EPSG%3A3857&I=1065&J=432                                                                      |
+|                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|                             | Récupérer les informations sur le secteur d'instruction et    | GET /urbanisme/adsSecteurInstruction&parcelle={code}                                               |
+|                             |                             l'instructeur                     |                                                                                                    |
+|    Afficher la fiche ADS    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|                             | Récupération de la liste des ADS présents sur la parcelle     | GET /urbanisme/adsAutorisation&parcelle={code}                                               |
+|                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+|                             | Récupération du quartier de la parcelle                       | GET //urbanisme/quartier?parcelle={code}                                                        |
++-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
+ 
  
 Coté serveur 
 >>>>>>>>>>>>
 
- 
+ **Exemple GET /urbanisme/adsSecteurInstruction&parcelle={code}**
+::
 
+        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/adsSecteurInstruction?parcelle=350238000BP0240
+		'{
+			"ini_instru": "ER",
+			"nom": "B",
+			"parcelle": "350238000BP0240"
+		}'
+
+ **Exemple GET /urbanisme/adsAutorisation&parcelle={code}**
+::
+
+        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/adsAutorisation?parcelle=350238000BP0240
+		'{
+			"numdossier": [
+				{"numdossier": "PC 35238 01 10241 M1"},
+				{"numdossier": "PD 35238 01 70117"},
+				{"numdossier": "PD 35238 08 70010"},
+				{"numdossier": "DP 35238 07 00169"},
+				{"numdossier": "DP 35238 09 00451"},
+				{"numdossier": "DP 35238 09 00450"},
+				{"numdossier": "DP 35238 12 00136"},
+				{"numdossier": "DP 35238 16 00974"},
+				{"numdossier": "DP 35238 18 00119"}
+			],
+			"parcelle": "350238000BP0240"
+		}'
+		
+**Exemple GET //urbanisme/quartier?parcelle={code}**
+::
+
+        >>>> https://portail.sig.rennesmetropole.fr/urbanisme/quartier?parcelle=350238000BP0240
+		'{
+			"numnom": "2 - Thabor - Saint-Hélier - Alphonse Guérin - Baud-Chardonnet",
+			"parcelle": "350238000BP0240"
+		}'
+		
 Génération du pdf de la liste des dossiers d'Aurorisation de Droit des Sols (ADS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -385,6 +443,223 @@ Côté Client
 
 **Exemple de paramètres POST**
 ::
-		>>>> https://portail.sig.rennesmetropole.fr/urbanisme/print/report.pdf 
-		''
-
+		>>>> https://portail.sig.rennesmetropole.fr/urbanisme/print/report.pdf
+        '{
+		   "layout":"A4 portrait ADS",
+		   "outputFilename":"ADS_350238000BP0240",
+		   "attributes":{
+			  "map":{
+				 "scale":1066.3647919248917,
+				 "center":[
+					-185552.085178,
+					6124901.561718
+				 ],
+				 "dpi":91,
+				 "layers":[
+					{
+					   "type":"geojson",
+					   "style":{
+						  "1":{
+							 "fillColor":"#ee9900",
+							 "fillOpacity":0,
+							 "hoverFillColor":"white",
+							 "hoverFillOpacity":0.8,
+							 "strokeColor":"#ee9900",
+							 "strokeOpacity":1,
+							 "strokeWidth":3,
+							 "strokeLinecap":"round",
+							 "strokeDashstyle":"solid",
+							 "hoverStrokeColor":"red",
+							 "hoverStrokeOpacity":1,
+							 "hoverStrokeWidth":0.2,
+							 "pointRadius":6,
+							 "hoverPointRadius":1,
+							 "hoverPointUnit":"%",
+							 "pointerEvents":"visiblePainted",
+							 "cursor":"pointer",
+							 "fontColor":"#000000",
+							 "labelAlign":"cm",
+							 "labelOutlineColor":"white",
+							 "labelOutlineWidth":3
+						  },
+						  "version":"1",
+						  "styleProperty":"_gx_style"
+					   },
+					   "geoJson":{
+						  "type":"FeatureCollection",
+						  "features":[
+							 {
+								"type":"Feature",
+								"properties":{
+								   "_gx_style":1,
+								   "ogc_fid":"131446",
+								   "lot":"2020-06",
+								   "inspireid":"FR350238000BP0240",
+								   "id_parc":"350238000BP0240",
+								   "commune":"350238",
+								   "section":"350238000BP",
+								   "section_txt":"BP",
+								   "parcelle_txt":"240",
+								   "section_parcelle_txt":"BP 240",
+								   "supf":"11850",
+								   "ssurf":"11839.40",
+								   "ssurfb":"3858.39",
+								   "scos":"32.6"
+								},
+								"geometry":{
+								   "type":"Polygon",
+								   "coordinates":[
+									  [
+										 [
+											-185637.618825,
+											6124902.523521
+										 ],
+										 [
+											-185640.221737,
+											6124911.889311
+										 ],
+										 [
+											-185646.028255,
+											6124945.51647
+										 ],
+										 [
+											-185652.288181,
+											6124963.102459
+										 ],
+										 [
+											-185657.961547,
+											6124973.708742
+										 ],
+										 [
+											-185661.825712,
+											6124985.852155
+										 ],
+										 [
+											-185661.061106,
+											6124990.300176
+										 ],
+										 [
+											-185660.446584,
+											6124991.283944
+										 ],
+										 [
+											-185658.159405,
+											6124993.586218
+										 ],
+										 [
+											-185655.341336,
+											6124995.034454
+										 ],
+										 [
+											-185653.320021,
+											6124995.292552
+										 ],
+										 [
+											-185644.359742,
+											6124994.485327
+										 ],
+										 [
+											-185538.753392,
+											6124978.101628
+										 ],
+										 [
+											-185476.123523,
+											6124966.285328
+										 ],
+										 [
+											-185442.344644,
+											6124960.496719
+										 ],
+										 [
+											-185451.147834,
+											6124815.163708
+										 ],
+										 [
+											-185451.800366,
+											6124812.825688
+										 ],
+										 [
+											-185453.809462,
+											6124810.134826
+										 ],
+										 [
+											-185457.054373,
+											6124808.315238
+										 ],
+										 [
+											-185460.08041,
+											6124807.830884
+										 ],
+										 [
+											-185463.314893,
+											6124808.565661
+										 ],
+										 [
+											-185641.744477,
+											6124889.008146
+										 ],
+										 [
+											-185637.618825,
+											6124902.523521
+										 ]
+									  ]
+								   ]
+								},
+								"id":"urbanisme_parcelle.fid-14f66340_17540975fb3_4719"
+							 }
+						  ]
+					   }
+					},
+					{
+					   "baseURL":"https://portail.sig.rennesmetropole.fr/geoserver/app/ows?SERVICE=WMS&",
+					   "opacity":1,
+					   "type":"tiledwms",
+					   "layers":[
+						  "urbanisme_parcelle"
+					   ],
+					   "imageFormat":"image/png",
+					   "styles":[
+						  ""
+					   ],
+					   "customParams":{
+						  "EXCEPTIONS":"XML",
+						  "TRANSPARENT":true,
+						  "SLD_VERSION":"1.1.0",
+						  "CRS":"EPSG:3857"
+					   },
+					   "tileSize":[
+						  512,
+						  512
+					   ]
+					},
+					{
+					   "baseURL":"https://portail.sig.rennesmetropole.fr/geoserver/wms",
+					   "opacity":1,
+					   "type":"tiledwms",
+					   "layers":[
+						  "ref_cad:cadastre"
+					   ],
+					   "imageFormat":"image/png",
+					   "styles":[
+						  ""
+					   ],
+					   "customParams":{
+						  "TRANSPARENT":"true",
+						  "EXCEPTIONS":"application/vnd.ogc.se_xml",
+						  "SLD_VERSION":"1.0.0"
+					   },
+					   "tileSize":[
+						  256,
+						  256
+					   ]
+					}
+				 ],
+				 "projection":"EPSG:3857"
+			  },
+			  "parcelle":"350238000BP0240",
+			  "instruction":"B / ER",
+			  "numNom":"2 - Thabor - Saint-Hélier - Alphonse Guérin - Baud-Chardonnet",
+			  "numDossier":"PC 35238 01 10241 M1\n\nPD 35238 01 70117\n\nPD 35238 08 70010\n\nDP 35238 07 00169\n\nDP 35238 09 00451\n\nDP 35238 09 00450\n\nDP 35238 12 00136\n\nDP 35238 16 00974\n\nDP 35238 18 00119\n\n"
+		   }
+		}'
+        
