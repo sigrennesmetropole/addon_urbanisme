@@ -54,13 +54,13 @@ Ces fonctions s'appuient sur les tables
 
 ::
 		>>>> quartier
-		'
+		'{
 			CREATE TABLE limite_admin.quartier
-				(objectid integer NOT NULL,
-				matricule character varying(15),
-				nuquart smallint,
-				nmquart character varying(150),
-				numnom character varying(150),
+				(objectid integer NOT NULL, 
+				matricule character varying(15), 
+				nuquart smallint, 
+				nmquart character varying(150), 
+				numnom character varying(150), 
 				nom character varying(150),
 				st_area_shape_ numeric(38,8) NOT NULL,
 				st_length_shape_ numeric(38,8) NOT NULL,
@@ -68,7 +68,7 @@ Ces fonctions s'appuient sur les tables
 				code_insee integer,
 				CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
 				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
-		'
+		}'
 
 ::
 		>>>>>>>>>>ads_secteur_instruction : 
