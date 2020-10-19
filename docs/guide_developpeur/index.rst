@@ -48,11 +48,13 @@ Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urba
 Ces fonctions s'appuient sur les tables 
 
 ::
-	>>>> parcelles cadastrales : cadastre_qgis.geo_parcelle
+
+		>>>> parcelles cadastrales : cadastre_qgis.geo_parcelle
 		''
 		
 
 ::
+		
 		>>>> quartier
 		'{
 			CREATE TABLE limite_admin.quartier
@@ -71,11 +73,11 @@ Ces fonctions s'appuient sur les tables
 		}'
 
 ::
-		>>>>>>>>>>ads_secteur_instruction : 
+		>>>> ads_secteur_instruction : 
 		''		
 
 ::
-		>>>>>>>>>>v_ads_autorisation : 
+		>>>> v_ads_autorisation : 
 		''
 
 
