@@ -42,21 +42,6 @@ Les contraintes de structuration de ces tables sont décrites `ici <http://docs.
 - quartierFunction
 
 
-CREATE OR REPLACE FUNCTION limite_admin.rm_intersect_ediparc_quartier(IN idparc character varying)
-  RETURNS TABLE(numnom character varying) AS
-$BODY$
-BEGIN
-    RETURN QUERY SELECT b.numnom
-        FROM  cadastre_qgis.geo_parcelle AS a , limite_admin.quartier AS b
-      WHERE a.geo_parcelle = idParc AND st_intersects(a.geom, b.shape);
-END;
-$BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100
-  ROWS 1000;
-ALTER FUNCTION limite_admin.rm_intersect_ediparc_quartier(character varying)
-  OWNER TO limite_admin;
-
 
 Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
 
@@ -69,7 +54,20 @@ Ces fonctions s'appuient sur les tables
 
 ::
 		>>>>>>>>>>quartier : limite_admin.quartier
-		''
+		'CREATE TABLE limite_admin.quartier
+			(
+			  objectid integer NOT NULL,
+			  matricule character varying(15),
+			  nuquart smallint,
+			  nmquart character varying(150),
+			  numnom character varying(150),
+			  nom character varying(150),
+			  st_area_shape_ numeric(38,8) NOT NULL,
+			  st_length_shape_ numeric(38,8) NOT NULL,
+			  shape geometry,
+			  code_insee integer,
+			  CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
+			  CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)'
 
 ::
 		>>>>>>>>>>ads_secteur_instruction : 
