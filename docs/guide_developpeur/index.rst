@@ -29,9 +29,9 @@ Paramétrage sur https://github.com/sigrennesmetropole/addon_urbanisme/blob/mast
 
 Les tables indispensables au bon fonctionnement de l'API sont : 
 
- - renseign_urba
- - renseign_urba_infos
- - v_croiseplu_param_theme
+- renseign_urba
+- renseign_urba_infos
+- v_croiseplu_param_theme
 
 Les contraintes de structuration de ces tables sont décrites `ici <http://docs.georchestra.org/addon_urbanisme/guide_administrateur/index.html#champs-requis-pour-la-table-de-la-base-de-donnees-du-service-web>`_.
 
@@ -41,7 +41,7 @@ Les contraintes de structuration de ces tables sont décrites `ici <http://docs.
 - adsSecteurInstructionFunction=urba_foncier.intersect_EdiParc_AdsSecteurInstruction
 - quartierFunction
 
-Elles sont récupérables ici`<https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
+Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
 
 Ces fonctions s'appuient sur les tables 
 
@@ -54,12 +54,12 @@ Ces fonctions s'appuient sur les tables
 Côté Services OGC (front)
 >>>>>>>>>>>>>>>>>
 - service wms/wfs  des parcelles cadastrales au format cadastre_qgis.
-- 
+
 
 Coté Moteur d'impressions
 >>>>>>>>>>>>>>>>>>>>>>>>>>
 
-MapfishPrint V3 instancié dans 
+MapfishPrint V3 doit être paramétré dans https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print
 
 
 Affichage de la note de renseignement d'urbanisme (NRU)
@@ -154,7 +154,6 @@ Coté serveur
 Génération du pdf de la note de renseignement d'urbanisme (NRU)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-La génération du pdf utilise le moteur mapfishprintV3 qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
 
 Côté Client
 >>>>>>>>>>>>
@@ -376,7 +375,7 @@ Côté Client
 Affichage des dossiers d'Autorisation de Droit des Sols (ADS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-La description côté client est basée sur `l'addon de mapfishapp<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
+La description côté client est basée sur `l'addon de mapfishapp <https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/addon/urbanisme>`_.
 
 .. image:: ../_images/ADS.png
    :scale: 80 %
@@ -456,8 +455,6 @@ Coté serveur
 		
 Génération du pdf de la liste des dossiers d'Aurorisation de Droit des Sols (ADS)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-La génération du pdf utilise le moteur mapfishprintV3 qui est paramétré et configuré `ici<https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print>`_
 
 Côté Client
 >>>>>>>>>>>>
