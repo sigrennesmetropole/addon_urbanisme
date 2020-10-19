@@ -80,7 +80,9 @@ Ces fonctions s'appuient sur les tables
 		'
 		
 **Exemple:**
+::
 
+	'
 	- geo_parcelle :				3500010000A0632
 	- annee	:						2020
 	- object_rid :					Objet_1445172
@@ -104,7 +106,7 @@ Ces fonctions s'appuient sur les tables
 	- scos :	
 	- geo_commune :					350001
 
-
+	'	
 
 ::
 		
