@@ -45,11 +45,13 @@ Les contraintes de structuration de ces tables sont décrites `ici <http://docs.
 
 Elles sont récupérables `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_.
 
-Ces fonctions s'appuient sur les tables 
+Ces fonctions s'appuient sur les tables et vues 
+
+- parcelles cadastrales : cadastre_qgis.geo_parcelle
 
 ::
 
-		>>>> parcelles cadastrales : cadastre_qgis.geo_parcelle
+
 		'CREATE TABLE cadastre_qgis.geo_parcelle
 			(	
 			  geo_parcelle text NOT NULL, -- Identifiant
@@ -108,9 +110,11 @@ Ces fonctions s'appuient sur les tables
 
 	
 
+- quartier
+
 ::
+				
 		
-		>>>> quartier
 		'CREATE TABLE limite_admin.quartier
 				(objectid integer NOT NULL, 
 				matricule character varying(15), 
@@ -141,9 +145,11 @@ Ces fonctions s'appuient sur les tables
 		shape				01030000206C0F000...
 		code_insee			35238
 
+- ads_secteur_instruction
+
 ::
 		
-		>>>> ads_secteur_instruction : 
+
 		'
 		CREATE TABLE urba_foncier.ads_secteur_instruction
 			(
@@ -186,9 +192,12 @@ Ces fonctions s'appuient sur les tables
 		ini_instru		LP
 		shape			xxxxxxxxxxxxxxxxxxxxxxx
 
+
+- v_ads_autorisation
+
 ::
 		
-		>>>> v_ads_autorisation : 
+
 		'
 		CREATE OR REPLACE VIEW urba_foncier.v_ads_autorisation AS 
 				 SELECT row_number() OVER ()::integer AS id,
