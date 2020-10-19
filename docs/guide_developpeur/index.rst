@@ -23,7 +23,7 @@ Configuration / préférences /dépendances
         Attention !!! L'application urbanisme est dépendante et fait appel à certains services de `cadastrapp <http://docs.georchestra.org/cadastrapp/>`_.
 
 Coté base de données (back)
->>>>>>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 Paramétrage sur https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/urbanisme.properties 
 
@@ -129,6 +129,7 @@ Ces fonctions s'appuient sur les tables et vues
 				CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
 				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
 		'
+
 **Exemple:** 
 
 ::
@@ -253,7 +254,7 @@ Ces fonctions s'appuient sur les tables et vues
 
 
 Côté Services OGC (front)
->>>>>>>>>>>>>>>>>
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 Configurable `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json>`_. 
 
