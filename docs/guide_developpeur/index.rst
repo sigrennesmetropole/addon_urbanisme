@@ -48,26 +48,27 @@ Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urba
 Ces fonctions s'appuient sur les tables 
 
 ::
-		>>>>>>>>>>parcelles cadastrales : cadastre_qgis.geo_parcelle
+	>>>> parcelles cadastrales : cadastre_qgis.geo_parcelle
 		''
 		
 
 ::
-		>>>>>>>>>>quartier : limite_admin.quartier
-		'CREATE TABLE limite_admin.quartier
-			(
-			  objectid integer NOT NULL,
-			  matricule character varying(15),
-			  nuquart smallint,
-			  nmquart character varying(150),
-			  numnom character varying(150),
-			  nom character varying(150),
-			  st_area_shape_ numeric(38,8) NOT NULL,
-			  st_length_shape_ numeric(38,8) NOT NULL,
-			  shape geometry,
-			  code_insee integer,
-			  CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
-			  CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)'
+		>>>> quartier
+		'
+			CREATE TABLE limite_admin.quartier
+				(objectid integer NOT NULL,
+				matricule character varying(15),
+				nuquart smallint,
+				nmquart character varying(150),
+				numnom character varying(150),
+				nom character varying(150),
+				st_area_shape_ numeric(38,8) NOT NULL,
+				st_length_shape_ numeric(38,8) NOT NULL,
+				shape geometry,
+				code_insee integer,
+				CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
+				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
+		'
 
 ::
 		>>>>>>>>>>ads_secteur_instruction : 
