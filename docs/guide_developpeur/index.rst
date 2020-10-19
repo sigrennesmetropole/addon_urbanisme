@@ -50,14 +50,41 @@ Ces fonctions s'appuient sur les tables
 ::
 
 		>>>> parcelles cadastrales : cadastre_qgis.geo_parcelle
-		''
+		'CREATE TABLE cadastre_qgis.geo_parcelle
+			(	
+			  geo_parcelle text NOT NULL, -- Identifiant
+			  annee text NOT NULL, -- Année
+			  object_rid text, -- Numéro d'objet
+			  idu text, -- Identifiant
+			  geo_section text NOT NULL, -- Section
+			  geo_subdsect text,
+			  supf numeric, -- Contenance MAJIC
+			  geo_indp text, -- Figuration de la parcelle au plan
+			  coar text, -- Code arpentage
+			  tex text, -- Numéro parcellaire
+			  tex2 text, -- tex2 - non documenté
+			  codm text, -- codm - non documenté
+			  creat_date date, -- Date de création
+			  update_dat date, -- Date de dernière modification
+			  inspireid text,
+			  lot text,
+			  ogc_fid serial NOT NULL,
+			  geom geometry(MultiPolygon,3948),
+			  ssurf numeric(38,2),
+			  ssurfb numeric(38,2),
+			  scos numeric(38,1),
+			  geo_commune text,
+			  CONSTRAINT geo_parcelle_pk PRIMARY KEY (ogc_fid)
+			)
+
+		'
 		
+** Exemple:** 
 
 ::
 		
 		>>>> quartier
-		'{
-			CREATE TABLE limite_admin.quartier
+		'CREATE TABLE limite_admin.quartier
 				(objectid integer NOT NULL, 
 				matricule character varying(15), 
 				nuquart smallint, 
@@ -70,16 +97,79 @@ Ces fonctions s'appuient sur les tables
 				code_insee integer,
 				CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
 				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
-		}'
+		'
+** Exemple:** 
 
 ::
 		>>>> ads_secteur_instruction : 
-		''		
+		'
+		CREATE TABLE urba_foncier.ads_secteur_instruction
+			(
+			  objectid integer NOT NULL,
+			  nom character varying(4),
+			  instruc character varying(20),
+			  pcm2 smallint,
+			  pcp2 smallint,
+			  dtm1 smallint,
+			  dtp1 smallint,
+			  area numeric(38,8),
+			  len numeric(38,8),
+			  echelle integer,
+			  rotation integer,
+			  ini_instru character varying(2),
+			  shape geometry,
+			  CONSTRAINT pk_ads_secteur_instruction_objectid PRIMARY KEY (objectid),
+			  CONSTRAINT enforce_dims_shape CHECK (st_ndims(shape) = 2),
+			  CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'MULTIPOLYGON'::text OR geometrytype(shape) = 'POLYGON'::text),
+			  CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
+			)
+		'		
+** Exemple:** 
 
 ::
 		>>>> v_ads_autorisation : 
-		''
+		'
+		CREATE OR REPLACE VIEW urba_foncier.v_ads_autorisation AS 
+				 SELECT row_number() OVER ()::integer AS id,
+					a.type,
+					a.numdossier,
+					a.precis,
+					a.nature,
+					st_multi(a.shape)::geometry(MultiPolygon,3948) AS shape
+				   FROM ( SELECT ads_pc.id_pc,
+							'PC'::text AS type,
+							ads_pc.numdossier,
+							ads_pc.precis,
+							ads_pc.nature,
+							ads_pc.shape
+						   FROM urba_foncier.ads_pc
+						UNION ALL
+						 SELECT ads_pa.id_pa,
+							'PA'::text AS type,
+							ads_pa.numdossier,
+							ads_pa.precis,
+							ads_pa.nature,
+							ads_pa.shape
+						   FROM urba_foncier.ads_pa
+						UNION ALL
+						 SELECT ads_pd.id_pd,
+							'PD'::text AS type,
+							ads_pd.numdossier,
+							ads_pd.precis,
+							NULL::character varying AS nature,
+							ads_pd.shape
+						   FROM urba_foncier.ads_pd
+						UNION ALL
+						 SELECT ads_dp.id_dp,
+							'DP'::text AS type,
+							ads_dp.numdossier,
+							ads_dp.precis,
+							ads_dp.nature,
+							ads_dp.shape
+						   FROM urba_foncier.ads_dp) a;
+		'
 
+** Exemple:** 
 
 
 Côté Services OGC (front)
