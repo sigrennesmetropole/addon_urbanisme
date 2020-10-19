@@ -43,7 +43,7 @@ Les contraintes de structuration de ces tables sont décrites `ici <http://docs.
 
 
 
-Elles sont récupérables ici` <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_. et doivent être adaptées et présentes en base.
+Elles sont récupérables `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/data/function.sql>`_.
 
 Ces fonctions s'appuient sur les tables 
 
@@ -82,31 +82,31 @@ Ces fonctions s'appuient sur les tables
 **Exemple:**
 ::
 
-	'
-	- geo_parcelle :				3500010000A0632
-	- annee	:						2020
-	- object_rid :					Objet_1445172
-	- idu :							0010000A0632
-	- geo_section :					3500010000A
-	- geo_subdsect :	
-	- supf :						14
-	- geo_indp :					1
-	- coar :	
-	- tex :							632
-	- tex2 :	
-	- codm :	
-	- creat_date : 					04/09/2007
-	- update_dat :					23/03/2015
-	- inspireid :					FR3500010000A0632
-	- lot :							2020-06
-	- ogc_fid :						367
-	- geom	:					xxxxxxxxxxxxxxxxxxxxxxx
-	- ssurf :						16.11
-	- ssurfb :	
-	- scos :	
-	- geo_commune :					350001
+	
+		geo_parcelle	 				3500010000A0632
+		annee							2020
+		object_rid 						Objet_1445172
+		idu 							0010000A0632
+		geo_section 					3500010000A
+		geo_subdsect 	
+		supf 							14
+		geo_indp 						1
+		coar 		
+		tex 							632
+		tex2 	
+		codm 	
+		creat_date  					04/09/2007
+		update_dat 						23/03/2015
+		inspireid 						FR3500010000A0632
+		lot 							2020-06
+		ogc_fid 						367
+		geometry						xxxxxxxxxxxxxxxxxxxxxxx
+		ssurf 							16.11
+		ssurfb 
+		scos 
+		geo_commune 					350001
 
-	'	
+	
 
 ::
 		
@@ -126,6 +126,19 @@ Ces fonctions s'appuient sur les tables
 				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
 		'
 ** Exemple:** 
+
+::
+
+		objectid			1
+		matricule			Q.11
+		nuquart				11
+		nmquart				LE BLOSNE
+		numnom				11 - Le Blosne
+		nom					Le Blosne
+		st_area_shape_		2690113.89355469
+		st_length_shape_	0.00000000
+		shape				01030000206C0F000...
+		code_insee	35238
 
 ::
 		
@@ -152,7 +165,21 @@ Ces fonctions s'appuient sur les tables
 			  CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
 			)
 		'		
-** Exemple:** 
+** Exemple:**
+
+		objectid		1
+		nom				F
+		instruc			P.Nom
+		pcm2			40
+		pcp2			59
+		dtm1			83
+		dtp1			72
+		area	
+		len	
+		echelle			15000
+		rotation		0
+		ini_instru		LP
+		shape			xxxxxxxxxxxxxxxxxxxxxxx
 
 ::
 		
@@ -198,7 +225,15 @@ Ces fonctions s'appuient sur les tables
 						   FROM urba_foncier.ads_dp) a;
 		'
 
-** Exemple:** 
+
+** Exemple:**
+
+		id				1
+		type			PC
+		numdossier		PC 35238 02 10049
+		precis			1
+		nature			C
+		shape			xxxxxxxxxxxxxxxxxxxxxxx
 
 
 Côté Services OGC (front)
