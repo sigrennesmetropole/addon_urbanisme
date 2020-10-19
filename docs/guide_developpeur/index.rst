@@ -9,7 +9,7 @@ Guide développeur
 
  
 Matrice des fonctionnalités
----------------------------
+-----------------------------
 
 * {string} = texte libre
 * {code} = doit correspondre à une valeur en base ou une valeur codée
@@ -125,7 +125,7 @@ Ces fonctions s'appuient sur les tables
 				CONSTRAINT enforce_geotype_shape CHECK (geometrytype(shape) = 'POLYGON'::text),
 				CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
 		'
-** Exemple:** 
+**Exemple:** 
 
 ::
 
@@ -138,7 +138,7 @@ Ces fonctions s'appuient sur les tables
 		st_area_shape_		2690113.89355469
 		st_length_shape_	0.00000000
 		shape				01030000206C0F000...
-		code_insee	35238
+		code_insee			35238
 
 ::
 		
@@ -165,7 +165,8 @@ Ces fonctions s'appuient sur les tables
 			  CONSTRAINT enforce_srid_shape CHECK (st_srid(shape) = 3948)
 			)
 		'		
-** Exemple:**
+**Exemple:**
+
 
 		objectid		1
 		nom				F
@@ -174,7 +175,7 @@ Ces fonctions s'appuient sur les tables
 		pcp2			59
 		dtm1			83
 		dtp1			72
-		area	
+		area			
 		len	
 		echelle			15000
 		rotation		0
@@ -226,7 +227,8 @@ Ces fonctions s'appuient sur les tables
 		'
 
 
-** Exemple:**
+**Exemple:**
+
 
 		id				1
 		type			PC
@@ -241,8 +243,8 @@ Côté Services OGC (front)
 - service wms/wfs  des parcelles cadastrales au format cadastre_qgis.
 
 
-Coté Moteur d'impressions
->>>>>>>>>>>>>>>>>>>>>>>>>>
+Coté Moteur d'impression
+>>>>>>>>>>>>>>>>>>>>>>>>>
 
 MapfishPrint V3 doit être paramétré dans https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print
 
@@ -568,11 +570,12 @@ La description côté client est basée sur `l'addon de mapfishapp <https://gith
 
 Le module "ADS" permet d'afficher la liste des dossiers d'instruction de Droits des Sols liés à la parcelle.
 L'activation du bouton ADS charge la couche des parcelles  publiée sur geoserver et paramétrée `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json#L7-L9>`_.
-Afin de disposer de fiches complètes, l'application cliente fait appel à des méthodes de`{l'API cadastrapp<http://docs.georchestra.org/cadastrapp/guide_developpeur/index.html>}`_. 
+Afin de disposer de fiches complètes, l'application cliente fait appel à des méthodes de`l'API cadastrapp <http://docs.georchestra.org/cadastrapp/guide_developpeur/index.html>`_. 
 
 
 Côté Client
 >>>>>>>>>>>>
+
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
 |  Fonctionnalité             |  Action                                                       | Appel API                                                                                          |
 +=============================+===============================================================+====================================================================================================+
@@ -591,9 +594,9 @@ Côté Client
 |                             | Récupérer les informations sur le secteur d'instruction et    | GET /urbanisme/adsSecteurInstruction&parcelle={code}                                               |
 |                             |                             l'instructeur                     |                                                                                                    |
 |    Afficher la fiche ADS    +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération de la liste des ADS présents sur la parcelle     | GET /urbanisme/adsAutorisation&parcelle={code}                                               |
+|                             | Récupération de la liste des ADS présents sur la parcelle     | GET /urbanisme/adsAutorisation&parcelle={code}                                                     |
 |                             +---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
-|                             | Récupération du quartier de la parcelle                       | GET //urbanisme/quartier?parcelle={code}                                                        |
+|                             | Récupération du quartier de la parcelle                       | GET //urbanisme/quartier?parcelle={code}                                                           |
 +-----------------------------+---------------------------------------------------------------+----------------------------------------------------------------------------------------------------+
  
  
