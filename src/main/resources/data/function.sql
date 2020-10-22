@@ -1,4 +1,4 @@
----function intersect cadastre.edi_parc &&  limite_admin.quartier
+---function intersect cadastre_qgis.geo_parcelle &&  limite_admin.quartier
 CREATE OR REPLACE FUNCTION limite_admin.rm_intersect_ediparc_quartier(IN idparc character varying)
   RETURNS TABLE(numnom character varying) AS
 $BODY$
@@ -12,7 +12,7 @@ $BODY$
   COST 100
   ROWS 1000;
 
---function intersect cadastre.edi_parc &&  urba_foncier.ads_secteur_instruction
+--function intersect cadastre_qgis.geo_parcellecadastre.edi_parc &&  urba_foncier.ads_secteur_instruction
 CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_adssecteurinstruction2(IN idparc character varying)
   RETURNS TABLE(nom character varying, ini_instru character varying) AS
 $BODY$
@@ -27,7 +27,7 @@ $BODY$
   COST 100
   ROWS 1000;
 
---function intersect cadastre.edi_parc &&  urba_foncier.v_ads_autorisation
+--function intersect cadastre_qgis.geo_parcelle &&  urba_foncier.v_ads_autorisation
 CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_vadsautorisation2(IN idparc character varying)
   RETURNS TABLE(numdossier character varying) AS
 $BODY$
