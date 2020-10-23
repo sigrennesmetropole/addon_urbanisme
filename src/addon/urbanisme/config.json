@@ -5,8 +5,8 @@
     "options": {
         "target": "tbar_12",
         "cadastre": {
-            "layer": "app_urbanisme_parcelle",
-            "service": "/geoserver/ref_cad/wms"
+            "layer": "urbanisme_parcelle",
+            "service": "/geoserver/app/wms"
         },
         "plu": {
             "layer": "plu_zone_urba",
