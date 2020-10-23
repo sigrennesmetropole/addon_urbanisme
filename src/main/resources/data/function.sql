@@ -13,7 +13,7 @@ $BODY$
   ROWS 1000;
 
 --function intersect cadastre_qgis.geo_parcellecadastre.edi_parc &&  urba_foncier.ads_secteur_instruction
-CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_adssecteurinstruction2(IN idparc character varying)
+CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_adssecteurinstruction(IN idparc character varying)
   RETURNS TABLE(nom character varying, ini_instru character varying) AS
 $BODY$
 	 
@@ -28,7 +28,7 @@ $BODY$
   ROWS 1000;
 
 --function intersect cadastre_qgis.geo_parcelle &&  urba_foncier.v_ads_autorisation
-CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_vadsautorisation2(IN idparc character varying)
+CREATE OR REPLACE FUNCTION urba_foncier.rm_intersect_ediparc_vadsautorisation(IN idparc character varying)
   RETURNS TABLE(numdossier character varying) AS
 $BODY$
 BEGIN
