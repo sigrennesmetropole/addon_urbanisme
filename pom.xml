@@ -31,7 +31,8 @@
     <dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>3.5-SNAPSHOT</version>
+      <!--  original : 3.5-SNAPSHOT -->
+      <version>3.5.0</version>
     </dependency>
     <!-- Needed by mfpv3 at runtime, see https://github.com/mapfish/mapfish-print/issues/418 -->
     <dependency>
@@ -189,7 +190,7 @@
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
       <version>1.2</version>
-      <scope>runtime</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -275,7 +276,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.3.0</version>
         <configuration>
           <descriptors>
             <descriptor>addon-assembly.xml</descriptor>

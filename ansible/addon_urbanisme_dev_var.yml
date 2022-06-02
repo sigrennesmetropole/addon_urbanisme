@@ -1,0 +1,8 @@
+db_host: database
+db_name: georchestra
+db_user: addon_urbanisme
+db_password: addon_urbanisme
+db_port: 5432
+
+server_expose_port: 8086
+
