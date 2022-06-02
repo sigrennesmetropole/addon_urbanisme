@@ -1,0 +1,24 @@
+---
+# les documents YAML commencent toujours par "---"
+
+# le nom de l'hôte ou groupe concerné
+- hosts: all
+  vars_files:
+    - ~/addon_urbanisme_var.yml
+  roles:
+    - {
+      role: dockerize,
+      addon_urbanisme_db_host: '{{db_host}}',
+      addon_urbanisme_db_port: '{{db_port}}',
+      addon_urbanisme_db_name: '{{db_name}}',
+      addon_urbanisme_db_user: '{{db_user}}',
+      addon_urbanisme_server_expose_port: '{{server_expose_port}}',
+      addon_urbanisme_db_password: '{{db_password}}',
+      addon_urbanisme_smtp_host: '{{smtp_host}}',
+      addon_urbanisme_smtp_port: '{{smtp_port}}',
+      addon_urbanisme_smtp_username: '{{smtp_username}}',
+      addon_urbanisme_ldap_host: '{{ldap_host}}',
+      addon_urbanisme_ldap_port: '{{ldap_port}}',
+      addon_urbanisme_ldap_username: '{{ldap_username}}',
+      addon_urbanisme_ldap_password: '{{ldap_password}}',
+      }

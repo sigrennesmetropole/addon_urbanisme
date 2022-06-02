@@ -1,0 +1,64 @@
+throwErrorOnExtraParameters: true
+templates:
+    A4 portrait: !template
+        reportTemplate: A4_Portrait.jrxml
+        attributes:
+            parcelle: !string {}
+            commune: !string {}
+            codeSection: !string {}
+            numero: !string {}
+            adresseCadastrale: !string {}
+            contenanceDGFiP: !string {}
+            surfaceSIG: !string {}
+            codeProprio: !string {}
+            nomProprio: !string {}
+            adresseProprio: !string {}
+            dateRU: !string {}
+            datePCI: !string {}
+            libelles: !string {}
+            legendURL: !string
+                default: ""
+            map: !map
+                maxDpi: 254
+                width: 555
+                height: 280
+        processors:
+          - !reportBuilder # compile all reports in current directory
+            directory: '.'
+          - !configureHttpRequests
+            httpProcessors:
+              - !addHeaders
+                headers:
+                  User-Agent: "QGIS V4"
+                  Authorization: "Basic Z2Vvc2VydmVyX3ByaXZpbGVnZWRfdXNlcjpjaGkxVGhhZQ=="
+                matchers:
+                  - !dnsMatch
+                    host: portail-test.sig.rennesmetropole.fr
+          - !createMap {}
+
+    A4 portrait ADS: !template
+        reportTemplate: A4_Portrait_ADS.jrxml
+        attributes:
+            parcelle: !string {}
+            instruction: !string {}
+            numNom: !string {}
+            numDossier: !string {}
+            legendURL: !string
+                default: ""
+            map: !map
+                maxDpi: 254
+                width: 555
+                height: 280
+        processors:
+          - !reportBuilder # compile all reports in current directory
+            directory: '.'
+          - !configureHttpRequests
+            httpProcessors:
+              - !addHeaders
+                headers:
+                  User-Agent: "QGIS V4"
+                  Authorization: "Basic Z2Vvc2VydmVyX3ByaXZpbGVnZWRfdXNlcjpjaGkxVGhhZQ=="
+                matchers:
+                  - !dnsMatch
+                    host: portail-test.sig.rennesmetropole.fr
+          - !createMap {}
