@@ -7,9 +7,9 @@
     path: "{{ item }}"
   with_items:
     - "{{addon_urbanisme_image_directory}}/"
+    - "{{addon_urbanisme_addon_directory}}"
     - "{{addon_urbanisme_image_directory}}/addon_urbanisme"
-    - "{{addon_urbanisme_config_directory}}/addon_urbanisme"
-    - "{{front_image_directory}}/"
+    - "{{addon_urbanisme_config_directory}}/urbanisme"
         
 # copy addon
 - name: Copy addon to mapfishapp
@@ -30,12 +30,12 @@
 - name: Update targets-mapping.properties if needed
   when: checksecurityaddon_urbanisme.rc == 1
   shell:
-    cmd: echo "addon_urbanisme=http://addon_urbanisme:{{addon_urbanisme_server_port}}/addon_urbanisme" >> "{{ addon_urbanisme_config_directory }}/security-proxy/targets-mapping.properties"    
+    cmd: echo "urbanisme=http://addon_urbanisme:{{addon_urbanisme_server_port}}/urbanisme" >> "{{ addon_urbanisme_config_directory }}/security-proxy/targets-mapping.properties"    
 
 # copy images 
 - name: Copy addon_urbanisme api Dockerfile
   template:
-    src: Dockerfile.api
+    src: Dockerfile
     dest: "{{ addon_urbanisme_image_directory }}/Dockerfile"
     mode: 0770
     
@@ -48,7 +48,7 @@
 - name: Copy addon_urbanisme api properties file
   template:
     src: urbanisme.properties.j2
-    dest: "{{ addon_urbanisme_config_directory }}/addon_urbanisme/urbanisme.properties"
+    dest: "{{ addon_urbanisme_config_directory }}/urbanisme/urbanisme.properties"
     mode: 0770
 
 - name: Copy default api properties file

@@ -15,7 +15,7 @@ services:
       - "{{addon_urbanisme_server_expose_port}}:{{addon_urbanisme_server_port}}"      
     volumes:
       - ./config:/etc/georchestra
-      - addon_urbanisme_data:/opt/addon_urbanisme/data
+      - urbanisme_data:/opt/urbanisme/data
     environment:
       - JAVA_OPTIONS=-Dorg.eclipse.jetty.annotations.AnnotationParser.LEVEL=OFF
       - ADD_JAVA_OPTS=

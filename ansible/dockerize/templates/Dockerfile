@@ -11,10 +11,9 @@ EXPOSE {{addon_urbanisme_server_port}}
 # uses Jetty's classloader rather than ours)
 RUN rm -r /usr/local/jetty/lib/mail
 
-ADD urbanisme-16.06-SNAPSHOT.war /var/lib/jetty/webapps/urbanisme.war
-ADD etc/ /etc
+ADD addon_urbanisme.war /var/lib/jetty/webapps/urbanisme.war
 
-CMD [ "sh", "-c", "exec java -Djava.io.tmpdir=/tmp/jetty \
+CMD [ "sh", "-c", "exec java -Djava.io.tmpdir=/tmp/jetty -Dgeorchestra.datadir=/etc/georchestra \
       ${ADD_JAVA_OPTS}                                   \
       -Xmx${XMX:-1G} -Xms${XMX:-1G}                      \
       -jar /usr/local/jetty/start.jar" ]

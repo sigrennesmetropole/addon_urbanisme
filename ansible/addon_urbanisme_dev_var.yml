@@ -6,3 +6,14 @@ db_port: 5432
 
 server_expose_port: 8086
 
+smtp_host: mailhog
+smtp_port: 1025
+smtp_username:
+smtp_password:
+
+ldap_host: ldap
+ldap_port: 389
+ldap_username: cn=admin,dc=georchestra,dc=org
+ldap_password: secret
+
+domain_name: georchestra.open-dev.com
