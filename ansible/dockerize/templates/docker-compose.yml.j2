@@ -1,0 +1,24 @@
+---
+version: "3"
+
+volumes:
+  urbanisme_data:
+
+services:
+
+  addon_urbanisme:
+    image: addon_urbanisme-image
+    depends_on:
+      - database
+      - ldap
+    ports:
+      - "{{addon_urbanisme_server_expose_port}}:{{addon_urbanisme_server_port}}"      
+    volumes:
+      - ./config:/etc/georchestra
+      - addon_urbanisme_data:/opt/addon_urbanisme/data
+    environment:
+      - JAVA_OPTIONS=-Dorg.eclipse.jetty.annotations.AnnotationParser.LEVEL=OFF
+      - ADD_JAVA_OPTS=
+      - XMX=1G
+
+
