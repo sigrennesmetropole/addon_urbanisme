@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.8.0.final using JasperReports Library version 6.8.0-2ed8dfabb690ff337a5797129f2cd92902b0c87b  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Baselland_A4_Portrait" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5fb2edee-19b3-488e-bb13-1a3c485efd5f">
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="legendURL" class="java.lang.String"/>
+	<parameter name="mapSubReport" class="java.lang.String"/>
+	<parameter name="parcelle" class="java.lang.String">
+		<parameterDescription><![CDATA[]]></parameterDescription>
+	</parameter>
+	<parameter name="instruction" class="java.lang.String"/>
+	<parameter name="numNom" class="java.lang.String"/>
+	<parameter name="numDossier" class="java.lang.String"/>
+	<pageHeader>
+		<band height="46">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="217" y="25" width="335" height="20" uuid="be1c2711-dc38-4407-84a6-af5b22ecae1b"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{parcelle}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="217" y="1" width="336" height="20" uuid="365b1684-2aad-4bdd-bb3b-ab5bb81bb253"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Règlements d’urbanisme applicable à la parcelle]]></text>
+			</staticText>
+			<image>
+				<reportElement x="60" y="8" width="90" height="31" uuid="4fc3c970-1761-4e33-8962-b10c72673334"/>
+				<imageExpression><![CDATA["./images/logos/RM_quadriNOIR.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="713" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<subreport>
+				<reportElement mode="Transparent" x="0" y="20" width="555" height="280" backcolor="#FFFFFF" uuid="c889b337-f931-43d3-b6b5-07e9adb33106">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<subreportExpression><![CDATA[$P{mapSubReport}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="1" y="310" width="438" height="40" uuid="80546676-4da0-4553-9ef9-212ca9381f74"/>
+				<box topPadding="6" leftPadding="6" bottomPadding="6" rightPadding="6">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Secteur d'instruction :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="350" width="429" height="30" uuid="aecebb55-f72e-4fac-bc42-c73b658bc43e"/>
+				<textFieldExpression><![CDATA[$P{instruction}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="381" width="189" height="36" uuid="1fd7bd43-fef7-4e6d-b7f8-fc5f838639d2"/>
+				<box topPadding="6" leftPadding="6" bottomPadding="6" rightPadding="6">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Quartier:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="10" y="421" width="429" height="30" uuid="8b463bb7-91d4-4e9e-9b33-7e7b44b36de8"/>
+				<textFieldExpression><![CDATA[$P{numNom}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="453" width="189" height="40" uuid="f7ad5d4e-cff3-452f-bcfa-6687f9ab57ae"/>
+				<box topPadding="6" leftPadding="6" bottomPadding="6" rightPadding="6">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Listes des ADS:]]></text>
+			</staticText>
+			<frame>
+				<reportElement x="0" y="496" width="555" height="36" uuid="17d10a29-4a24-45d7-a15c-9ea485f072e0"/>
+				<textField isStretchWithOverflow="true">
+					<reportElement x="10" y="6" width="534" height="24" uuid="acce9673-74c6-4bd9-912a-d5be4ad85f2a">
+						<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					</reportElement>
+					<textFieldExpression><![CDATA[$P{numDossier}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="43">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<printWhenExpression><![CDATA[!$P{legendURL}.equals("")]]></printWhenExpression>
+			<image scaleImage="RealSize" hAlign="Left" vAlign="Top">
+				<reportElement x="0" y="0" width="535" height="31" uuid="63273d5a-46be-4bab-bad7-46998ac21dce"/>
+				<imageExpression><![CDATA[$P{legendURL}]]></imageExpression>
+			</image>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="63">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<staticText>
+				<reportElement x="360" y="6" width="195" height="30" uuid="61169c33-3392-4b11-8348-b9c20528cf36"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[Un service fourni par le SIG de Rennes Métropole]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="6" width="30" height="30" uuid="5866bbe5-f7ea-4755-8266-e35aa0d3514f"/>
+				<imageExpression><![CDATA["./images/logos/SIG_RM.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="40" y="0" width="160" height="60" uuid="14c2f179-8e30-4570-adf2-33d1dfb0279c"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Portail des données \n géographiques \n de Rennes Métropole"]]></textFieldExpression>
+			</textField>
+			<textField pattern="">
+				<reportElement x="190" y="6" width="176" height="30" uuid="6e3edb21-3dee-4fa0-9259-9241a4e2baab"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Document créé le " + new SimpleDateFormat("EEEEE dd MMMMM yyyy ' à ' HH:mm", new Locale("fr")).format(new Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

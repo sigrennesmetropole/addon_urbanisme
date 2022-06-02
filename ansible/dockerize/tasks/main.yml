@@ -10,6 +10,7 @@
     - "{{addon_urbanisme_addon_directory}}"
     - "{{addon_urbanisme_image_directory}}/addon_urbanisme"
     - "{{addon_urbanisme_config_directory}}/urbanisme"
+    - "{{addon_urbanisme_config_directory}}/urbanisme/templates"
         
 # copy addon
 - name: Copy addon to mapfishapp
@@ -55,6 +56,18 @@
   template:
     src: default.properties.j2
     dest: "{{ addon_urbanisme_config_directory }}/default.properties"
+    mode: 0777
+
+- name: Copy logback.xml
+  copy:
+    src: logback.xml
+    dest: "{{ addon_urbanisme_config_directory }}/urbanisme/logback.xml"
+    mode: 0777 
+
+- name: Copy mapfishapp
+  copy:
+    src: print
+    dest: "{{ addon_urbanisme_config_directory }}/urbanisme/templates"
     mode: 0777
   
 - name: Build addon_urbanisme api image
