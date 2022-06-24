@@ -49,6 +49,8 @@ public class RenseignUrbaController {
      */
     private RenseignUrbaBackend backend;
 
+    @Value("${parcelleAdresseRvaTable:}")
+    private String parcelleAdresseRvaTable;
     @Value("${renseignUrbaTable}")
     private String renseignUrbaTable;
     @Value("${tableTheme}")
@@ -69,6 +71,7 @@ public class RenseignUrbaController {
     private static final String GROUPES_LIBELLE = "groupesLibelle";
     private static final String NOM = "nom";
     private static final String ORDRE = "ordre";
+    private static final String ADRESSES_POSTALES = "adressesPostales";
     private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
@@ -77,7 +80,7 @@ public class RenseignUrbaController {
     @PostConstruct
     private void init() {
         this.backend = new RenseignUrbaBackend(driverClassName, renseignUrbaTable,
-                tableTheme, tableThemeGroupes, ordreTheme, jdbcUrl);
+                tableTheme, tableThemeGroupes, ordreTheme, parcelleAdresseRvaTable, jdbcUrl);
     }
 
     /**
@@ -140,6 +143,10 @@ public class RenseignUrbaController {
 
         // On récupère le renseignement d'urbanisme
         RenseignUrba renseign = this.backend.getParcelleNouvelleNRU(request.getParameter(PARCELLE));
+
+        // On recupere les adresses postales
+        List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
+
         // Initialisation du la liste des groupes de renseignements
         JSONArray groupesRenseignements= new JSONArray();
         AtomicReference<JSONException> jsonException = null;
@@ -179,6 +186,7 @@ public class RenseignUrbaController {
 
         res.put(PARCELLE, request.getParameter(PARCELLE));
         res.put(GROUPES_LIBELLE, groupesRenseignements);
+        res.put(ADRESSES_POSTALES, adressesPostales);
 
 
         response.setContentType(RESPONSE_TYPE_JSON);

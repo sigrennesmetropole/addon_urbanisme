@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class represent storage of Renseignement d'urbanisme.
@@ -37,6 +38,7 @@ public class RenseignUrbaBackend {
     private String tableTheme;
     private String tableThemeGroupes;
     private String ordreTheme;
+    private String parcelleAdresseRvaTable;
     private String jdbcUrl;
     private BasicDataSource basicDataSource;
 
@@ -50,11 +52,12 @@ public class RenseignUrbaBackend {
      */
     public RenseignUrbaBackend(final String driverClassName,
             final String table, final String tableTheme, final String tableThemeGroupes, final String ordreTheme,
-            final String jdbcUrl) {
+            final String parcelleAdresseRvaTable, final String jdbcUrl) {
         this.table = table;
         this.tableTheme = tableTheme;
         this.tableThemeGroupes = tableThemeGroupes;
         this.ordreTheme = ordreTheme;
+        this.parcelleAdresseRvaTable = parcelleAdresseRvaTable;
         this.jdbcUrl = jdbcUrl;
 
         this.initDataSource(driverClassName);
@@ -179,6 +182,43 @@ public class RenseignUrbaBackend {
         "LEFT OUTER JOIN "+ this.tableThemeGroupes +" AS theme ON ru.nom_theme = theme.nom " +
         "WHERE id_parc = ? " +
         "ORDER BY groupe_ru, ordre, libelle;";
+    }
+
+    /**
+     * Permet de recupérer les adresses postales d'une parcelle donnée
+     * @param parcelle id de la parcelle
+     * @return Liste d'adresses postales
+     */
+    public List<String> getAdressesPostales(String parcelle) throws SQLException {
+        Connection connection = null;
+        PreparedStatement queryAdressesPostalesByParcelle = null;
+
+        List<String> adressesPostales = new ArrayList<>();
+
+        try {
+            connection = this.basicDataSource.getConnection();
+            if (StringUtils.isEmpty(this.parcelleAdresseRvaTable)) {
+                return adressesPostales;
+            }
+            String query = "SELECT adresse FROM " + this.parcelleAdresseRvaTable + " WHERE parc_ident = ?";
+
+            queryAdressesPostalesByParcelle = connection.prepareStatement(query);
+            queryAdressesPostalesByParcelle.setString(1, parcelle);
+            ResultSet rs = queryAdressesPostalesByParcelle.executeQuery();
+
+            while (rs.next()) {
+                String adressePostale = rs.getString("adresse");
+                adressesPostales.add(adressePostale);
+            }
+            return adressesPostales;
+        } finally {
+            if ((queryAdressesPostalesByParcelle != null) && (!queryAdressesPostalesByParcelle.isClosed())) {
+                queryAdressesPostalesByParcelle.close();
+            }
+            if ((connection != null) && (!connection.isClosed())) {
+                connection.close();
+            }
+        }
     }
 
 }
