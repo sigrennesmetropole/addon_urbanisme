@@ -69,7 +69,7 @@ public class RenseignUrbaController {
     private static final String LIBELLES = "libelles";
     private static final String LIBELLE = "libelle";
     private static final String GROUPES_LIBELLE = "groupesLibelle";
-    private static final String NOM = "nom";
+    private static final String GROUPE_RU = "groupe_ru";
     private static final String ORDRE = "ordre";
     private static final String ADRESSES_POSTALES = "adressesPostales";
     private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
@@ -162,7 +162,7 @@ public class RenseignUrbaController {
                 if (index != -1 && index < renseign.getOrdres().size()) {
                     ordre = renseign.getOrdres().get(index);
                 }
-                groupeRu.put(NOM, groupe);
+                groupeRu.put(GROUPE_RU, groupe);
                 groupeRu.put(ORDRE, ordre);
                 // On ajoute ensuite tous les libelles associés à ce groupement de renseignements
                 List<String> libelles = new ArrayList<>();
