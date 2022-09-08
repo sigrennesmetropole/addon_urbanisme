@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * This class represent storage of Renseignement d'urbanisme.
@@ -35,7 +36,9 @@ public class RenseignUrbaBackend {
 
     private String table;
     private String tableTheme;
+    private String tableThemeGroupes;
     private String ordreTheme;
+    private String parcelleAdresseRvaTable;
     private String jdbcUrl;
     private BasicDataSource basicDataSource;
 
@@ -48,13 +51,19 @@ public class RenseignUrbaBackend {
      * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
      */
     public RenseignUrbaBackend(final String driverClassName,
-            final String table, final String tableTheme, final String ordreTheme,
-            final String jdbcUrl) {
+            final String table, final String tableTheme, final String tableThemeGroupes, final String ordreTheme,
+            final String parcelleAdresseRvaTable, final String jdbcUrl) {
         this.table = table;
         this.tableTheme = tableTheme;
+        this.tableThemeGroupes = tableThemeGroupes;
         this.ordreTheme = ordreTheme;
+        this.parcelleAdresseRvaTable = parcelleAdresseRvaTable;
         this.jdbcUrl = jdbcUrl;
 
+        this.initDataSource(driverClassName);
+    }
+
+    private void initDataSource(String driverClassName) {
         this.basicDataSource = new BasicDataSource();
         this.basicDataSource.setDriverClassName(driverClassName);
         this.basicDataSource.setTestOnBorrow(true);
@@ -77,12 +86,71 @@ public class RenseignUrbaBackend {
         Connection connection = null;
         PreparedStatement queryLibellesByParcelle = null;
 
-        List<String> libellesVal;
-        libellesVal = new ArrayList<String>();
+        List<String> libellesVal = new ArrayList<>();
 
         try {
             connection = this.basicDataSource.getConnection();
-            String query = "SELECT "
+            String query = this.getNRUQuery();
+
+            queryLibellesByParcelle = connection.prepareStatement(query);
+            queryLibellesByParcelle.setString(1, parcelle);
+            ResultSet rs = queryLibellesByParcelle.executeQuery();
+
+            while (rs.next()) {
+                String libelle = rs.getString("libelle");
+                libellesVal.add(libelle);
+            }
+            return new RenseignUrba(parcelle, libellesVal);
+        } finally {
+            if ((queryLibellesByParcelle != null) && (!queryLibellesByParcelle.isClosed())) {
+                queryLibellesByParcelle.close();
+            }
+            if ((connection != null) && (!connection.isClosed())) {
+                connection.close();
+            }
+        }
+    }
+
+    /**
+     * Nouveau service
+     * Get renseignement d'urbanisme for the given parcelle.
+     *
+     * @param parcelle Parcelle ID
+     * @return RenseignUrba instance containing the libelles, the ordres, the groupeRu
+     * @throws SQLException
+     */
+    public RenseignUrba getParcelleNouvelleNRU(String parcelle) throws SQLException {
+
+        List<String> libellesVal = new ArrayList<>();
+        List<String> groupesRu = new ArrayList<>();
+        List<Long> ordres = new ArrayList<>();
+
+
+        String query = this.getNewNRUQuery();
+        try (Connection connection =  this.basicDataSource.getConnection();
+             PreparedStatement queryInfosByParcelle = connection.prepareStatement(query);
+        ) {
+            queryInfosByParcelle.setString(1, parcelle);
+            ResultSet rs = queryInfosByParcelle.executeQuery();
+
+            while (rs.next()) {
+                String libelle = rs.getString("libelle");
+                libellesVal.add(libelle);
+                String groupeRu = rs.getString("groupe_ru");
+                Long ordre = rs.getLong("ordre");
+                groupesRu.add(groupeRu);
+                ordres.add(ordre);
+            }
+            return new RenseignUrba(parcelle, libellesVal, groupesRu, ordres);
+        }
+    }
+
+    /**
+     * Requete SQL des nouveaux renseignements d'Urbanisme
+     * @return Requete SQL à exécuter pour recuperer les Nouveaux Renseignement d'Urbanisme
+     */
+    private String getNRUQuery() {
+        return "SELECT "
                 + "     libelle "
                 + "FROM "
                 + "(  SELECT "
@@ -100,24 +168,57 @@ public class RenseignUrbaBackend {
                 + "LEFT JOIN (VALUES " + this.ordreTheme + ") AS ordre(code, priorite) "
                 + "ON libelles.ventilation_ddc = ordre.code "
                 + "ORDER BY ordre.priorite ASC, numero ASC ;";
+    }
 
-            queryLibellesByParcelle = connection.prepareStatement(query);
-            queryLibellesByParcelle.setString(1, parcelle);
-            ResultSet rs = queryLibellesByParcelle.executeQuery();
+    /**
+     * Requete SQL des nouveaux renseignements d'Urbanisme
+     * @return Requete SQL à exécuter pour recuperer les Nouveaux Renseignement d'Urbanisme
+     */
+    private String getNewNRUQuery() {
+        return "SELECT ru.libelle AS libelle, " +
+                "theme.groupe_ru::text, " +
+                "theme.ordre " +
+        "FROM " + this.table + " AS ru " +
+        "LEFT OUTER JOIN "+ this.tableThemeGroupes +" AS theme ON ru.nom_theme = theme.nom " +
+        "WHERE id_parc = ? " +
+        "ORDER BY groupe_ru, ordre, libelle;";
+    }
+
+    /**
+     * Permet de recupérer les adresses postales d'une parcelle donnée
+     * @param parcelle id de la parcelle
+     * @return Liste d'adresses postales
+     */
+    public List<String> getAdressesPostales(String parcelle) throws SQLException {
+        Connection connection = null;
+        PreparedStatement queryAdressesPostalesByParcelle = null;
+
+        List<String> adressesPostales = new ArrayList<>();
+
+        try {
+            connection = this.basicDataSource.getConnection();
+            if (StringUtils.isEmpty(this.parcelleAdresseRvaTable)) {
+                return adressesPostales;
+            }
+            String query = "SELECT adresse FROM " + this.parcelleAdresseRvaTable + " WHERE parc_ident = ?";
+
+            queryAdressesPostalesByParcelle = connection.prepareStatement(query);
+            queryAdressesPostalesByParcelle.setString(1, parcelle);
+            ResultSet rs = queryAdressesPostalesByParcelle.executeQuery();
 
             while (rs.next()) {
-                String libelle = rs.getString("libelle");
-                libellesVal.add(libelle);
+                String adressePostale = rs.getString("adresse");
+                adressesPostales.add(adressePostale);
             }
-            RenseignUrba renseign = new RenseignUrba(parcelle, libellesVal);
-            return renseign;
+            return adressesPostales;
         } finally {
-            if ((queryLibellesByParcelle != null) && (!queryLibellesByParcelle.isClosed())) {
-                queryLibellesByParcelle.close();
+            if ((queryAdressesPostalesByParcelle != null) && (!queryAdressesPostalesByParcelle.isClosed())) {
+                queryAdressesPostalesByParcelle.close();
             }
             if ((connection != null) && (!connection.isClosed())) {
                 connection.close();
             }
         }
     }
+
 }

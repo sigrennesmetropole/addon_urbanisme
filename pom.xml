@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.georchestra</groupId>
   <artifactId>urbanisme</artifactId>
-  <version>16.06-SNAPSHOT</version>
+  <version>16.06</version>
   <packaging>war</packaging>
   <description>This project contains two different things:
 
@@ -31,7 +31,8 @@
     <dependency>
       <groupId>org.mapfish.print</groupId>
       <artifactId>print-lib</artifactId>
-      <version>3.5-SNAPSHOT</version>
+      <!--  original : 3.5-SNAPSHOT -->
+      <version>3.5.0</version>
     </dependency>
     <!-- Needed by mfpv3 at runtime, see https://github.com/mapfish/mapfish-print/issues/418 -->
     <dependency>
@@ -117,7 +118,7 @@
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-      <version>6.1.1</version>
+      <version>6.17.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
@@ -189,7 +190,7 @@
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
       <version>1.2</version>
-      <scope>runtime</scope>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -253,8 +254,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.0</version>
             <configuration>
-                <source>1.7</source>
-                <target>1.7</target>
+                <source>8</source>
+                <target>8</target>
             </configuration>
       </plugin>
       <plugin>
@@ -275,7 +276,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>2.6</version>
+        <version>3.3.0</version>
         <configuration>
           <descriptors>
             <descriptor>addon-assembly.xml</descriptor>

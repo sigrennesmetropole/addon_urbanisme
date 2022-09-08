@@ -28,6 +28,8 @@ public class RenseignUrba {
 
     private String parcelle;
     private List<String> libelles;
+    private List<String> groupesRu;
+    private List<Long> ordres;
 
     /**
      * Create a new instance of renseignUrban
@@ -40,6 +42,20 @@ public class RenseignUrba {
         this.libelles = libelles;
     }
 
+    /**
+     * Create a new instance of renseignUrban
+     *
+     * @param parcelle Parcelle ID.
+     * @param libelles List of libelle string
+     * @param groupesRu List of groupe Ru
+     */
+    public RenseignUrba(String parcelle, List<String> libelles, List<String> groupesRu, List<Long> ordres) {
+        this.parcelle = parcelle;
+        this.libelles = libelles;
+        this.groupesRu = groupesRu;
+        this.ordres = ordres;
+    }
+
    public String getParcelle() {
         return parcelle;
     }
@@ -48,4 +64,12 @@ public class RenseignUrba {
         return libelles;
     }
 
+
+    public List<String> getGroupesRu() {
+        return groupesRu;
+    }
+
+    public List<Long> getOrdres() {
+        return ordres;
+    }
 }

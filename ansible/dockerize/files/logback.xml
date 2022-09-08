@@ -1,0 +1,14 @@
+<configuration>
+  <logger name="org.georchestra.urbanisme" level="INFO" />
+  <logger name="org.mapfish.print" level="INFO" />
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+        <pattern>%d [%thread] %-5level /%X{uri} - %X{user:-nouser} - %X{roles:-norole} -%logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
