@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.georchestra</groupId>
   <artifactId>urbanisme</artifactId>
-  <version>16.06-SNAPSHOT</version>
+  <version>16.06</version>
   <packaging>war</packaging>
   <description>This project contains two different things:
 
@@ -118,7 +118,7 @@
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
       <artifactId>jasperreports</artifactId>
-      <version>6.1.1</version>
+      <version>6.17.0</version>
     </dependency>
     <dependency>
       <groupId>net.sf.jasperreports</groupId>
@@ -254,8 +254,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <version>3.0</version>
             <configuration>
-                <source>1.7</source>
-                <target>1.7</target>
+                <source>8</source>
+                <target>8</target>
             </configuration>
       </plugin>
       <plugin>

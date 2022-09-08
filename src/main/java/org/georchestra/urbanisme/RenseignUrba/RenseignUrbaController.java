@@ -20,12 +20,15 @@
 package org.georchestra.urbanisme.RenseignUrba;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.georchestra.urbanisme.RenseignUrba.RenseignUrbaBackend;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,16 +49,30 @@ public class RenseignUrbaController {
      */
     private RenseignUrbaBackend backend;
 
+    @Value("${parcelleAdresseRvaTable:}")
+    private String parcelleAdresseRvaTable;
     @Value("${renseignUrbaTable}")
     private String renseignUrbaTable;
     @Value("${tableTheme}")
     private String tableTheme;
     @Value("${ordreTheme}")
     private String ordreTheme;
+    @Value("${tableThemeGroupes:}")
+    private String tableThemeGroupes;
     @Value("${jdbcUrl}")
     private String jdbcUrl;
     @Value("${driverClassName}")
     private String driverClassName;
+
+
+    private static final String PARCELLE = "parcelle";
+    private static final String LIBELLES = "libelles";
+    private static final String LIBELLE = "libelle";
+    private static final String GROUPES_LIBELLE = "groupesLibelle";
+    private static final String GROUPE_RU = "groupe_ru";
+    private static final String ORDRE = "ordre";
+    private static final String ADRESSES_POSTALES = "adressesPostales";
+    private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
      * This read configuration in datadir a create configured backend
@@ -63,7 +80,7 @@ public class RenseignUrbaController {
     @PostConstruct
     private void init() {
         this.backend = new RenseignUrbaBackend(driverClassName, renseignUrbaTable,
-                tableTheme, ordreTheme, jdbcUrl);
+                tableTheme, tableThemeGroupes, ordreTheme, parcelleAdresseRvaTable, jdbcUrl);
     }
 
     /**
@@ -81,7 +98,7 @@ public class RenseignUrbaController {
 
         res.put("msg", "Urbanisme web service");
 
-        response.setContentType("application/json; charset=utf-8");
+        response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));
     }
 
@@ -94,23 +111,85 @@ public class RenseignUrbaController {
     @RequestMapping(value = "/renseignUrba", method = RequestMethod.GET)
     public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        RenseignUrba renseign = this.backend.getParcelle(request.getParameter("parcelle"));
+        RenseignUrba renseign = this.backend.getParcelle(request.getParameter(PARCELLE));
 
         JSONArray libs = new JSONArray();
 
 
         for (String libelle : renseign.getLibelles()) {
             JSONObject libelleRow = new JSONObject();
-            libelleRow.put("libelle", libelle);
+            libelleRow.put(LIBELLE, libelle);
             libs.put(libelleRow);
         }
 
         JSONObject res = new JSONObject();
 
-        res.put("parcelle", request.getParameter("parcelle"));
-        res.put("libelles", libs);
+        res.put(PARCELLE, request.getParameter(PARCELLE));
+        res.put(LIBELLES, libs);
 
-        response.setContentType("application/json; charset=utf-8");
+        response.setContentType(RESPONSE_TYPE_JSON);
+        response.getWriter().print(res.toString(4));
+    }
+
+
+    /**
+     * Retrieve groupements de renseignements (libelles, nom, ordre) for the parcelle given in parameter
+     *
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(value = "/renseignUrbaGroupe", method = RequestMethod.GET)
+    public void getNewRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        // On récupère le renseignement d'urbanisme
+        RenseignUrba renseign = this.backend.getParcelleNouvelleNRU(request.getParameter(PARCELLE));
+
+        // On recupere les adresses postales
+        List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
+
+        // Initialisation du la liste des groupes de renseignements
+        JSONArray groupesRenseignements= new JSONArray();
+        AtomicReference<JSONException> jsonException = null;
+        // On parcourts les groupes après un filtre éliminant les doublons
+        // Le but de regrouper les renseignement par groupe de renseignement
+        renseign.getGroupesRu().stream().distinct().forEach(groupe -> {
+            try {
+                // Pour chaque groupe de renseignement
+                JSONObject groupeRu = new JSONObject();
+                // On ajoute le nom et l'ordre
+                Long ordre = 0L;
+                int index = renseign.getGroupesRu().indexOf(groupe);
+                if (index != -1 && index < renseign.getOrdres().size()) {
+                    ordre = renseign.getOrdres().get(index);
+                }
+                groupeRu.put(GROUPE_RU, groupe);
+                groupeRu.put(ORDRE, ordre);
+                // On ajoute ensuite tous les libelles associés à ce groupement de renseignements
+                List<String> libelles = new ArrayList<>();
+                for (int i = 0; i < renseign.getLibelles().size(); i++) {
+                    if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe)) {
+                        libelles.add(renseign.getLibelles().get(i));
+                    }
+                }
+                groupeRu.put(LIBELLES, libelles);
+                // On ajoute le groupement de personne à la liste des groupements de personnes
+                groupesRenseignements.put(groupeRu);
+            } catch (JSONException e) {
+                jsonException.set(e);
+            }
+        });
+        if (jsonException != null && jsonException.get() != null) {
+            throw new JSONException(jsonException.get());
+        }
+
+        JSONObject res = new JSONObject();
+
+        res.put(PARCELLE, request.getParameter(PARCELLE));
+        res.put(GROUPES_LIBELLE, groupesRenseignements);
+        res.put(ADRESSES_POSTALES, adressesPostales);
+
+
+        response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));
     }
 }
