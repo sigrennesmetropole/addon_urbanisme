@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.georchestra</groupId>
   <artifactId>urbanisme</artifactId>
-  <version>16.06-SNAPSHOT</version>
+  <version>16.06</version>
   <packaging>war</packaging>
   <description>This project contains two different things:
 
