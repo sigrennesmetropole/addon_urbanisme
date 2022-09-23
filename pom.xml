@@ -248,6 +248,7 @@
     </repository>
   </repositories>
   <build>
+    <finalName>urbanisme</finalName>
     <plugins>
       <plugin>
             <groupId>org.apache.maven.plugins</groupId>
