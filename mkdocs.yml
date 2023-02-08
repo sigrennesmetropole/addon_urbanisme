@@ -29,7 +29,7 @@ nav:
         - Sommaire: guides_techniques/index.md
         - Administrer:
             - guides_techniques/administrer/index.md
-            - guides_techniques/administrer/une_page.md
+            - guides_techniques/administrer/pre-requis-SGBD.md
         - Installer:
             - guides_techniques/installer/index.md
             - guides_techniques/installer/00_presentation.md
