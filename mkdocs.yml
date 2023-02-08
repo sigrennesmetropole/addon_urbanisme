@@ -1,0 +1,47 @@
+site_name: Template pour la documentation d'un composant geOrchestra
+
+repo_url: https://github.com/georchestra/georchestra_documentation
+repo_name: GitHub
+
+docs_dir: docs
+edit_uri: edit/main/docs/
+
+theme:
+  features:
+    - toc.integrate
+  logo: images/georchestra-logo-white.svg
+  favicon: images/favicon.ico
+  name: material
+
+extra_css:
+    - css/extra.css
+
+# arborescence de 1er et 2e niveau à gérer ici
+# Ces entrées correspondent au modèle de documentation
+
+nav:
+    - Accueil: index.md 
+    - Guide utilisateur:
+        - Sommaire: guide_utilisateur/index.md
+        - Prendre en main: guide_utilisateur/prise_en_main.md
+        - Utiliser: guide_utilisateur/utiliser.md
+    - Guides techniques:
+        - Sommaire: guides_techniques/index.md
+        - Administrer:
+            - guides_techniques/administrer/index.md
+            - guides_techniques/administrer/une_page.md
+        - Installer:
+            - guides_techniques/installer/index.md
+            - guides_techniques/installer/00_presentation.md
+            - guides_techniques/installer/01_prerequis.md
+            - guides_techniques/installer/02_preparation.md
+            - guides_techniques/installer/03_installation.md
+            - guides_techniques/installer/04_configuration.md
+            - guides_techniques/installer/05_debug.md
+            - guides_techniques/installer/06_tests.md
+        - Développer:
+            - guides_techniques/developper/index.md
+            - guides_techniques/developper/matrice_fonctionnalites.md
+            - guides_techniques/developper/api.md
+
+# TODO Documenter comment simplifier l'arborescence pour un petit projet
