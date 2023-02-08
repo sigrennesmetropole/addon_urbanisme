@@ -4,6 +4,8 @@
 
 Description rapide du guide utilisateur et table des matières.
 
-A faire ...
+- Ce qu'on peut faire avec
+- Prise en main rapide
+
 
 

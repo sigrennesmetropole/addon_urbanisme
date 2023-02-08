@@ -1,5 +1,9 @@
 # Prérequis
 
+ Attention !!! L'application urbanisme est dépendante et fait appel à certains services du plugin Mapstore2
+[cadastrapp](http://docs.georchestra.org/cadastrapp/ "cadastrapp")
+
+
 ## Base de données
 
 Paramétrage sur https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/main/resources/urbanisme.properties 
@@ -233,7 +237,8 @@ Ces fonctions s'appuient sur les tables et vues
 
 ## Services OGC
 
-onfigurable `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json>`_. 
+Configurable [ici](https://github.com/sigrennesmetropole/addon_urbanisme/blob/master/src/addon/urbanisme/config.json)
+ 
 
 - service wms  des parcelles cadastrales au format cadastre_qgis
 - service wms du zonage du PLU (fonction désactivée du front depuis le tag v2.1)
@@ -242,4 +247,4 @@ onfigurable `ici <https://github.com/sigrennesmetropole/addon_urbanisme/blob/mas
 
  ## Moteur d'impression
 
-MapfishPrint V3 doit être paramétré dans https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print
+MapfishPrint V3 doit être paramétré dans [https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print](https://github.com/sigrennesmetropole/addon_urbanisme/tree/master/src/main/resources/templates/print "ce dossier")
