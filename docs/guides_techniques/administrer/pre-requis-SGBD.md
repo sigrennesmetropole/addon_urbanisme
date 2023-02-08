@@ -1,7 +1,7 @@
 # Pré-requis SGBD
 
 ## Champs requis pour la table de la base de données du service web
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 
 La table de renseignement d'urbanisme doit contenir les colonnes suivantes :
 
