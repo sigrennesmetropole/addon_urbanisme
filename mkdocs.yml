@@ -12,9 +12,21 @@ theme:
     - navigation.indexes
     - navigation.tabs
     - navigation.tabs.sticky
+    - navigation.footer
   logo: images/georchestra-logo-white.svg
   favicon: images/favicon.ico
   name: material
+
+extra:
+  generator: false
+  social:
+    - icon: fontawesome/solid/paper-plane
+      link: mailto:psc@georchestra.org
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/georchestra
+    - icon: fontawesome/brands/github
+      link: https://github.com/georchestra
+copyright: '© 2023 - georchestra'
 
 extra_css:
     - css/extra.css
