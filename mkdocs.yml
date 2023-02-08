@@ -40,7 +40,6 @@ nav:
         - Sommaire: guide_utilisateur/index.md
         - Description: guide_utilisateur/description.md
         - Prendre en main: guide_utilisateur/prise_en_main.md
-        - Utiliser: guide_utilisateur/utiliser.md
     - Guides techniques:
         - Sommaire: guides_techniques/index.md
         - Administrer:
