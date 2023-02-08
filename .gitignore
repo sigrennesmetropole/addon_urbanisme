@@ -16,3 +16,4 @@ env.bak/
 venv.bak/
 venv_mkdocs/
 .venv_mkdocs/
+modules/
