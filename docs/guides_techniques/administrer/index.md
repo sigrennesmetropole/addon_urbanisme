@@ -6,16 +6,15 @@ Sommaire de la partie Administrer
 Cette partie de la documentation est dédiée à l'administration du contenu:
 
 
--  gestion des données,
--  mise à jour des données
+-  Bases de données - prérequis
 -  gestion des utilisateurs
 -  ...
 
 
-Mettre les images dans le répertoire imgages
+Mettre les images dans le répertoire images
 
 
-![](./images/gesiton_donnees.jpg)
+![](./images/gestion_donnees.jpg)
 
 
 
