@@ -44,7 +44,7 @@ nav:
     - Accueil: index.md 
     - Guide utilisateur:
         - Sommaire: guide_utilisateur/index.md
-        - Description: guide_utilisateur/description.md
+        - Vue globale: guide_utilisateur/description.md
         - Prendre en main: guide_utilisateur/prise_en_main.md
     - Guides techniques:
         - Sommaire: guides_techniques/index.md

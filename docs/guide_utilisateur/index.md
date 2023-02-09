@@ -1,9 +1,8 @@
-# Index du guide utilisateur
+# Sommaire du guide utilisateur
 
-## Sommaire
+Cette page est dédiée au sommaire du guide utilisateur de la fonctionnalité urbanisme du visualiseur de geOrchestra, c'est-à-dire à la documentation de référence qui décrit toutes les fonctionnalités et outils du composant à destination des **utilisateurs**.
 
-
-- Description
+- Vue globale de Urbanisme
 - Prendre en main
 
 
