@@ -8,7 +8,8 @@ Le composant Urbanisme de geOrchestra est un plugin additionnel au visualiseur (
 -  une liste de dossiers d'instructions de droit des dols (Permis de construire, permis de démolir,...).
 
 L'information peut également être exportée sous forme de document PDF.
-Cette ectension de Mapstoreé-geOrchestra est destinée aux services instructeurs de l'urbanisme et du droit des sols des collectivités qui souhaitent disposer de l'information d'urbanisme à la parcelle.
+
+Cette extension de Mapstore2-geOrchestra est destinée aux services instructeurs de l'urbanisme et du droit des sols des collectivités qui souhaitent disposer de l'information d'urbanisme à la parcelle.
 </br>
 
 
