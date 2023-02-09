@@ -11,7 +11,8 @@ L'information peut également être exportée sous forme de document PDF.
 Cette ectension de Mapstoreé-geOrchestra est destinée aux services instructeurs de l'urbanisme et du droit des sols des collectivités qui souhaitent disposer de l'information d'urbanisme à la parcelle.
 </br>
 
-![image info](./images/urbanisme.jpg)
+
+![image info](./images/vue_ensemble.jpg)
 
 
 Sponsors
@@ -29,6 +30,4 @@ Posez vos questions sur la liste de diffusion
 georchestra@googlegroups.com
 
 
-Exemples
-=========
-@compléter avec screen shot
+
