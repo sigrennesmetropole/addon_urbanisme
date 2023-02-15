@@ -66,6 +66,10 @@ Un ascenceur permet de parcourir la fiche complète avec l'ensemble des informat
 
 ![image info](./images/ads3.jpg)
 
+### Fermer la fonctionnalité
+
+En cliquant sur la croix en haut à droite de la liste
+
 ## Accéder à cette documentation
 
 * cliquer sur le bouton d'aide :
