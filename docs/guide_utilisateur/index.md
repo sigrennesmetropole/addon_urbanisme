@@ -5,5 +5,4 @@ Cette page est dédiée au sommaire du guide utilisateur de la fonctionnalité u
 - Vue globale du plugin Urbanisme
 - Prendre en main
 
-TEST DATE
 
