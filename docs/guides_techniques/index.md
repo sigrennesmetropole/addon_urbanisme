@@ -2,6 +2,8 @@
 
 ## Sommaire
 
-sommaire
+- Installer
+- Administrer
+- Développer
 
 
