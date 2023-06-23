@@ -246,8 +246,14 @@
         <enabled>false</enabled>
       </releases>
     </repository>
+    <repository>
+		<id>jaspersoft-third-party</id>
+		<name>Jasper Repository</name>
+		<url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
+	</repository>
   </repositories>
   <build>
+    <finalName>urbanisme</finalName>
     <plugins>
       <plugin>
             <groupId>org.apache.maven.plugins</groupId>
