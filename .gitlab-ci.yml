@@ -112,7 +112,7 @@ urb:deploy:
     refs:
       - open/develop
   variables:
-    SERVER: "10.50.1.21"
+    SERVER: "REN1VML0096"
     ANSIBLE_VAR_FILE: addon_urbanisme_dev_var.yml
 
 urb:deploy:master:
@@ -123,6 +123,6 @@ urb:deploy:master:
     refs:
       - open/master
   variables:
-    SERVER: "194.2.68.134"
+    SERVER: "REN1VML0095"
     ANSIBLE_VAR_FILE: addon_urbanisme_rct_var.yml
    
