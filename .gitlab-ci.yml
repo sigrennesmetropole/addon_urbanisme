@@ -39,7 +39,7 @@ urb:build:
   except:
     refs:
       - master
-      - open/master   
+      - open/master
       
 urb:build:master:
   extends: .urb:build
@@ -89,16 +89,18 @@ urb:sonar:master:
   stage: deploy
   image: glregistry.boost.open.global/boost/docker/mvn-node-jdk11-ansible:latest
   cache: {}
-  tags: 
-   - iaas
+  tags:
+    - iaas
+  before_script:
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$ansible_private_key" | base64 -d)
   script:
     - ls $CI_PROJECT_DIR/target/
     - find $CI_PROJECT_DIR/target/ -name "urbanisme*.war" -exec cp {} $CI_PROJECT_DIR/ansible/dockerize/files/addon_urbanisme.war \;
     - find $CI_PROJECT_DIR/target/ -name "urbanisme*.zip" -exec cp {} $CI_PROJECT_DIR/ansible/dockerize/files/addon_urbanisme.zip \;
-    - cd $CI_PROJECT_DIR/ansible  
-    - chmod og-rw key/id_rsa
+    - cd $CI_PROJECT_DIR/ansible
     - cp ${ANSIBLE_VAR_FILE} $HOME/addon_urbanisme_var.yml
-    - ansible-playbook addon_urbanisme-docker.yml -v -i "${SERVER}," -u root --private-key=key/id_rsa --ssh-common-args=-oStrictHostKeyChecking=no
+    - ansible-playbook addon_urbanisme-docker.yml -v -i "${SERVER}," -u root --ssh-common-args=-oStrictHostKeyChecking=no
 
 urb:deploy:
   extends: .urb:deploy
