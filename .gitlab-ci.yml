@@ -39,7 +39,9 @@ urb:build:
   except:
     refs:
       - master
-      - open/master
+      - open/master  
+  tags: 
+   - iaas
       
 urb:build:master:
   extends: .urb:build
