@@ -14,6 +14,12 @@ EXPOSE {{addon_urbanisme_server_port}}
 
 ADD addon_urbanisme.war /var/lib/jetty/webapps/urbanisme.war
 
+ENV PROPERTIES_PATH /etc/georchestra/urbanisme/urbanisme.properties
+
+RUN mkdir -p /opt/urbanisme
+ADD entrypoint.sh /opt/urbanisme/entrypoint.sh
+ENTRYPOINT [ "/bin/bash", "/opt/urbanisme/entrypoint.sh" ]
+
 CMD [ "sh", "-c", "exec java -Djava.io.tmpdir=/tmp/jetty -Dgeorchestra.datadir=/etc/georchestra \
       ${ADD_JAVA_OPTS}                                   \
       -Xmx${XMX:-1G} -Xms${XMX:-1G}                      \
