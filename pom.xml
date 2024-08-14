@@ -20,7 +20,9 @@
 		<spring.data.version>1.9.1.RELEASE</spring.data.version>
 		<geotools.version>11.0</geotools.version>
 		<metrics.version>3.0.2</metrics.version>
-
+		
+		<surefire.plugin.version>2.22.2</surefire.plugin.version>
+		
 		<sonar.projectKey>${env.SONAR_KEY}${project.artifactId}</sonar.projectKey>
 		<sonar.projectName>${project.artifactId}</sonar.projectName>
 	</properties>
