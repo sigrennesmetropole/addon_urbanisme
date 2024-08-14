@@ -12,6 +12,12 @@ cache:
     - $CI_PROJECT_DIR/.m2/repository/**/*
     - $CI_PROJECT_DIR/**/target/**/*
 
+include:
+  - project: 'boost/template-ci/pipelines/common'
+    file: 'docker/docker-template.yml'
+  - project: 'boost/template-ci/pipelines/common'
+    file: 'securite/oss-index/oss-index-template.yml' 
+
 default:
   image: maven:3.6.0-jdk-11
   before_script:
@@ -22,6 +28,7 @@ default:
 stages:
   - build
   - test
+  - sast
   - deploy
 
 # Build job with maven plugin execution policies define in parent pom
