@@ -18,4 +18,14 @@ addon_urbanisme_addon_directory: '{{addon_urbanisme_docker_directory}}/config/ma
 addon_urbanisme_server_port: 8080
 addon_urbanisme_server_expose_port: 8086
 
+# path du certificat sur le serveur
+addon_urbanisme_server_keystore_path: '/etc/georchestra/urbanisme/'
+# filename du certificat (à déposer dans ansible/dockerize/files/)
+addon_urbanisme_server_keystore_cert: ''
+# nom de l'alias du certificat à insérer dans le keystore
+addon_urbanisme_server_keystore_alias: ''
+# chemin absolu du keystore dans le container docker
+addon_urbanisme_server_keystore_store: ''
+# mot de passe du keystore
+addon_urbanisme_server_keystore_password: ''
 
