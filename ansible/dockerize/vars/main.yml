@@ -16,7 +16,7 @@ addon_urbanisme_docker_directory: /opt/georchestra/docker
 addon_urbanisme_config_directory: '{{addon_urbanisme_docker_directory}}/config/'
 addon_urbanisme_addon_directory: '{{addon_urbanisme_docker_directory}}/config/mapfishapp/addons'
 addon_urbanisme_server_port: 8080
-addon_urbanisme_server_expose_port: 8088
+addon_urbanisme_server_expose_port: 8089
 
 # path du certificat sur le serveur
 addon_urbanisme_server_keystore_path: '/etc/georchestra/urbanisme/'
