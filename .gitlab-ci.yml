@@ -29,6 +29,7 @@ stages:
   - build
   - test
   - sast
+  - docker
   - deploy
 
 # Build job with maven plugin execution policies define in parent pom
