@@ -207,6 +207,14 @@
   </dependencies>
   <repositories>
     <repository>
+      <id>georchestra</id>
+      <name>geOrchestra's artifactory</name>
+      <url>https://artifactory.georchestra.org/artifactory/maven</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
       <id>opengeo</id>
       <name>OSGeo Release Repository</name>
       <url>https://repo.osgeo.org/repository/release/</url>
