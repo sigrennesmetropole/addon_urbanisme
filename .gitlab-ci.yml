@@ -40,9 +40,6 @@ stages:
   script:
     - mvn $MAVEN_CLI_OPTS -U clean package ${OPTS} -Pprod
   stage: build
-  rules:
-    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/'
-  timeout: 1h
   artifacts:
     paths:
       - $CI_PROJECT_DIR//target/urbanisme*.war
@@ -53,7 +50,8 @@ urb:build:
   except:
     refs:
       - master
-      - open/master  
+      - open/master
+      - /.*karbonification.*/
   tags: 
    - iaas
       
