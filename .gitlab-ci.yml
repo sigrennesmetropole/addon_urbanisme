@@ -16,7 +16,9 @@ include:
   - project: 'boost/template-ci/pipelines/common'
     file: 'docker/docker-template.yml'
   - project: 'boost/template-ci/pipelines/common'
-    file: 'securite/oss-index/oss-index-template.yml' 
+    file: 'securite/oss-index/oss-index-template.yml'
+  - project: 'bots/trivy-script'
+    file: '/trivy-template-job.yml'
 
 default:
   image: maven:3.6.0-jdk-11
@@ -106,6 +108,7 @@ pre_docker:
       - open/master
       - open/develop
       - /^release.*/
+      - /.*karbonification.*/
   script:
     - ls $CI_PROJECT_DIR/target/
     - cp $CI_PROJECT_DIR/target/urbanisme.*ar $CI_PROJECT_DIR/src/docker/urbanisme
@@ -139,8 +142,7 @@ urb:deploy:
     refs:
       - open/develop
   variables:
-    SERVER: "REN1VML0096"
-    ANSIBLE_VAR_FILE: addon_urbanisme_dev_var.yml
+    TARGET_ENV: REN1VML0096
 
 urb:deploy:master:
   extends: .urb:deploy
@@ -150,6 +152,85 @@ urb:deploy:master:
     refs:
       - open/master
   variables:
-    SERVER: "REN1VML0095"
-    ANSIBLE_VAR_FILE: addon_urbanisme_rct_var.yml
-   
+    TARGET_ENV: REN1VML0095
+  when: manual
+
+## #####
+# Déploiement Karbon
+.urb:deploy-karbon:prepare:
+  stage: pre_docker
+  script:
+    - echo "send automation to georchestra deploiement"
+  artifacts:
+    name: urbanisme-karbon-${TARGET_ENV}
+    paths:
+      - '$CI_PROJECT_DIR/automation/**'
+
+urb:deploy-karbon:prepare:dev:
+  extends: .urb:deploy-karbon:prepare
+  only:
+    refs:
+      - open/develop
+      - /.*karbonification.*/
+  variables:
+    TARGET_ENV: dev
+
+.urb:deploy-karbon:
+  stage: deploy
+  trigger:
+    project: rennes-metropole/georchestra/georchestra-service-deployment
+    strategy: depend
+    branch: master
+  variables:
+    TRIGGERED_BY: urbanisme
+    PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+
+urb:deploy-karbon:dev:
+  extends: .urb:deploy-karbon
+  needs:
+    - job: urb:deploy-karbon:prepare:dev
+      artifacts: true
+  only:
+    refs:
+      - open/develop
+      - /.*karbonification.*/
+  variables:
+    TARGET_ENV: dev
+    FORCE_POD: "true"
+    PARENT_COMMIT_BRANCH: $CI_COMMIT_BRANCH
+    PARENT_SERVICE_LOGIN: $SERVICE_LOGIN
+    PARENT_SERVICE_TOKEN: $SERVICE_TOKEN
+    PARENT_SERVICE_ACCESS_TOKEN: $SERVICE_ACCESS_TOKEN
+    PARENT_PROJECT_ID: $CI_PROJECT_ID
+    PARENT_STAGE_PREFIX: urb:deploy-karbon:prepare
+
+urb:deploy-karbon:qua:
+  extends: .urb:deploy-karbon
+  needs:
+    - job: urb:deploy-karbon:prepare:dev
+      artifacts: true
+  only:
+    refs:
+      - open/master
+      - /.*karbonification.*/
+  variables:
+    TARGET_ENV: dev
+    FORCE_POD: "true"
+    PARENT_COMMIT_BRANCH: $CI_COMMIT_BRANCH
+    PARENT_SERVICE_LOGIN: $SERVICE_LOGIN
+    PARENT_SERVICE_TOKEN: $SERVICE_TOKEN
+    PARENT_SERVICE_ACCESS_TOKEN: $SERVICE_ACCESS_TOKEN
+    PARENT_PROJECT_ID: $CI_PROJECT_ID
+    PARENT_STAGE_PREFIX: urb:deploy-karbon:prepare
+  when: manual
+
+trivyscan:back:
+  extends:
+    - .trivy-scan
+  stage: docker
+  variables:
+    TRIVY_DOCKER_SCAN: glregistry.boost.open.global/rennes-metropole/urbanisme/addon_urbanisme/rennes-metropole:open-develop
+  only:
+    refs:
+      - open/develop
+      - /.*karbonification.*/
