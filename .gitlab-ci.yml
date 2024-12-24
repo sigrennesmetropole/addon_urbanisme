@@ -143,7 +143,8 @@ urb:deploy:
     refs:
       - open/develop
   variables:
-    TARGET_ENV: REN1VML0096
+    SERVER: "REN1VML0096"
+    ANSIBLE_VAR_FILE: addon_urbanisme_dev_var.yml
 
 urb:deploy:master:
   extends: .urb:deploy
@@ -153,8 +154,7 @@ urb:deploy:master:
     refs:
       - open/master
   variables:
-    TARGET_ENV: REN1VML0095
-  when: manual
+    SERVER: "REN1VML0095"
 
 ## #####
 # Déploiement Karbon

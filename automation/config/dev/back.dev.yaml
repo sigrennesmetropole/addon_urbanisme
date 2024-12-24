@@ -6,8 +6,9 @@ image:
         secretKeyRef:
           name: urbanisme-secret-dev
           key: database.urbanisme.password
+
     - name: URBANISME_BDD_HOST
-      value: 127.0.0.1
+      value: georchestra-bdd-dev-georchestra-service-bdd
       
     - name: SWAGGER_SERVER
       value: https://urbanisme-back-dev.rennes-metropole-georchestra.karbon.open.global
