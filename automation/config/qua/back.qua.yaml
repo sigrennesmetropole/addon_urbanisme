@@ -7,7 +7,7 @@ image:
           name: urbanisme-secret-qua
           key: database.urbanisme.password
     - name: URBANISME_BDD_HOST
-      value: 127.0.0.1
+      value: georchestra-bdd-dev-georchestra-service-bdd
       
     - name: SWAGGER_SERVER
       value: https://search-application-qua.shom-search.karbon.open.global/
