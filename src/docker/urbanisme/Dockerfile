@@ -2,7 +2,11 @@ FROM jetty:9.3-jre8
 USER root
 
 ADD urbanisme.war /var/lib/jetty/webapps/urbanisme.war
-ADD etc/ /etc
+RUN mkdir -p /tmp/jetty
+RUN chmod 777 -R /tmp && chmod o+t -R /tmp
+
+RUN mkdir -p /etc/georchestra
+RUN chmod 777 -R /etc/georchestra
 
 ENV PROPERTIES_PATH /etc/georchestra/urbanisme/urbanisme.properties
 
