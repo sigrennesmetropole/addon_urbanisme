@@ -118,6 +118,24 @@ pre_docker:
       - $CI_PROJECT_DIR//target/urbanisme*.war
       - $CI_PROJECT_DIR//target/urbanisme*.zip
 
+docker2:build:
+  extends: ['.docker:build']
+  needs:
+    - pre_docker
+  dependencies:
+    - pre_docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/'
+  timeout: 1h
+  artifacts:
+    paths:
+      - '$CI_PROJECT_DIR/target/**.war'
+      - '$CI_PROJECT_DIR/target/**.zip'
+      - '$CI_PROJECT_DIR/target/**.jar'
+      - '$CI_PROJECT_DIR/src/docker/**/**.war'
+      - '$CI_PROJECT_DIR/src/docker/**/**.zip'
+      - '$CI_PROJECT_DIR/src/docker/**/**.jar'
+
 .urb:deploy:
   stage: deploy
   image: glregistry.boost.open.global/boost/docker/mvn-node-jdk11-ansible:latest
