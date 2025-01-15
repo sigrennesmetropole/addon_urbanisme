@@ -15,6 +15,7 @@
 # copy addon
 - name: Copy addon to mapfishapp
   unarchive:
+    src: "src/docker/mapfishapp/urbanisme-addon.zip"
     dest: "{{addon_urbanisme_addon_directory}}"
     remote_src: no
     mode: 0775
