@@ -4,7 +4,8 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   NODE_OPTIONS: "--max-old-space-size=8192"
   DOCKER_DISABLE: "true"  
-
+  DOCKER_EXCLUDE_DIRS: "src/docker/cadastrapp"
+  
 # Cache policy - Share target folders between jobs - Note that key is related to a commit and is purged automatically after pipeline execution
 cache:
   key: ${CI_COMMIT_REF_SLUG}
