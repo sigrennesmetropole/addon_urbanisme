@@ -118,6 +118,10 @@ pre_docker:
     paths:
       - $CI_PROJECT_DIR//target/urbanisme*.war
       - $CI_PROJECT_DIR//target/urbanisme*.zip
+      - $CI_PROJECT_DIR//target/urbanisme*.jar
+      - '$CI_PROJECT_DIR/src/docker/**/**.war'
+      - '$CI_PROJECT_DIR/src/docker/**/**.zip'
+      - '$CI_PROJECT_DIR/src/docker/**/**.jar'	  
 
 docker2:build:
   extends: ['.docker:build']
