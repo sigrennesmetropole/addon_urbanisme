@@ -15,7 +15,6 @@
 # copy addon
 - name: Copy addon to mapfishapp
   unarchive:
-    src: "{{ addon_urbanisme_addon_name }}"
     dest: "{{addon_urbanisme_addon_directory}}"
     remote_src: no
     mode: 0775
@@ -25,7 +24,7 @@
   command: grep -Fcq "addon_urbanisme" "{{ addon_urbanisme_config_directory }}/security-proxy/targets-mapping.properties"
   register: checksecurityaddon_urbanisme
   check_mode: no
-  ignore_errors: yes
+  ignore_errors: true
   changed_when: no
 
 - name: Update targets-mapping.properties if needed
@@ -36,7 +35,7 @@
 # copy images 
 - name: Copy addon_urbanisme api Dockerfile
   template:
-    src: Dockerfile
+    src: Dockerfile.j2
     dest: "{{ addon_urbanisme_image_directory }}/Dockerfile"
     mode: 0770
     
