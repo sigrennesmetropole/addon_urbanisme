@@ -16,130 +16,90 @@
 		consult the "urbanism notes" and the "zoning of a urbanism local map".
 		This module has been funded by Rennes-Métropole.</description>
 	<properties>
-		<spring.version>4.2.5.RELEASE</spring.version>
-		<spring.data.version>1.9.1.RELEASE</spring.data.version>
-		<geotools.version>11.0</geotools.version>
-		<metrics.version>3.0.2</metrics.version>
-		
-		<surefire.plugin.version>2.22.2</surefire.plugin.version>
-		
-		<sonar.projectKey>${env.SONAR_KEY}${project.artifactId}</sonar.projectKey>
+		<!--SONAR-->
 		<sonar.projectName>Urbanisme Addon</sonar.projectName>
+		<sonar.projectKey>${env.SONAR_KEY}${project.artifactId}</sonar.projectKey>
+
+		<!--SPRING-->
+		<spring.version>6.2.3</spring.version>
+		<spring-security.version>6.4.3</spring-security.version>
+		<spring.data.version>3.4.3</spring.data.version>
+
+		<!--MAVEN COMPILER-->
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+
+		<geotools.version>32.2</geotools.version>
+		<mapfish.version>2.3.2</mapfish.version>
+		<metrics.version>4.2.30</metrics.version>
+		<jsr166y.version>1.7.0</jsr166y.version>
+		<postgresql.version>42.7.5</postgresql.version>
+		<junit.version>4.13.2</junit.version>
+		<snakeyaml.version>2.4</snakeyaml.version>
+		<commons-dbcp2.version>2.13.0</commons-dbcp2.version>
+
+		<surefire.plugin.version>2.22.2</surefire.plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>6.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<!--<dependency>
 			<groupId>org.mapfish.print</groupId>
 			<artifactId>print-lib</artifactId>
-			<!--  original : 3.5-SNAPSHOT -->
-			<version>3.5.0</version>
-		</dependency>
-		<!-- Needed by mfpv3 at runtime, see
-		https://github.com/mapfish/mapfish-print/issues/418 -->
+			<version>${mapfish.version}</version>
+		</dependency>-->
+
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
-			<artifactId>metrics-httpclient</artifactId>
-			<version>${metrics.version}</version>
+			<groupId>com.github.mapfish.mapfish-print</groupId>
+			<artifactId>print-lib</artifactId>
+			<version>3.31.7</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.yaml</groupId>
+			<artifactId>snakeyaml</artifactId>
+			<version>${snakeyaml.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
-			<artifactId>metrics-healthchecks</artifactId>
-			<version>${metrics.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.codahale.metrics</groupId>
+			<groupId>io.dropwizard.metrics</groupId>
 			<artifactId>metrics-logback</artifactId>
 			<version>${metrics.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.codahale.metrics</groupId>
-			<artifactId>metrics-jvm</artifactId>
-			<version>${metrics.version}</version>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>${commons-dbcp2.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.readytalk</groupId>
-			<artifactId>metrics3-statsd</artifactId>
-			<version>4.1.0</version>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${postgresql.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jsr166-mirror</groupId>
-			<artifactId>jsr166y</artifactId>
-			<version>1.7.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.yaml</groupId>
-			<artifactId>snakeyaml</artifactId>
-			<version>1.13</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-epsg-hsql</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-render</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-geojson</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-geotiff</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-wms</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools.xsd</groupId>
-			<artifactId>gt-xsd-gml3</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-svg</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-cql</artifactId>
-			<version>${geotools.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>16.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports</artifactId>
-			<version>6.17.0</version>
-		</dependency>
-		<dependency>
-			<groupId>net.sf.jasperreports</groupId>
-			<artifactId>jasperreports-fonts</artifactId>
-			<version>6.0.0</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>4.1.0.RELEASE</version>
+			<version>${spring-security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>4.1.0.RELEASE</version>
+			<version>${spring-security.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -167,96 +127,53 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring.data.version}</version>
+		</dependency>
+
+		<!--DOUTE POUR CEUX LA-->
+		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.data</groupId>
-			<artifactId>spring-data-jpa</artifactId>
-			<version>${spring.data.version}</version>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.17.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20080701</version>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports-fonts</artifactId>
+			<version>6.0.0</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-dbcp2</artifactId>
-			<version>2.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.1</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>javax.annotation-api</artifactId>
-			<version>1.2</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.4.1209.jre7</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.12</version>
-			<scope>test</scope>
-		</dependency>
+		<!--FIN DOUTE POUR CEUX LA-->
 	</dependencies>
 	<repositories>
 		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<url>https://repo.maven.apache.org/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-			<id>osgeo</id>
-			<name>Open Source Geospatial Foundation Repository</name>
-			<url>http://download.osgeo.org/webdav/geotools/</url>
 		</repository>
+
 		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+
+		<!--<repository>
 			<id>opengeo</id>
 			<name>OSGeo Release Repository</name>
-			<url>https://repo.osgeo.org/repository/release/</url>
+			<url>https://repo.osgeo.org/repository/Geoserver-releases/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>
-		<repository>
-			<id>jetty-repository</id>
-			<name>Jetty Maven2 Repository</name>
-			<url>https://oss.sonatype.org/content/groups/jetty/</url>
-		</repository>
-		<repository>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<id>bintray</id>
-			<name>bintray</name>
-			<url>http://dl.bintray.com/readytalk/maven</url>
-		</repository>
-		<repository>
-			<id>sonatype</id>
-			<name>Sonatype Repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-		</repository>
-		<repository>
-			<id>jaspersoft-third-party</id>
-			<name>Jasper Repository</name>
-			<url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
-		</repository>
+		</repository>-->
+
 	</repositories>
 	<build>
 		<finalName>urbanisme</finalName>
@@ -274,8 +191,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
 				<configuration>
-					<source>8</source>
-					<target>8</target>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
 				</configuration>
 			</plugin>
 			<plugin>
