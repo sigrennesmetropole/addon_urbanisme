@@ -37,6 +37,7 @@
 		<junit.version>4.13.2</junit.version>
 		<snakeyaml.version>2.4</snakeyaml.version>
 		<commons-dbcp2.version>2.13.0</commons-dbcp2.version>
+		<org.json.version>20240303</org.json.version>
 
 		<surefire.plugin.version>2.22.2</surefire.plugin.version>
 	</properties>
@@ -62,8 +63,23 @@
 			<groupId>com.github.mapfish.mapfish-print</groupId>
 			<artifactId>print-lib</artifactId>
 			<version>3.31.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.codehaus.groovy</groupId>
+				    <artifactId>groovy-all</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
+		<!--<dependency>
+	      	<groupId>org.codehaus.groovy</groupId>
+	      	<artifactId>groovy-all</artifactId>
+	      	<version>3.0.23</version>
+      	</dependency>-->
+		<dependency>
+			<groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>${org.json.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.yaml</groupId>
 			<artifactId>snakeyaml</artifactId>
@@ -165,14 +181,13 @@
 			<url>https://jitpack.io</url>
 		</repository>
 
-		<!--<repository>
-			<id>opengeo</id>
-			<name>OSGeo Release Repository</name>
-			<url>https://repo.osgeo.org/repository/Geoserver-releases/</url>
+		<repository>
+			<id>osgeo</id>
+			<url>https://repo.osgeo.org/repository/release/</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
-		</repository>-->
+		</repository>
 
 	</repositories>
 	<build>
