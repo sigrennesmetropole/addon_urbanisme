@@ -22,7 +22,7 @@ include:
     file: '/trivy-template-job.yml'
 
 default:
-  image: maven:3.6.0-jdk-11
+  image: maven:3.9.9-eclipse-temurin-17
   before_script:
     - apt update && apt install -y gettext-base build-essential
     - envsubst '${MVN_GROUP} ${MVN_RELEASE} ${MVN_SNAPSHOTS}' < pom.xml > pom.subst && mv -f pom.subst pom.xml
@@ -68,7 +68,6 @@ urb:build:master:
 # Sonar code quality analysis - note a full test coverage report through a jacoco.exec merged file in base project folder
 .urb:sonar:
   stage: test
-  image: maven:3.9.9-eclipse-temurin-17
   allow_failure: true
   script:
     - >
@@ -111,6 +110,8 @@ pre_docker:
       - open/develop
       - /^release.*/
       - /.*karbonification.*/
+      - /.*CDCRM-1560.*/
+
   script:
     - ls $CI_PROJECT_DIR/target/
     - cp $CI_PROJECT_DIR/target/urbanisme.*ar $CI_PROJECT_DIR/src/docker/urbanisme
@@ -131,7 +132,7 @@ docker2:build:
   dependencies:
     - pre_docker
   rules:
-    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/'
+    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/ || $CI_COMMIT_BRANCH =~ /.*CDCRM-1560.*/'
   timeout: 1h
   artifacts:
     paths:
