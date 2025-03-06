@@ -1,6 +1,8 @@
-FROM jetty:9.3-jre8
+FROM jetty:9.4-jdk17-eclipse-temurin
+
 USER root
 
+RUN apt-get update && apt-get upgrade -y
 ADD urbanisme.war /var/lib/jetty/webapps/urbanisme.war
 RUN mkdir -p /tmp/jetty
 RUN chmod 777 -R /tmp && chmod o+t -R /tmp
