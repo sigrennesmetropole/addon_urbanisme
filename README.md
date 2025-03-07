@@ -6,4 +6,4 @@ Cet extension permet de consulter une Note de Renseignement d'Urbanisme (NRU) ou
  Elle est dépendante de l'extension [cadastrapp](https://github.com/georchestra/cadastrapp) pour geOrchestra.
 # Documentation
 
-Toute la documentation est ici : http://docs.georchestra.org/addon_urbanisme/
+Toute la documentation est ici : [doc urbanisme](https://docs.georchestra.org/mapstore2-urbanisme/fr/latest/)
