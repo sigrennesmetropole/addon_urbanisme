@@ -110,7 +110,6 @@ pre_docker:
       - open/develop
       - /^release.*/
       - /.*karbonification.*/
-      - /.*CDCRM-1560.*/
 
   script:
     - ls $CI_PROJECT_DIR/target/
@@ -132,7 +131,7 @@ docker2:build:
   dependencies:
     - pre_docker
   rules:
-    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/ || $CI_COMMIT_BRANCH =~ /.*CDCRM-1560.*/'
+    - if: '$CI_COMMIT_BRANCH =~ /.*develop/ || $CI_COMMIT_BRANCH =~ /.*master/ || $CI_COMMIT_BRANCH =~ /^release.*/ || $CI_COMMIT_BRANCH =~ /.*karbonification.*/'
   timeout: 1h
   artifacts:
     paths:
