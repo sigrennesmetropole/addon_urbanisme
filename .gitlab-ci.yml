@@ -39,9 +39,7 @@ urb:build:
   except:
     refs:
       - master
-      - open/master  
-  tags: 
-   - cdp-rennes  
+      - open/master   
       
 urb:build:master:
   extends: .urb:build
@@ -92,7 +90,7 @@ urb:sonar:master:
   image: glregistry.boost.open.global/boost/docker/mvn-node-jdk11-ansible:latest
   cache: {}
   tags: 
-   - cdp-rennes
+   - iaas
   script:
     - ls $CI_PROJECT_DIR/target/
     - find $CI_PROJECT_DIR/target/ -name "urbanisme*.war" -exec cp {} $CI_PROJECT_DIR/ansible/dockerize/files/addon_urbanisme.war \;
