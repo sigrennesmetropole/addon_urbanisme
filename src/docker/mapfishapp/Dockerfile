@@ -3,7 +3,7 @@ FROM georchestra/mapfishapp
 ADD urbanisme-addon.zip /etc/georchestra/mapfishapp/addons/
 
 USER root
-RUN apt-get update && apt-get upgrade -y && apt-get install -y zip
+RUN apt-get update && apt-get upgrade -y && apt-get install -y unzip
 USER jetty
 
 RUN cd /etc/georchestra/mapfishapp/addons &&      \
