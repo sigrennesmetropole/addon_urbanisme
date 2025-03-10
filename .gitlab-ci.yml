@@ -157,8 +157,9 @@ docker2:build:
     - find $CI_PROJECT_DIR/target/ -name "urbanisme*.zip" -exec cp {} $CI_PROJECT_DIR/ansible/dockerize/files/addon_urbanisme.zip \;
     - cd $CI_PROJECT_DIR/ansible
     - cp ${ANSIBLE_VAR_FILE} $HOME/addon_urbanisme_var.yml
-    - ansible-playbook addon_urbanisme-docker.yml -v -i "${SERVER}," -u root --ssh-common-args=-oStrictHostKeyChecking=no
-
+    - ansible-playbook addon_urbanisme-docker.yml -v -i "${SERVER}," -u root --ssh-common-args=-oStrictHostKeyChecking=no*
+  when: manual
+  
 urb:deploy:
   extends: .urb:deploy
   dependencies:
