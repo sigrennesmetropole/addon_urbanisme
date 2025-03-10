@@ -15,7 +15,7 @@
 # copy addon
 - name: Copy addon to mapfishapp
   unarchive:
-    src: "{{ addon_urbanisme_addon_name }}"
+    src: "src/docker/mapfishapp/urbanisme-addon.zip"
     dest: "{{addon_urbanisme_addon_directory}}"
     remote_src: no
     mode: 0775
@@ -25,7 +25,7 @@
   command: grep -Fcq "addon_urbanisme" "{{ addon_urbanisme_config_directory }}/security-proxy/targets-mapping.properties"
   register: checksecurityaddon_urbanisme
   check_mode: no
-  ignore_errors: yes
+  ignore_errors: true
   changed_when: no
 
 - name: Update targets-mapping.properties if needed
@@ -36,7 +36,7 @@
 # copy images 
 - name: Copy addon_urbanisme api Dockerfile
   template:
-    src: Dockerfile
+    src: Dockerfile.j2
     dest: "{{ addon_urbanisme_image_directory }}/Dockerfile"
     mode: 0770
     
@@ -57,6 +57,19 @@
     src: default.properties.j2
     dest: "{{ addon_urbanisme_config_directory }}/default.properties"
     mode: 0777
+
+- name: Copy certificate
+  copy:
+    src: "{{ addon_urbanisme_server_keystore_cert }}"
+    dest: "{{ addon_urbanisme_config_directory }}/urbanisme/{{ addon_urbanisme_server_keystore_cert }}"
+    mode: 0770
+  when: addon_urbanisme_server_keystore_cert | length > 0
+
+- name: Copy entrypoint shell script
+  copy:
+    src: "entrypoint.sh"
+    dest: "{{ addon_urbanisme_image_directory }}/entrypoint.sh"
+    mode: 0770
 
 - name: Copy logback.xml
   copy:

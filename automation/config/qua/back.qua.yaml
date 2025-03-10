@@ -1,0 +1,13 @@
+image:
+  tag: open-develop
+  env:
+    - name: URBANISME_DATASOURCE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: urbanisme-secret-qua
+          key: database.urbanisme.password
+    - name: URBANISME_BDD_HOST
+      value: georchestra-bdd-dev-georchestra-service-bdd
+      
+    - name: SWAGGER_SERVER
+      value: https://search-application-qua.shom-search.karbon.open.global/

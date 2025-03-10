@@ -1,0 +1,7 @@
+{
+	"id": "urbanisme-TARGET_ENV",
+	"uri": "http://urbanisme-back-TARGET_ENV-rm-urbanisme-back:8080/urbanisme/",
+	"predicates": [ 
+		"Path=/urbanisme-TARGET_ENV/**"
+	]
+}

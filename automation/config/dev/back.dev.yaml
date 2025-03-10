@@ -1,0 +1,14 @@
+image:
+  tag: open-develop
+  env:
+    - name: URBANISME_DATASOURCE_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: urbanisme-secret-dev
+          key: database.urbanisme.password
+
+    - name: URBANISME_BDD_HOST
+      value: georchestra-bdd-dev-georchestra-service-bdd
+      
+    - name: SWAGGER_SERVER
+      value: https://urbanisme-back-dev.rennes-metropole-georchestra.karbon.open.global
