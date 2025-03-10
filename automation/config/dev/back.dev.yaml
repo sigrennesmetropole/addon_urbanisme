@@ -1,6 +1,9 @@
 image:
   tag: open-develop
   env:
+    - name: georchestra.datadir
+      value: "/etc/georchestra"
+    
     - name: URBANISME_DATASOURCE_PASSWORD
       valueFrom:
         secretKeyRef:
@@ -9,6 +12,3 @@ image:
 
     - name: URBANISME_BDD_HOST
       value: georchestra-bdd-dev-georchestra-service-bdd
-      
-    - name: SWAGGER_SERVER
-      value: https://urbanisme-back-dev.rennes-metropole-georchestra.karbon.open.global
