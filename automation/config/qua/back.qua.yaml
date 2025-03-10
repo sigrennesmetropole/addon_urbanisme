@@ -1,8 +1,8 @@
 image:
   tag: open-develop
   env:
-    - name: georchestra.datadir
-      value: "/etc/georchestra"
+    - name: ADD_JAVA_OPTS
+      value: "-Dgeorchestra.datadir=/etc/georchestra"
 
     - name: URBANISME_DATASOURCE_PASSWORD
       valueFrom:
