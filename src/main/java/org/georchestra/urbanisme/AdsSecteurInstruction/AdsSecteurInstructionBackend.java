@@ -43,36 +43,24 @@ public class AdsSecteurInstructionBackend {
      * @throws SQLException
      */
     public AdsSecteurInstruction getadsInstruction(String parcelle) throws SQLException {
-        Connection connection = null;
-        PreparedStatement queryNomAndIniInstruByParcelle = null;
-
         String nom = "";
         String ini_instru = "";
-        try {
-            connection = this.basicDataSource.getConnection();
-
-            String query = "SELECT"
-                    +" nom,ini_instru "
-                    +" FROM "
-                    + this.functionAdsInstruction+"(?);";
-
-            queryNomAndIniInstruByParcelle = connection.prepareStatement(query);
+        String query = "SELECT"
+                +" nom,ini_instru "
+                +" FROM "
+                + this.functionAdsInstruction+"(?);";
+        try (
+            Connection connection = this.basicDataSource.getConnection();
+            PreparedStatement queryNomAndIniInstruByParcelle = connection.prepareStatement(query);
+        ){
             queryNomAndIniInstruByParcelle.setString(1, parcelle);
-            ResultSet rs = queryNomAndIniInstruByParcelle.executeQuery();
-
-            while(rs.next()) {
-                nom= rs.getString("nom");
-                ini_instru= rs.getString("ini_instru");
+            try (ResultSet rs = queryNomAndIniInstruByParcelle.executeQuery()){
+                while(rs.next()) {
+                    nom= rs.getString("nom");
+                    ini_instru= rs.getString("ini_instru");
+                }
             }
-            AdsSecteurInstruction adsSecteurInstruction = new AdsSecteurInstruction(nom, ini_instru);
-            return adsSecteurInstruction;
-        } finally {
-            if ((queryNomAndIniInstruByParcelle != null) && (!queryNomAndIniInstruByParcelle.isClosed())) {
-                queryNomAndIniInstruByParcelle.close();
-            }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
-            }
+            return new AdsSecteurInstruction(nom, ini_instru);
         }
     }
 

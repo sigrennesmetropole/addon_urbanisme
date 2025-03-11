@@ -46,37 +46,24 @@ public class AdsAutorisationBackend {
      * @throws SQLException
      */
     public AdsAutorisation getNumDossier(String parcelle) throws SQLException {
-        Connection connection = null;
-        PreparedStatement queryNumDossierByParcelle = null;
+        List<String> numDossiers = new ArrayList<>();
+        String query = "SELECT"
+                +" numdossier "
+                +" FROM "
+                + this.functionAdsAutorisation+"(?);";
 
-        List<String> numDossiers = new ArrayList<String>();
-
-        try {
-            connection = this.basicDataSource.getConnection();
-
-            String query = "SELECT"
-                    +" numdossier "
-                    +" FROM "
-                    + this.functionAdsAutorisation+"(?);";
-
-            queryNumDossierByParcelle = connection.prepareStatement(query);
+        try (
+                Connection connection = this.basicDataSource.getConnection();
+                PreparedStatement queryNumDossierByParcelle = connection.prepareStatement(query);
+        ){
             queryNumDossierByParcelle.setString(1, parcelle);
-            ResultSet rs = queryNumDossierByParcelle.executeQuery();
-
-            while (rs.next()) {
-                String numdossier = rs.getString("numdossier");
-                numDossiers.add(numdossier);
-
+            try (ResultSet rs = queryNumDossierByParcelle.executeQuery()){
+                while (rs.next()) {
+                    String numdossier = rs.getString("numdossier");
+                    numDossiers.add(numdossier);
+                }
             }
-            AdsAutorisation adsAutorisation = new AdsAutorisation(numDossiers);
-            return adsAutorisation;
-        } finally {
-            if ((queryNumDossierByParcelle != null) && (!queryNumDossierByParcelle.isClosed())) {
-                queryNumDossierByParcelle.close();
-            }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
-            }
+            return new AdsAutorisation(numDossiers);
         }
     }
 }

@@ -64,42 +64,23 @@ public class RenseignUrbaInfosBackend {
      * @throws SQLException
      */
     public RenseignUrbaInfos getDate(String code_commune) throws SQLException {
-        Connection connection = null;
-        PreparedStatement queryDateByCommune = null;
-
         String date_ru = "";
         String date_pci = "";
-        try {
-            connection = this.basicDataSource.getConnection();
-            String query = "SELECT "
-            +" code_commune,"
-            +"date_ru,"
-            +" date_pci FROM "
-            + this.table
-            +" WHERE code_commune like ?;";
-
-
-            queryDateByCommune = connection.prepareStatement(query);
+        String query = "SELECT " +" code_commune," +"date_ru," +" date_pci FROM " + this.table +" WHERE code_commune like ?;";
+        try (
+                Connection connection = this.basicDataSource.getConnection();
+                PreparedStatement queryDateByCommune = connection.prepareStatement(query);
+        ){
             queryDateByCommune.setString(1, code_commune);
-            ResultSet rs = queryDateByCommune.executeQuery();
 
-            if(rs.next()) {
-                date_ru= rs.getString("date_ru");
-                date_pci= rs.getString("date_pci");
+            try (ResultSet rs = queryDateByCommune.executeQuery()){
+                if(rs.next()) {
+                    date_ru= rs.getString("date_ru");
+                    date_pci= rs.getString("date_pci");
+                }
             }
-            RenseignUrbaInfos renseign = new RenseignUrbaInfos(code_commune, date_ru, date_pci);
-            return renseign;
-        } finally {
-            if ((queryDateByCommune != null) && (!queryDateByCommune.isClosed())) {
-                queryDateByCommune.close();
-            }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
-            }
+
+            return new RenseignUrbaInfos(code_commune, date_ru, date_pci);
         }
     }
-
-
-
-
 }
