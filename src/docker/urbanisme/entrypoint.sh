@@ -4,7 +4,7 @@ if [[ -r "$PROPERTIES_PATH" ]]; then
 
 	properties=$(<"$PROPERTIES_PATH")
 
-  path=`echo "$properties" | awk -F= '/^server.trustcert.keystore.path/ { print $2 }'`
+    path=`echo "$properties" | awk -F= '/^server.trustcert.keystore.path/ { print $2 }'`
 	cert=`echo "$properties" | awk -F= '/^server.trustcert.keystore.cert/ { print $2 }'`
 	alias=`echo "$properties" | awk -F= '/^server.trustcert.keystore.alias/ { print $2 }'`
 	store=`echo "$properties" | awk -F= '/^server.trustcert.keystore.store/ { print $2 }'`
