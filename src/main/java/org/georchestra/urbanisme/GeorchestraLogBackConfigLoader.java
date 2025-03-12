@@ -54,7 +54,7 @@ public class GeorchestraLogBackConfigLoader {
 				configurator.setContext(lc);
 				lc.reset();
 				configurator.doConfigure(urbaLogBackFile);
-				logger.error("Configured Logback with config file from: {}", urbaLogBackFile);
+				logger.info("Configured Logback with config file from: {}", urbaLogBackFile);
 			}
 		}
 	}
