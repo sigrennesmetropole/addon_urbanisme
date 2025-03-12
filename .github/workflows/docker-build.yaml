@@ -1,0 +1,56 @@
+name: "builds a addon_urbanisme docker image"
+on:
+  - push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "checking out"
+        uses: actions/checkout@v2
+
+      - name: "Setting up Java"
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17.x'
+
+      - name: "Maven repository caching"
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: photosobliques-${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: "Calculating docker image tag"
+        id: version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+
+      - name: "builds the docker image"
+        run: |
+          mvn clean package
+          cd target/docker/urbanisme && docker build -t sigrennesmetropole/addon_urbanisme:latest .
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to docker-hub
+        uses: azure/docker-login@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: "Pushing latest to docker.io"
+        if: github.ref == 'refs/heads/master'
+        run: |
+          docker tag sigrennesmetropole/addon_urbanisme:${{ steps.version.outputs.VERSION }} sigrennesmetropole/addon_urbanisme:latest
+          #docker push sigrennesmetropole/addon_urbanisme:latest
+
+      - name: "Pushing release tag to docker.io"
+        if: contains(github.ref, 'refs/tags/')
+        run: |
+          docker push sigrennesmetropole/addon_urbanisme:${{ steps.version.outputs.VERSION }}
+
+      - name: "Remove SNAPSHOT jars from repository"
+        run: |
+          find .m2/repository -name "*SNAPSHOT*" -type d | xargs rm -rf {}		  
+  
