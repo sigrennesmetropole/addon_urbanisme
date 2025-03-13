@@ -18,6 +18,8 @@ kubectl patch deployment urbanisme-back-"${TARGET_ENV}"-rm-urbanisme-back --patc
 
 kubectl apply -f config/"${TARGET_ENV}"/back.ingress."${TARGET_ENV}".yaml
 
+helm upgrade --install -f cadastrapp.yaml cadastrapp boost-stable/boost-deploy
+
 # on attend que tout soit démarré
 sleep 15
 
