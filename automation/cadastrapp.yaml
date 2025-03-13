@@ -1,0 +1,33 @@
+nameOverride: "cadastrapp"
+image:
+  repository: georchestra/cadastrapp
+  tag: v2.2
+  internalPort: 8080
+  exposedPort: 8080
+  env:
+    - name: JAVA_OPTIONS
+      value: '-Duser.language=fr -Duser.country=FR -Dgeorchestra.datadir=/etc/georchestra'
+    - name: CADASTRAPP_JDBC_URL
+      value: 'jdbc:postgresql://georchestra-bdd-dev-georchestra-service-bdd:5432/georchestra'
+    - name: CADASTRAPP_JDBC_USER
+      value: cadastrapp
+    - name: CADASTRAPP_JDBC_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: urbanisme-secret-dev
+          key: database.cadastrapp.password
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 720Mi
+
+livenessProbe:
+  enabled: false
+readinessProbe:
+  enabled: false
+
+ingress:
+  enabled: true
+  hosts:
+    host: "{{ .Release.Name }}.rennes-metropole-georchestra.karbon.open.global"
