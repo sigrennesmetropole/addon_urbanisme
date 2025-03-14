@@ -19,6 +19,7 @@ kubectl patch deployment urbanisme-back-"${TARGET_ENV}"-rm-urbanisme-back --patc
 kubectl apply -f config/"${TARGET_ENV}"/back.ingress."${TARGET_ENV}".yaml
 
 helm upgrade --install -f cadastrapp.yaml cadastrapp boost-stable/boost-deploy
+kubectl patch deployment cadastrapp --patch-file back-config.yaml
 
 # on attend que tout soit démarré
 sleep 15
@@ -34,6 +35,8 @@ if [ ! -z "$POD_NAME" ]; then
 	fi 
 	kubectl cp "config/${TARGET_ENV}/log4j2.xml" "$POD_NAME":"/etc/georchestra/urbanisme/log4j2.xml"
 	kubectl cp "config/${TARGET_ENV}/urbanisme.properties" "$POD_NAME":"/etc/georchestra/urbanisme/urbanisme.properties"
+	kubectl cp "config/${TARGET_ENV}/cadastrapp.properties" "$POD_NAME":"/etc/georchestra/cadastrapp/cadastrapp.properties"
+
 fi
 
 POD_NAME="kubectl get pods -o name | grep "georchestra-mapstore-" | sed -e 's:pod\/::g'"
