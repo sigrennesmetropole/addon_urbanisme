@@ -51,19 +51,22 @@ public class AdsAutorisationBackend {
                 +" numdossier "
                 +" FROM "
                 + this.functionAdsAutorisation+"(?);";
+        ResultSet rs = null;
 
-        try (
-                Connection connection = this.basicDataSource.getConnection();
-                PreparedStatement queryNumDossierByParcelle = connection.prepareStatement(query);
-        ){
+        try (Connection connection = this.basicDataSource.getConnection(); PreparedStatement queryNumDossierByParcelle = connection.prepareStatement(query)) {
             queryNumDossierByParcelle.setString(1, parcelle);
-            try (ResultSet rs = queryNumDossierByParcelle.executeQuery()){
-                while (rs.next()) {
-                    String numdossier = rs.getString("numdossier");
-                    numDossiers.add(numdossier);
-                }
+            rs = queryNumDossierByParcelle.executeQuery();
+
+            while (rs.next()) {
+                String numdossier = rs.getString("numdossier");
+                numDossiers.add(numdossier);
             }
+
             return new AdsAutorisation(numDossiers);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 }

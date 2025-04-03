@@ -49,18 +49,24 @@ public class AdsSecteurInstructionBackend {
                 +" nom,ini_instru "
                 +" FROM "
                 + this.functionAdsInstruction+"(?);";
+        ResultSet rs = null;
         try (
             Connection connection = this.basicDataSource.getConnection();
             PreparedStatement queryNomAndIniInstruByParcelle = connection.prepareStatement(query);
         ){
             queryNomAndIniInstruByParcelle.setString(1, parcelle);
-            try (ResultSet rs = queryNomAndIniInstruByParcelle.executeQuery()){
-                while(rs.next()) {
-                    nom= rs.getString("nom");
-                    ini_instru= rs.getString("ini_instru");
-                }
+            rs = queryNomAndIniInstruByParcelle.executeQuery();
+
+            while(rs.next()) {
+                nom= rs.getString("nom");
+                ini_instru= rs.getString("ini_instru");
             }
+
             return new AdsSecteurInstruction(nom, ini_instru);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
