@@ -84,20 +84,24 @@ public class RenseignUrbaBackend {
     public RenseignUrba getParcelle(String parcelle) throws SQLException {
         List<String> libellesVal = new ArrayList<>();
         String query = this.getNRUQuery();
+        ResultSet rs = null;
         try (
                 Connection connection = this.basicDataSource.getConnection();
                 PreparedStatement queryLibellesByParcelle = connection.prepareStatement(query);
         ){
             queryLibellesByParcelle.setString(1, parcelle);
 
-            try (ResultSet rs = queryLibellesByParcelle.executeQuery()){
-                while (rs.next()) {
-                    String libelle = rs.getString("libelle");
-                    libellesVal.add(libelle);
-                }
+            rs = queryLibellesByParcelle.executeQuery();
+            while (rs.next()) {
+                String libelle = rs.getString("libelle");
+                libellesVal.add(libelle);
             }
 
             return new RenseignUrba(parcelle, libellesVal);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
@@ -114,14 +118,14 @@ public class RenseignUrbaBackend {
         List<String> libellesVal = new ArrayList<>();
         List<String> groupesRu = new ArrayList<>();
         List<Long> ordres = new ArrayList<>();
-
+        ResultSet rs = null;
 
         String query = this.getNewNRUQuery();
         try (Connection connection =  this.basicDataSource.getConnection();
              PreparedStatement queryInfosByParcelle = connection.prepareStatement(query);
         ) {
             queryInfosByParcelle.setString(1, parcelle);
-            ResultSet rs = queryInfosByParcelle.executeQuery();
+            rs = queryInfosByParcelle.executeQuery();
 
             while (rs.next()) {
                 String libelle = rs.getString("libelle");
@@ -132,6 +136,10 @@ public class RenseignUrbaBackend {
                 ordres.add(ordre);
             }
             return new RenseignUrba(parcelle, libellesVal, groupesRu, ordres);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
@@ -181,22 +189,31 @@ public class RenseignUrbaBackend {
      */
     public List<String> getAdressesPostales(String parcelle) throws SQLException {
         List<String> adressesPostales = new ArrayList<>();
+        PreparedStatement queryAdressesPostalesByParcelle = null;
+        ResultSet rs = null;
         try (Connection connection = this.basicDataSource.getConnection()){
             if (StringUtils.isEmpty(this.parcelleAdresseRvaTable)) {
                 return adressesPostales;
             }
+
             String query = "SELECT adresse FROM " + this.parcelleAdresseRvaTable + " WHERE parc_ident = ?";
+            queryAdressesPostalesByParcelle = connection.prepareStatement(query);
+            queryAdressesPostalesByParcelle.setString(1, parcelle);
+            rs = queryAdressesPostalesByParcelle.executeQuery();
 
-            try(PreparedStatement queryAdressesPostalesByParcelle = connection.prepareStatement(query)){
-                queryAdressesPostalesByParcelle.setString(1, parcelle);
+            while (rs.next()) {
+                String adressePostale = rs.getString("adresse");
+                adressesPostales.add(adressePostale);
+            }
 
-                try(ResultSet rs = queryAdressesPostalesByParcelle.executeQuery();){
-                    while (rs.next()) {
-                        String adressePostale = rs.getString("adresse");
-                        adressesPostales.add(adressePostale);
-                    }
-                    return adressesPostales;
-                }
+            return adressesPostales;
+        } finally {
+            if (queryAdressesPostalesByParcelle != null) {
+                queryAdressesPostalesByParcelle.close();
+            }
+
+            if(rs != null){
+                rs.close();
             }
         }
     }

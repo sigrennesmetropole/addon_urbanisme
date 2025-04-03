@@ -48,17 +48,23 @@ public class QuartierBackend {
                 +" numnom "
                 +" FROM "
                 + this.functionQuartier+"(?);";
+        ResultSet rs = null;
         try (
              Connection connection = this.basicDataSource.getConnection();
              PreparedStatement queryQuartierByParcelle = connection.prepareStatement(query);
         ) {
             queryQuartierByParcelle.setString(1, parcelle);
-            try (ResultSet rs = queryQuartierByParcelle.executeQuery()) {
-                while (rs.next()) {
-                    numnom = rs.getString("numnom");
-                }
+            rs = queryQuartierByParcelle.executeQuery();
+
+            while (rs.next()) {
+                numnom = rs.getString("numnom");
             }
+
             return new Quartier(numnom);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 }

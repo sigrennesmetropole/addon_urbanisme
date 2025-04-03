@@ -67,20 +67,25 @@ public class RenseignUrbaInfosBackend {
         String date_ru = "";
         String date_pci = "";
         String query = "SELECT " +" code_commune," +"date_ru," +" date_pci FROM " + this.table +" WHERE code_commune like ?;";
+        ResultSet rs = null;
         try (
                 Connection connection = this.basicDataSource.getConnection();
                 PreparedStatement queryDateByCommune = connection.prepareStatement(query);
         ){
             queryDateByCommune.setString(1, code_commune);
 
-            try (ResultSet rs = queryDateByCommune.executeQuery()){
-                if(rs.next()) {
-                    date_ru= rs.getString("date_ru");
-                    date_pci= rs.getString("date_pci");
-                }
+            rs = queryDateByCommune.executeQuery();
+
+            if(rs.next()) {
+                date_ru= rs.getString("date_ru");
+                date_pci= rs.getString("date_pci");
             }
 
             return new RenseignUrbaInfos(code_commune, date_ru, date_pci);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 }
