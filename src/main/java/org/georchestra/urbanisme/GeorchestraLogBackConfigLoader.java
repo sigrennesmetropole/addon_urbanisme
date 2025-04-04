@@ -25,7 +25,7 @@ public class GeorchestraLogBackConfigLoader {
 	private Logger logger = LoggerFactory.getLogger(GeorchestraLogBackConfigLoader.class);
 
 	public GeorchestraLogBackConfigLoader() {
-
+		// constructeur par défaut
 	}
 
 	@PostConstruct
@@ -45,20 +45,16 @@ public class GeorchestraLogBackConfigLoader {
 		}
 
 		if (!urbaLogBackFile.isFile()) {
-			logger.error("Logback External Config File Parameter exists, " + "but does not reference a file: "
-					+ urbaLogBackFile);
-			return;
+			logger.error("Logback External Config File Parameter exists, but does not reference a file: {}", urbaLogBackFile);
 		} else {
 			if (!urbaLogBackFile.canRead()) {
-				logger.error("Logback External Config File exists and is a file, " + "but cannot be read: "
-						+ urbaLogBackFile);
-				return;
+				logger.error("Logback External Config File exists and is a file, but cannot be read: {}", urbaLogBackFile);
 			} else {
 				JoranConfigurator configurator = new JoranConfigurator();
 				configurator.setContext(lc);
 				lc.reset();
 				configurator.doConfigure(urbaLogBackFile);
-				logger.info("Configured Logback with config file from: " + urbaLogBackFile);
+				logger.info("Configured Logback with config file from: {}", urbaLogBackFile);
 			}
 		}
 	}

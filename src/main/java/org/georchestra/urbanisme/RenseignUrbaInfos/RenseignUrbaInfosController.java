@@ -31,12 +31,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * This class defines webservices to retrieve « date » from database
  */
 @Controller
 public class RenseignUrbaInfosController {
+
+    private static final String CODE_COMMUNE = "code_commune";
+    private static final String DATE_RU = "date_ru";
+    private static final String DATE_PCI = "date_pci";
+    private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
      * Backend managing database configuration
@@ -68,17 +75,17 @@ public class RenseignUrbaInfosController {
      * @throws Exception
      */
     @RequestMapping(value = "/renseignUrbaInfos", method = RequestMethod.GET)
-    public void getRenseignUrbaInfos(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getRenseignUrbaInfos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
-        RenseignUrbaInfos renseign = this.backend.getDate(request.getParameter("code_commune"));
+        RenseignUrbaInfos renseign = this.backend.getDate(request.getParameter(CODE_COMMUNE));
 
         JSONObject res = new JSONObject();
 
-        res.put("code_commune", request.getParameter("code_commune"));
-        res.put("date_ru", renseign.getDate_ru());
-        res.put("date_pci", renseign.getDate_pci());
+        res.put(CODE_COMMUNE, request.getParameter(CODE_COMMUNE));
+        res.put(DATE_RU, renseign.getDate_ru());
+        res.put(DATE_PCI, renseign.getDate_pci());
 
-        response.setContentType("application/json; charset=utf-8");
+        response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));
     }
 
