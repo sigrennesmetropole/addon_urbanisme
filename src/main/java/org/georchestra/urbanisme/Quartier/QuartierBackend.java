@@ -43,34 +43,27 @@ public class QuartierBackend {
      * @throws SQLException
      */
     public Quartier getNumNom(String parcelle) throws SQLException {
-        Connection connection = null;
-        PreparedStatement queryQuartierByParcelle = null;
-
         String numnom = "";
-
-        try {
-            connection = this.basicDataSource.getConnection();
-
-            String query = "SELECT"
-                    +" numnom "
-                    +" FROM "
-                    + this.functionQuartier+"(?);";
-
-            queryQuartierByParcelle = connection.prepareStatement(query);
+        String query = "SELECT"
+                +" numnom "
+                +" FROM "
+                + this.functionQuartier+"(?);";
+        ResultSet rs = null;
+        try (
+             Connection connection = this.basicDataSource.getConnection();
+             PreparedStatement queryQuartierByParcelle = connection.prepareStatement(query);
+        ) {
             queryQuartierByParcelle.setString(1, parcelle);
-            ResultSet rs = queryQuartierByParcelle.executeQuery();
+            rs = queryQuartierByParcelle.executeQuery();
 
-            while(rs.next()) {
-                numnom= rs.getString("numnom");
+            while (rs.next()) {
+                numnom = rs.getString("numnom");
             }
-            Quartier quartier = new Quartier(numnom);
-            return quartier;
+
+            return new Quartier(numnom);
         } finally {
-            if ((queryQuartierByParcelle != null) && (!queryQuartierByParcelle.isClosed())) {
-                queryQuartierByParcelle.close();
-            }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
+            if (rs != null) {
+                rs.close();
             }
         }
     }

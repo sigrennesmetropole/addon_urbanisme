@@ -10,9 +10,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
 
 @Controller
 public class AdsAutorisationController {
+
+    private static final String PARCELLE = "parcelle";
+    private static final String NUM_DOSSIER = "numdossier";
+    private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
      * Backend managing database configuration
@@ -42,26 +48,26 @@ public class AdsAutorisationController {
      * @throws Exception
      */
     @RequestMapping(value = "/adsAutorisation", method = RequestMethod.GET)
-    public void getAdsAutorisation(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getAdsAutorisation(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
-        AdsAutorisation adsAutorisation = this.backend.getNumDossier(request.getParameter("parcelle"));
+        AdsAutorisation adsAutorisation = this.backend.getNumDossier(request.getParameter(PARCELLE));
 
         JSONArray nums = new JSONArray();
 
 
         for (String numdossier : adsAutorisation.getNumdossier()) {
             JSONObject numDossierRow = new JSONObject();
-            numDossierRow.put("numdossier", numdossier);
+            numDossierRow.put(NUM_DOSSIER, numdossier);
             nums.put(numDossierRow);
         }
 
         JSONObject res = new JSONObject();
 
-        res.put("numdossier", nums);
-        res.put("parcelle", request.getParameter("parcelle"));
+        res.put(NUM_DOSSIER, nums);
+        res.put(PARCELLE, request.getParameter(PARCELLE));
 
 
-        response.setContentType("application/json; charset=utf-8");
+        response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));
     }
 }

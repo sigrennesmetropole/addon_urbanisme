@@ -3,15 +3,14 @@ package org.georchestra.urbanisme;
 import java.io.File;
 import java.io.IOException;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.classic.joran.JoranConfigurator;
+import ch.qos.logback.core.joran.spi.JoranException;
 import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.classic.joran.JoranConfigurator;
-import ch.qos.logback.core.joran.spi.JoranException;
 
 /**
  * Simple Utility class for loading an external config file for logback
@@ -26,7 +25,7 @@ public class GeorchestraLogBackConfigLoader {
 	private Logger logger = LoggerFactory.getLogger(GeorchestraLogBackConfigLoader.class);
 
 	public GeorchestraLogBackConfigLoader() {
-
+		// constructeur par défaut
 	}
 
 	@PostConstruct
@@ -46,20 +45,16 @@ public class GeorchestraLogBackConfigLoader {
 		}
 
 		if (!urbaLogBackFile.isFile()) {
-			logger.error("Logback External Config File Parameter exists, " + "but does not reference a file: "
-					+ urbaLogBackFile);
-			return;
+			logger.error("Logback External Config File Parameter exists, but does not reference a file: {}", urbaLogBackFile);
 		} else {
 			if (!urbaLogBackFile.canRead()) {
-				logger.error("Logback External Config File exists and is a file, " + "but cannot be read: "
-						+ urbaLogBackFile);
-				return;
+				logger.error("Logback External Config File exists and is a file, but cannot be read: {}", urbaLogBackFile);
 			} else {
 				JoranConfigurator configurator = new JoranConfigurator();
 				configurator.setContext(lc);
 				lc.reset();
 				configurator.doConfigure(urbaLogBackFile);
-				logger.info("Configured Logback with config file from: " + urbaLogBackFile);
+				logger.info("Configured Logback with config file from: {}", urbaLogBackFile);
 			}
 		}
 	}
