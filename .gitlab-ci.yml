@@ -233,7 +233,7 @@ urb:deploy-karbon:dev:
 urb:deploy-karbon:qua:
   extends: .urb:deploy-karbon
   needs:
-    - job: urb:deploy-karbon:prepare:dev
+    - job: urb:deploy-karbon:prepare:qua
       artifacts: true
   only:
     refs:
