@@ -201,6 +201,15 @@ urb:deploy-karbon:prepare:dev:
   variables:
     TARGET_ENV: dev
 
+urb:deploy-karbon:prepare:qua:
+  extends: .urb:deploy-karbon:prepare
+  only:
+    refs:
+      - open/master
+      - /.*karbonification.*/
+  variables:
+    TARGET_ENV: dev
+
 .urb:deploy-karbon:
   stage: deploy
   trigger:
