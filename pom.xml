@@ -16,7 +16,7 @@
 
     This module has been funded by Rennes-Métropole.</description>
   <properties>
-    <spring.version>4.2.5.RELEASE</spring.version>
+    <spring.version>5.2.9.RELEASE</spring.version>
     <spring.data.version>1.9.1.RELEASE</spring.data.version>
     <geotools.version>11.0</geotools.version>
     <metrics.version>3.0.2</metrics.version>
