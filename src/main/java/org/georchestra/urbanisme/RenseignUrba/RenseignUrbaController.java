@@ -20,6 +20,7 @@
 package org.georchestra.urbanisme.RenseignUrba;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,6 +45,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class RenseignUrbaController {
 
+    private static final String PARCELLE = "parcelle";
+    private static final String LIBELLES = "libelles";
+    private static final String LIBELLE = "libelle";
+    private static final String GROUPES_LIBELLE = "groupesLibelle";
+    private static final String GROUPE_RU = "groupe_ru";
+    private static final String ORDRE = "ordre";
+    private static final String ADRESSES_POSTALES = "adressesPostales";
+    private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
+
     /**
      * Backend managing database configuration
      */
@@ -63,16 +73,6 @@ public class RenseignUrbaController {
     private String jdbcUrl;
     @Value("${driverClassName}")
     private String driverClassName;
-
-
-    private static final String PARCELLE = "parcelle";
-    private static final String LIBELLES = "libelles";
-    private static final String LIBELLE = "libelle";
-    private static final String GROUPES_LIBELLE = "groupesLibelle";
-    private static final String GROUPE_RU = "groupe_ru";
-    private static final String ORDRE = "ordre";
-    private static final String ADRESSES_POSTALES = "adressesPostales";
-    private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
      * This read configuration in datadir a create configured backend
@@ -109,7 +109,7 @@ public class RenseignUrbaController {
      * @throws Exception
      */
     @RequestMapping(value = "/renseignUrba", method = RequestMethod.GET)
-    public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
         RenseignUrba renseign = this.backend.getParcelle(request.getParameter(PARCELLE));
 
@@ -139,7 +139,7 @@ public class RenseignUrbaController {
      * @throws Exception
      */
     @RequestMapping(value = "/renseignUrbaGroupe", method = RequestMethod.GET)
-    public void getNewRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void getNewRenseignUrba(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
         // On récupère le renseignement d'urbanisme
         RenseignUrba renseign = this.backend.getParcelleNouvelleNRU(request.getParameter(PARCELLE));

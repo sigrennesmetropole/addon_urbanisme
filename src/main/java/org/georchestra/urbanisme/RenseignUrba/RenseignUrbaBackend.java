@@ -82,31 +82,25 @@ public class RenseignUrbaBackend {
      * @throws SQLException
      */
     public RenseignUrba getParcelle(String parcelle) throws SQLException {
-
-        Connection connection = null;
-        PreparedStatement queryLibellesByParcelle = null;
-
         List<String> libellesVal = new ArrayList<>();
-
-        try {
-            connection = this.basicDataSource.getConnection();
-            String query = this.getNRUQuery();
-
-            queryLibellesByParcelle = connection.prepareStatement(query);
+        String query = this.getNRUQuery();
+        ResultSet rs = null;
+        try (
+                Connection connection = this.basicDataSource.getConnection();
+                PreparedStatement queryLibellesByParcelle = connection.prepareStatement(query);
+        ){
             queryLibellesByParcelle.setString(1, parcelle);
-            ResultSet rs = queryLibellesByParcelle.executeQuery();
 
+            rs = queryLibellesByParcelle.executeQuery();
             while (rs.next()) {
                 String libelle = rs.getString("libelle");
                 libellesVal.add(libelle);
             }
+
             return new RenseignUrba(parcelle, libellesVal);
         } finally {
-            if ((queryLibellesByParcelle != null) && (!queryLibellesByParcelle.isClosed())) {
-                queryLibellesByParcelle.close();
-            }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
+            if (rs != null) {
+                rs.close();
             }
         }
     }
@@ -124,14 +118,14 @@ public class RenseignUrbaBackend {
         List<String> libellesVal = new ArrayList<>();
         List<String> groupesRu = new ArrayList<>();
         List<Long> ordres = new ArrayList<>();
-
+        ResultSet rs = null;
 
         String query = this.getNewNRUQuery();
         try (Connection connection =  this.basicDataSource.getConnection();
              PreparedStatement queryInfosByParcelle = connection.prepareStatement(query);
         ) {
             queryInfosByParcelle.setString(1, parcelle);
-            ResultSet rs = queryInfosByParcelle.executeQuery();
+            rs = queryInfosByParcelle.executeQuery();
 
             while (rs.next()) {
                 String libelle = rs.getString("libelle");
@@ -142,6 +136,10 @@ public class RenseignUrbaBackend {
                 ordres.add(ordre);
             }
             return new RenseignUrba(parcelle, libellesVal, groupesRu, ordres);
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
         }
     }
 
@@ -190,33 +188,32 @@ public class RenseignUrbaBackend {
      * @return Liste d'adresses postales
      */
     public List<String> getAdressesPostales(String parcelle) throws SQLException {
-        Connection connection = null;
-        PreparedStatement queryAdressesPostalesByParcelle = null;
-
         List<String> adressesPostales = new ArrayList<>();
-
-        try {
-            connection = this.basicDataSource.getConnection();
+        PreparedStatement queryAdressesPostalesByParcelle = null;
+        ResultSet rs = null;
+        try (Connection connection = this.basicDataSource.getConnection()){
             if (StringUtils.isEmpty(this.parcelleAdresseRvaTable)) {
                 return adressesPostales;
             }
-            String query = "SELECT adresse FROM " + this.parcelleAdresseRvaTable + " WHERE parc_ident = ?";
 
+            String query = "SELECT adresse FROM " + this.parcelleAdresseRvaTable + " WHERE parc_ident = ?";
             queryAdressesPostalesByParcelle = connection.prepareStatement(query);
             queryAdressesPostalesByParcelle.setString(1, parcelle);
-            ResultSet rs = queryAdressesPostalesByParcelle.executeQuery();
+            rs = queryAdressesPostalesByParcelle.executeQuery();
 
             while (rs.next()) {
                 String adressePostale = rs.getString("adresse");
                 adressesPostales.add(adressePostale);
             }
+
             return adressesPostales;
         } finally {
-            if ((queryAdressesPostalesByParcelle != null) && (!queryAdressesPostalesByParcelle.isClosed())) {
+            if (queryAdressesPostalesByParcelle != null) {
                 queryAdressesPostalesByParcelle.close();
             }
-            if ((connection != null) && (!connection.isClosed())) {
-                connection.close();
+
+            if(rs != null){
+                rs.close();
             }
         }
     }

@@ -30,6 +30,5 @@
     <context:property-placeholder properties-ref="urbaProps" />
 
 	<import resource="classpath:mapfish-spring-application-context.xml" />
-	
 
 </beans>
