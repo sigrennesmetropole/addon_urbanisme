@@ -29,6 +29,7 @@ public class RenseignUrba {
     private String parcelle;
     private List<String> libelles;
     private List<String> groupesRu;
+    private List<String> typeDocuments;
     private List<Long> ordres;
 
     /**
@@ -48,11 +49,13 @@ public class RenseignUrba {
      * @param parcelle Parcelle ID.
      * @param libelles List of libelle string
      * @param groupesRu List of groupe Ru
+     * @param typeDocuments List of the type of documents
      */
-    public RenseignUrba(String parcelle, List<String> libelles, List<String> groupesRu, List<Long> ordres) {
+    public RenseignUrba(String parcelle, List<String> libelles, List<String> groupesRu, List<String> typeDocuments, List<Long> ordres) {
         this.parcelle = parcelle;
         this.libelles = libelles;
         this.groupesRu = groupesRu;
+        this.typeDocuments = typeDocuments;
         this.ordres = ordres;
     }
 
@@ -64,12 +67,13 @@ public class RenseignUrba {
         return libelles;
     }
 
-
-    public List<String> getGroupesRu() {
+   public List<String> getGroupesRu() {
         return groupesRu;
     }
 
-    public List<Long> getOrdres() {
+   public List<String> getTypeDocuments() {return typeDocuments;}
+
+   public List<Long> getOrdres() {
         return ordres;
     }
 }

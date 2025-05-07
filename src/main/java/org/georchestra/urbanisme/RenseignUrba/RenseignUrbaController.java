@@ -50,6 +50,7 @@ public class RenseignUrbaController {
     private static final String LIBELLE = "libelle";
     private static final String GROUPES_LIBELLE = "groupesLibelle";
     private static final String GROUPE_RU = "groupe_ru";
+    private static final String TYPE_DOCUMENTS = "type";
     private static final String ORDRE = "ordre";
     private static final String ADRESSES_POSTALES = "adressesPostales";
     private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
@@ -164,6 +165,7 @@ public class RenseignUrbaController {
                 }
                 groupeRu.put(GROUPE_RU, groupe);
                 groupeRu.put(ORDRE, ordre);
+
                 // On ajoute ensuite tous les libelles associés à ce groupement de renseignements
                 List<String> libelles = new ArrayList<>();
                 for (int i = 0; i < renseign.getLibelles().size(); i++) {
@@ -172,6 +174,15 @@ public class RenseignUrbaController {
                     }
                 }
                 groupeRu.put(LIBELLES, libelles);
+
+                // On continue en ajoutant tous les types de documents associés
+                List<String> types = new ArrayList<>();
+                for (int i = 0; i < renseign.getTypeDocuments().size(); i++) {
+                    if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe)) {
+                        types.add(renseign.getTypeDocuments().get(i));
+                    }
+                }
+                groupeRu.put(TYPE_DOCUMENTS, types);
                 // On ajoute le groupement de personne à la liste des groupements de personnes
                 groupesRenseignements.put(groupeRu);
             } catch (JSONException e) {

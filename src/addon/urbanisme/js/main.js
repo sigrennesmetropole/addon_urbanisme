@@ -25,6 +25,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
                         "adresseProprio",
                         "dateRU",
                         "datePCI",
+                        "typeDocument",
                         "num_dossier",
                         "nom",
                         "ini_instru",
@@ -96,6 +97,15 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             var noteRecord = this.getAt(0).copy();
             noteRecord.set("dateRU", dateRecord.get("date_ru"));
             noteRecord.set("datePCI",date_Pci);
+            this.add([noteRecord]);
+        },
+
+        updateTypeDocument: function(typeDocumentRecord) {
+            if (typeDocument === undefined) {
+                return;
+            }
+            var noteRecord = this.getAt(0).copy();
+            noteRecord.set("typeDocument", typeDocumentRecord.get("type"));
             this.add([noteRecord]);
         },
 
@@ -200,6 +210,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
      * Informations retrieved from addon server about « date
      */
     dateStore: null,
+
+    /**
+     * Informations retrieved from addon server about « typeDocument
+     */
+    typeDocumentStore: null,
 
     /**
      * Informations retrieved from addon server about « adsInstruction
@@ -699,6 +714,28 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
             }
         });
 
+        this.typeDocumentStore = new Ext.data.JsonStore({
+            idProperty: "document_urbanisme",
+            root: "",
+            fields: [
+                "type_document"
+            ],
+            proxy: new Ext.data.HttpProxy({
+                method: "GET",
+                url: this.options.printServerUrl + "/getTypeDocument"
+            }),
+            listeners: {
+                "load": {
+                    fn: function(store, records) {
+                        //We assume there is only 1 returned record
+                        this.noteStore.updateTypeDocument(records[0]);
+                        this.checkRemainingXHRs();
+                    },
+                    scope: this
+                }
+            }
+        });
+
         this.adsAutorisationStore = new Ext.data.JsonStore({
             idProperty: "parcelle",
             root: "",
@@ -872,6 +909,10 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         '<td class="parcelle-table-label">Millésime du cadastre</td>',
                         '<td>{datePCI}</td>',
                         '</tr>',
+                        `${ !typeDocument == "Donnée vivante"  && '<tr>'}`,
+                        `${ !typeDocument == "Donnée vivante"  && '<td class="parcelle-table-label">Documents d\'urbanisme</td>'}`,
+                        `${ !typeDocument == "Donnée vivante"  && '<td>{typeDocument}</td>'}`,
+                        `${ !typeDocument == "Donnée vivante"  && '</tr>'}`,
                         '</table>',
                         '</div>',
                         '</tpl>'
@@ -898,6 +939,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, libellesArray, libellesAsString, parcelle;
+                    var nomLayer = "A4 portrait ADS";
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
@@ -911,8 +953,20 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     parcelle = this.noteStore.getAt(0).get("parcelle");
 
+                    if (this.typeDocumentStore != null) {
+                        for (var i in this.typeDocumentStore) {
+                            if (this.typeDocumentStore[i] === "PSMV") {
+                                nomLayer = "A4 portrait PSMV";
+                                break;
+                            }
+                            if (this.typeDocumentStore[i] === "PLUi") {
+                                nomLayer = "A4 portrait PLUi";
+                            }
+                        }
+                    }
+
                     params = {
-                        layout: "A4 portrait",
+                        layout: nomLayer,
                         outputFilename:"NRU_"+parcelle,
                         attributes: {
                             map: {
@@ -934,6 +988,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                             adresseProprio: this.noteStore.getAt(0).get("adresseProprio"),
                             dateRU: this.noteStore.getAt(0).get("dateRU"),
                             datePCI: this.noteStore.getAt(0).get("datePCI"),
+                            typeDocument: this.noteStore.getAt(0).get("typeDocument"),
                             libelles: libellesAsString
                         }
                     };
@@ -1093,6 +1148,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, NumDossierAsString, parcelle, instruction, num_nom;
+                    var nomLayer = "A4 portrait ADS";
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
 
@@ -1115,8 +1171,20 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                         num_nom=this.noteStore.getAt(0).get("num_nom");
                     }
 
+                    if (this.typeDocumentStore != null) {
+                        for (var i in this.typeDocumentStore) {
+                            if (this.typeDocumentStore[i] === "PSMV") {
+                                nomLayer = "A4 portrait PSMV";
+                                break;
+                            }
+                            if (this.typeDocumentStore[i] === "PLUi") {
+                                nomLayer = "A4 portrait PLUi";
+                            }
+                        }
+                    }
+
                     params = {
-                        layout: "A4 portrait ADS",
+                        layout: nomLayer,
                         outputFilename:"ADS_"+parcelle,
                         attributes: {
                             map: {
@@ -1207,6 +1275,11 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.dateStore.load({
             params: {
                 code_commune: parcelle.slice(0, 6).substr(0,2) + parcelle.slice(0, 6).substr(3,6)
+            }
+        });
+        this.typeDocumentStore.load({
+            params: {
+                type_document: parcelle
             }
         });
         this.parcelleWindow.show();
@@ -1333,6 +1406,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
         this.proprioStore.destroy();
         this.proprioStoreSurf.destroy();
         this.dateStore.destroy();
+        this.typeDocumentStore.destroy();
         this.adsInstructionStore.destroy();
         this.adsAutorisationStore.destroy();
         this.referentQuartierStore.destroy();

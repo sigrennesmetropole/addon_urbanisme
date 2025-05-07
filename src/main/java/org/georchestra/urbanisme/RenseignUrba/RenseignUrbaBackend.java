@@ -117,6 +117,7 @@ public class RenseignUrbaBackend {
 
         List<String> libellesVal = new ArrayList<>();
         List<String> groupesRu = new ArrayList<>();
+        List<String> typeDocuments = new ArrayList<>();
         List<Long> ordres = new ArrayList<>();
         ResultSet rs = null;
 
@@ -133,9 +134,11 @@ public class RenseignUrbaBackend {
                 String groupeRu = rs.getString("groupe_ru");
                 Long ordre = rs.getLong("ordre");
                 groupesRu.add(groupeRu);
+                String typeDocument = rs.getString("type");
+                typeDocuments.add(typeDocument);
                 ordres.add(ordre);
             }
-            return new RenseignUrba(parcelle, libellesVal, groupesRu, ordres);
+            return new RenseignUrba(parcelle, libellesVal, groupesRu, typeDocuments, ordres);
         } finally {
             if (rs != null) {
                 rs.close();
