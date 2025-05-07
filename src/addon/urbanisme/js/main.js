@@ -118,7 +118,7 @@ Ext.namespace("GEOR.Addons", "GEOR.data");
             var ads= "Aucun ADS trouvé pour la parcelle";
 
             var arr=adsAutorisationRecord.get("numdossier");
-            var AdsArray = new Array();
+            var AdsArray = [];
             if(arr.length == 0){
                 AdsArray.push(ads);
             }else {
@@ -180,7 +180,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
     ficheAdsWindow: null,
 
     /**
-     * Informations retrieved from addon server about « libelles
+     * Information retrieved from addon server about « libelles
      */
     libellesStore: null,
 
@@ -191,43 +191,43 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
 
     /**
-     * Informations retrieved from cadastrapp about « parcelle cadastrale » - {Ext.data.JsonStore}
+     * Information retrieved from cadastrapp about « parcelle cadastrale » - {Ext.data.JsonStore}
      */
     parcelleStore: null,
 
 
     /**
-     * Informations retrived from cadastrapp about owners - {Ext.data.JsonStore}
+     * Information retrived from cadastrapp about owners - {Ext.data.JsonStore}
      */
     proprioStore: null,
 
     /**
-     * Informations retrived from cadastrapp about surfaceSIG - {Ext.data.JsonStore}
+     * Information retrived from cadastrapp about surfaceSIG - {Ext.data.JsonStore}
      */
     proprioStoreSurf: null,
 
     /**
-     * Informations retrieved from addon server about « date
+     * Information retrieved from addon server about « date
      */
     dateStore: null,
 
     /**
-     * Informations retrieved from addon server about « typeDocument
+     * Information retrieved from addon server about « typeDocument
      */
     typeDocumentStore: null,
 
     /**
-     * Informations retrieved from addon server about « adsInstruction
+     * Information retrieved from addon server about « adsInstruction
      */
     adsInstructionStore: null,
 
     /**
-     * Informations retrieved from addon server about « adsAutorisation
+     * Information retrieved from addon server about « adsAutorisation
      */
     adsAutorisationStore: null,
 
     /**
-     * Informations retrieved from addon server about « referentQuartier
+     * Information retrieved from addon server about « referentQuartier
      */
     referentQuartierStore: null,
 
@@ -939,7 +939,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, libellesArray, libellesAsString, parcelle;
-                    var nomLayer = "A4 portrait ADS";
+                    var layerName = "A4 portrait ADS";
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
@@ -956,17 +956,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     if (this.typeDocumentStore != null) {
                         for (var i in this.typeDocumentStore) {
                             if (this.typeDocumentStore[i] === "PSMV") {
-                                nomLayer = "A4 portrait PSMV";
+                                layerName = "A4 portrait PSMV";
                                 break;
                             }
                             if (this.typeDocumentStore[i] === "PLUi") {
-                                nomLayer = "A4 portrait PLUi";
+                                layerName = "A4 portrait PLUi";
                             }
                         }
                     }
 
                     params = {
-                        layout: nomLayer,
+                        layout: layerName,
                         outputFilename:"NRU_"+parcelle,
                         attributes: {
                             map: {
@@ -1148,7 +1148,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, NumDossierAsString, parcelle, instruction, num_nom;
-                    var nomLayer = "A4 portrait ADS";
+                    var layerName = "A4 portrait ADS";
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
 
@@ -1157,14 +1157,14 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     parcelle=this.noteStore.getAt(0).get("id_parcelle");
 
-                    //dans le cas ou nom et ini_instruction sont vide
+                    //dans le cas ou nom et ini_instruction sont vides
                     if(this.noteStore.getAt(0).get("nom") =='' || this.noteStore.getAt(0).get("ini_instru") == ''){
                         instruction="Aucun secteur d'instruction ne correspond à la localisation de la parcelle";
                     }else{
                         instruction=this.noteStore.getAt(0).get("nom") +" / "+ this.noteStore.getAt(0).get("ini_instru");
                     }
 
-                    //dans le cas où num_nom est vide
+                    //dans le cas où le num_nom est vide
                     if(this.noteStore.getAt(0).get("num_nom") ==''){
                         num_nom="Aucun quartier ne correspond à la localisation de la parcelle";
                     }else{
@@ -1174,17 +1174,17 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                     if (this.typeDocumentStore != null) {
                         for (var i in this.typeDocumentStore) {
                             if (this.typeDocumentStore[i] === "PSMV") {
-                                nomLayer = "A4 portrait PSMV";
+                                layerName = "A4 portrait PSMV";
                                 break;
                             }
                             if (this.typeDocumentStore[i] === "PLUi") {
-                                nomLayer = "A4 portrait PLUi";
+                                layerName = "A4 portrait PLUi";
                             }
                         }
                     }
 
                     params = {
-                        layout: nomLayer,
+                        layout: layerName,
                         outputFilename:"ADS_"+parcelle,
                         attributes: {
                             map: {

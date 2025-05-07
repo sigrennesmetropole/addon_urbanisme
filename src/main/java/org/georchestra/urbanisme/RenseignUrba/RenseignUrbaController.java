@@ -148,11 +148,11 @@ public class RenseignUrbaController {
         // On recupere les adresses postales
         List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
 
-        // Initialisation du la liste des groupes de renseignements
+        // Initialisation de la liste des groupes de renseignements
         JSONArray groupesRenseignements= new JSONArray();
         AtomicReference<JSONException> jsonException = null;
-        // On parcourts les groupes après un filtre éliminant les doublons
-        // Le but de regrouper les renseignement par groupe de renseignement
+        // On parcourt les groupes après un filtre éliminant les doublons
+        // Le but de regrouper les renseignements par groupe de renseignement
         renseign.getGroupesRu().stream().distinct().forEach(groupe -> {
             try {
                 // Pour chaque groupe de renseignement

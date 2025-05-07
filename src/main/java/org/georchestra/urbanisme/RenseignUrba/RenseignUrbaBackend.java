@@ -34,16 +34,16 @@ import org.apache.commons.lang.StringUtils;
  */
 public class RenseignUrbaBackend {
 
-    private String table;
-    private String tableTheme;
-    private String tableThemeGroupes;
-    private String ordreTheme;
-    private String parcelleAdresseRvaTable;
-    private String jdbcUrl;
+    private final String table;
+    private final String tableTheme;
+    private final String tableThemeGroupes;
+    private final String ordreTheme;
+    private final String parcelleAdresseRvaTable;
+    private final String jdbcUrl;
     private BasicDataSource basicDataSource;
 
     /**
-     * Create a new instance of RenseignUrbaBackend and crate a BasicDataSource configured with jdbc URL
+     * Create a new instance of RenseignUrbaBackend and create a BasicDataSource configured with jdbc URL
      *
      * @param table      name of table containing renseignement d'urbanisme (libelles)
      * @param tableTheme name of table containing theme description
