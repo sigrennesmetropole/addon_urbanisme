@@ -55,3 +55,69 @@ templates:
                 headers:
                     User-Agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0"
           - !createMap {}
+
+    A4 portrait PLUi: !template
+      reportTemplate: A4_Portrait_PLUi.jrxml
+      attributes:
+        parcelle: !string { }
+        commune: !string { }
+        codeSection: !string { }
+        numero: !string { }
+        adresseCadastrale: !string { }
+        contenanceDGFiP: !string { }
+        surfaceSIG: !string { }
+        codeProprio: !string { }
+        nomProprio: !string { }
+        adresseProprio: !string { }
+        dateRU: !string { }
+        datePCI: !string { }
+        libelles: !string { }
+        typeDocument: !string { }
+        legendURL: !string
+          default: ""
+        map: !map
+          maxDpi: 254
+          width: 555
+          height: 280
+      processors:
+        - !reportBuilder # compile all reports in current directory
+          directory: '.'
+        - !configureHttpRequests
+          httpProcessors:
+            - !addHeaders
+              headers:
+                User-Agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0"
+        - !createMap { }
+
+    A4 portrait PSMV: !template
+      reportTemplate: A4_Portrait_PSMV.jrxml
+      attributes:
+        parcelle: !string { }
+        commune: !string { }
+        codeSection: !string { }
+        numero: !string { }
+        adresseCadastrale: !string { }
+        contenanceDGFiP: !string { }
+        surfaceSIG: !string { }
+        codeProprio: !string { }
+        nomProprio: !string { }
+        adresseProprio: !string { }
+        dateRU: !string { }
+        datePCI: !string { }
+        libelles: !string { }
+        typeDocument: !string { }
+        legendURL: !string
+          default: ""
+        map: !map
+          maxDpi: 254
+          width: 555
+          height: 280
+      processors:
+        - !reportBuilder # compile all reports in current directory
+          directory: '.'
+        - !configureHttpRequests
+          httpProcessors:
+            - !addHeaders
+              headers:
+                User-Agent: "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:42.0) Gecko/20100101 Firefox/42.0"
+        - !createMap { }
