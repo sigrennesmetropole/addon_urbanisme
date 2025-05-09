@@ -939,7 +939,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, libellesArray, libellesAsString, parcelle;
-                    var layerName = "A4 portrait ADS";
+                    var layerName = this.options.template.defaut;
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
                     libellesArray = [];
@@ -955,12 +955,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     if (this.typeDocumentStore != null) {
                         for (var i in this.typeDocumentStore) {
-                            if (this.typeDocumentStore[i] === "PSMV") {
-                                layerName = "A4 portrait PSMV";
+                            if (this.typeDocumentStore[i] === this.options.type_template.PSMV) {
+                                layerName = this.options.template.PSMV;
                                 break;
                             }
-                            if (this.typeDocumentStore[i] === "PLUi") {
-                                layerName = "A4 portrait PLUi";
+                            if (this.typeDocumentStore[i] === this.options.type_template.PLUi) {
+                                layerName = this.options.template.PLUi;
                             }
                         }
                     }
@@ -1148,7 +1148,7 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
                 //disabled: true, // only activate when all XHRs are finished
                 handler: function() {
                     var params, centerLonLat, NumDossierAsString, parcelle, instruction, num_nom;
-                    var layerName = "A4 portrait ADS";
+                    var layerName = this.options.template.defaut;
 
                     centerLonLat = this.vectorLayer.getDataExtent().getCenterLonLat();
 
@@ -1173,12 +1173,12 @@ GEOR.Addons.Urbanisme = Ext.extend(GEOR.Addons.Base, {
 
                     if (this.typeDocumentStore != null) {
                         for (var i in this.typeDocumentStore) {
-                            if (this.typeDocumentStore[i] === "PSMV") {
-                                layerName = "A4 portrait PSMV";
+                            if (this.typeDocumentStore[i] === this.options.type_template.PSMV) {
+                                layerName = this.options.template.PSMV;
                                 break;
                             }
-                            if (this.typeDocumentStore[i] === "PLUi") {
-                                layerName = "A4 portrait PLUi";
+                            if (this.typeDocumentStore[i] === this.options.type_template.PLUi) {
+                                layerName = this.options.template.PLUi;
                             }
                         }
                     }
