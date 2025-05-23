@@ -29,6 +29,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,10 @@ public class RenseignUrbaController {
     private String ordreTheme;
     @Value("${tableThemeGroupes:}")
     private String tableThemeGroupes;
+    @Value("${excludeTypes:Donnée vivante}")
+    private List<String> excludeDocumentTypes;
+    @Value("${renseignUrbaTable.column.type:}")
+    private String renseignUrbaTableTypeColumn;
     @Value("${jdbcUrl}")
     private String jdbcUrl;
     @Value("${driverClassName}")
@@ -81,7 +86,7 @@ public class RenseignUrbaController {
     @PostConstruct
     private void init() {
         this.backend = new RenseignUrbaBackend(driverClassName, renseignUrbaTable,
-                tableTheme, tableThemeGroupes, ordreTheme, parcelleAdresseRvaTable, jdbcUrl);
+                renseignUrbaTableTypeColumn, tableTheme, tableThemeGroupes, ordreTheme, parcelleAdresseRvaTable, jdbcUrl);
     }
 
     /**
@@ -150,7 +155,7 @@ public class RenseignUrbaController {
 
         // Initialisation de la liste des groupes de renseignements
         JSONArray groupesRenseignements= new JSONArray();
-        AtomicReference<JSONException> jsonException = null;
+        AtomicReference<JSONException> jsonException = new AtomicReference<>(null);
         // On parcourt les groupes après un filtre éliminant les doublons
         // Le but de regrouper les renseignements par groupe de renseignement
         renseign.getGroupesRu().stream().distinct().forEach(groupe -> {
@@ -178,8 +183,9 @@ public class RenseignUrbaController {
                 // On continue en ajoutant tous les types de documents associés
                 List<String> types = new ArrayList<>();
                 for (int i = 0; i < renseign.getTypeDocuments().size(); i++) {
-                    if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe)) {
-                        types.add(renseign.getTypeDocuments().get(i));
+                	String type = renseign.getTypeDocuments().get(i);
+                    if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe) && !excludeDocumentTypes.contains(type)) {
+                        types.add(type);
                     }
                 }
                 groupeRu.put(TYPE_DOCUMENTS, types);
