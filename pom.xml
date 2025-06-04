@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.georchestra</groupId>
 	<artifactId>urbanisme</artifactId>
-	<version>17.0</version>
+	<version>18.0</version>
 	<packaging>war</packaging>
 	<description>This project contains two different things:
 
@@ -45,6 +45,7 @@
 		<jasperreports.version>6.17.0</jasperreports.version>
 		<velocity.version>1.7</velocity.version>
 		<logback.version>1.5.17</logback.version>
+		<commons-collection.version>4.5.0</commons-collection.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -289,6 +290,12 @@
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports-fonts</artifactId>
 			<version>${jasperreports.fonts.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-collections4</artifactId>
+		    <version>${commons-collection.version}</version>
 		</dependency>
 	</dependencies>
 	<repositories>
