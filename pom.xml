@@ -35,7 +35,7 @@
 		<metrics.version>4.2.30</metrics.version>
 		<jsr166y.version>1.7.0</jsr166y.version>
 		<postgresql.version>42.7.5</postgresql.version>
-		<junit.version>4.13.2</junit.version>
+		
 		<snakeyaml.version>2.4</snakeyaml.version>
 		<commons-dbcp2.version>2.13.0</commons-dbcp2.version>
 		<org.json.version>20240303</org.json.version>
@@ -46,6 +46,8 @@
 		<velocity.version>1.7</velocity.version>
 		<logback.version>1.5.17</logback.version>
 		<commons-collection.version>4.5.0</commons-collection.version>
+		<junit.version>5.8.2</junit.version>
+		<mockito.version>4.5.1</mockito.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -225,12 +227,12 @@
 			<version>${postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
 			<scope>test</scope>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
@@ -297,6 +299,16 @@
 		    <artifactId>commons-collections4</artifactId>
 		    <version>${commons-collection.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito.version}</version>
+  		</dependency>
+  		<dependency>
+  			<groupId>org.junit.jupiter</groupId>
+  			<artifactId>junit-jupiter-engine</artifactId>
+  			<version>${junit.version}</version>
+  		</dependency>
 	</dependencies>
 	<repositories>
 		<repository>

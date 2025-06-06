@@ -94,4 +94,21 @@ public class TemplateRuleHelper {
 		return result;
 	}
 
+
+	public String getDefaultTemplate() {
+		return defaultTemplate;
+	}
+
+	public void setDefaultTemplate(String defaultTemplate) {
+		this.defaultTemplate = defaultTemplate;
+	}
+
+	public Map<String, Map<String, String>> getTemplatesRulesMap() {
+		return templatesRulesMap;
+	}
+
+	public void setTemplatesRulesMap(Map<String, Map<String, String>> templatesRulesMap) {
+		this.templatesRulesMap = templatesRulesMap;
+	}
+
 }
