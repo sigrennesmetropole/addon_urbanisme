@@ -139,7 +139,7 @@ public class RenseignUrbaBackend {
 				groupesRu.add(groupeRu);
 				if (StringUtils.isNotEmpty(tableTypeColumn)) {
 					String typeDocument = rs.getString(tableTypeColumn);
-					if (StringUtils.isNotEmpty(typeDocument)) {
+					if (StringUtils.isNotEmpty(typeDocument) && !typeDocuments.contains(typeDocument)) {
 						typeDocuments.add(typeDocument);
 					}
 				}
