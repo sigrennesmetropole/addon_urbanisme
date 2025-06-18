@@ -1,4 +1,4 @@
-throwErrorOnExtraParameters: true
+throwErrorOnExtraParameters: false
 
 templates:
   A4 portrait: !template
