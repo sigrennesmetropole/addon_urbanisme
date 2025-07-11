@@ -22,8 +22,6 @@ templates:
         default: ""
       adressesPostales: !string
         default: ""
-      libelles: !string
-        default: ""
       intra: !boolean
         default: false
       libelles_1: !string
@@ -110,6 +108,40 @@ templates:
       datePCI: !string { }
       libelles: !string
         default: ""
+      mapImageStream: !string
+        default: ""
+      adressesPostales: !string
+        default: ""
+      intra: !boolean
+        default: false
+      libelles_1: !string
+        default: ""
+      libelles_2: !string
+        default: ""
+      libelles_311: !string
+        default: ""
+      libelles_312: !string
+        default: ""
+      libelles_313: !string
+        default: ""
+      libelles_314: !string
+        default: ""
+      libelles_315: !string
+        default: ""
+      libelles_32: !string
+        default: ""
+      libelles_33: !string
+        default: ""
+      libelles_4: !string
+        default: ""
+      libelles_5: !string
+        default: ""
+      libelles_6: !string
+        default: ""
+      libelles_7: !string
+        default: ""
+      libelles_alertes: !string
+        default: ""
       typeDocument: !string { }
       legendURL: !string
         default: ""
@@ -143,6 +175,40 @@ templates:
       dateRU: !string { }
       datePCI: !string { }
       libelles: !string
+        default: ""
+      mapImageStream: !string
+        default: ""
+      adressesPostales: !string
+        default: ""
+      intra: !boolean
+        default: false
+      libelles_1: !string
+        default: ""
+      libelles_2: !string
+        default: ""
+      libelles_311: !string
+        default: ""
+      libelles_312: !string
+        default: ""
+      libelles_313: !string
+        default: ""
+      libelles_314: !string
+        default: ""
+      libelles_315: !string
+        default: ""
+      libelles_32: !string
+        default: ""
+      libelles_33: !string
+        default: ""
+      libelles_4: !string
+        default: ""
+      libelles_5: !string
+        default: ""
+      libelles_6: !string
+        default: ""
+      libelles_7: !string
+        default: ""
+      libelles_alertes: !string
         default: ""
       typeDocument: !string { }
       legendURL: !string
