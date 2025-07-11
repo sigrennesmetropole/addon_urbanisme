@@ -16,10 +16,12 @@
 	<parameter name="codeProprio" class="java.lang.String"/>
 	<parameter name="nomProprio" class="java.lang.String"/>
 	<parameter name="adresseProprio" class="java.lang.String"/>
+	<parameter name="libelles" class="java.lang.String"/>
 	<parameter name="surfaceSIG" class="java.lang.String"/>
 	<parameter name="commune" class="java.lang.String"/>
 	<parameter name="dateRU" class="java.lang.String"/>
 	<parameter name="datePCI" class="java.lang.String"/>
+	<parameter name="typeDocument" class="java.lang.String"/>
 	<parameter name="adressesPostales" class="java.lang.String"/>
 	<parameter name="intra" class="java.lang.Boolean">
 		<defaultValueExpression><![CDATA[false]]></defaultValueExpression>
