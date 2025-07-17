@@ -13,7 +13,16 @@
             "service": "/geoserver/urba_docs/wms"
         },
         "zipBaseURL": "http://public.sig.rennesmetropole.fr/ressources/donnees/urbanisme/plu",
-        "helpURL": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur"
+        "helpURL": "https://github.com/sigrennesmetropole/addon_urbanisme/wiki/Guide-Utilisateur",
+        "template": {
+            "defaut": "A4 portrait ADS",
+            "PLUi": "A4 portrait PLUi",
+            "PSMV": "A4 portrait PSMV"
+        },
+        "type_template": {
+            "PLUi": "PLUi",
+            "PSMV": "PSMV"
+        }
     },
     "title": {
         "en": "Land Planning",
