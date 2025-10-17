@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrba;
+package org.georchestra.urbanisme.renseignurba;
 
 import java.util.List;
 

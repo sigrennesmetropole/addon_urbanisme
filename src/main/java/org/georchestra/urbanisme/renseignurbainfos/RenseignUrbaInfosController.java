@@ -17,22 +17,20 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrbaInfos;
+package org.georchestra.urbanisme.renseignurbainfos;
 
 
-import org.georchestra.urbanisme.RenseignUrbaInfos.RenseignUrbaInfos;
-import org.georchestra.urbanisme.RenseignUrbaInfos.RenseignUrbaInfosBackend;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * This class defines webservices to retrieve « date » from database
@@ -74,7 +72,7 @@ public class RenseignUrbaInfosController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping(value = "/renseignUrbaInfos", method = RequestMethod.GET)
+    @GetMapping(value = "/renseignUrbaInfos")
     public void getRenseignUrbaInfos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
         RenseignUrbaInfos renseign = this.backend.getDate(request.getParameter(CODE_COMMUNE));

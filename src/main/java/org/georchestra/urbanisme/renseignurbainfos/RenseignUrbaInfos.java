@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrbaInfos;
+package org.georchestra.urbanisme.renseignurbainfos;
 
 /**
  * This class hold informations about renseignement d'urbanisme.

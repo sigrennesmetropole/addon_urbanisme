@@ -1,16 +1,16 @@
-package org.georchestra.urbanisme.AdsSecteurInstruction;
+package org.georchestra.urbanisme.adssecteurinstruction;
 
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.SQLException;
+
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class AdsSecteurInstructionController {
@@ -46,7 +46,7 @@ public class AdsSecteurInstructionController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping(value = "/adsSecteurInstruction", method = RequestMethod.GET)
+    @GetMapping(value = "/adsSecteurInstruction")
     public void getAdsSecteurInstruction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
         AdsSecteurInstruction adsSecteurInstruction = this.backend.getadsInstruction(request.getParameter(PARCELLE));
