@@ -151,7 +151,7 @@ public class RenseignUrbaController {
 		// On récupère le renseignement d'urbanisme
 		RenseignUrba renseign = this.backend.getParcelleNouvelleNRU(request.getParameter(PARCELLE));
 
-		// On recupere les adresses postales
+		// On recupere les adresses légales
 		List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
 
 		// Initialisation de la liste des groupes de renseignements
