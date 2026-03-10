@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrba;
+package org.georchestra.urbanisme.renseignurba;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -183,10 +183,10 @@ public class RenseignUrbaBackend {
 	}
 
 	/**
-	 * Permet de recupérer les adresses postales d'une parcelle donnée
+	 * Permet de recupérer les adresses légales d'une parcelle donnée
 	 * 
 	 * @param parcelle id de la parcelle
-	 * @return Liste d'adresses postales
+	 * @return Liste d'adresses légales
 	 */
 	public List<String> getAdressesPostales(String parcelle) throws SQLException {
 		List<String> adressesPostales = new ArrayList<>();

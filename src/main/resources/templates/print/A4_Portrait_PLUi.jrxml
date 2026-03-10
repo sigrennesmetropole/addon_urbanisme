@@ -117,7 +117,7 @@
 		<band height="160" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement x="10" y="0" width="540" height="150" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
+				<reportElement stretchType="RelativeToTallestObject" x="10" y="0" width="540" height="150" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -393,7 +393,7 @@
 					<textFieldExpression><![CDATA[$P{datePCI}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Transparent" x="0" y="120" width="110" height="30" forecolor="#29335C" uuid="3d6618fb-41a6-4452-8db0-e139817b0d3a">
+					<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="120" width="110" height="30" forecolor="#29335C" uuid="3d6618fb-41a6-4452-8db0-e139817b0d3a">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -407,11 +407,11 @@
 					<textElement>
 						<font isBold="true"/>
 					</textElement>
-					<text><![CDATA[Adresses postales
+					<text><![CDATA[Adresses légales
 ]]></text>
 				</staticText>
-				<textField pattern="">
-					<reportElement x="110" y="120" width="430" height="30" uuid="4ee2698e-a1d8-44e2-8b4f-61a6e385b7f2">
+				<textField isStretchWithOverflow="true" pattern="">
+					<reportElement stretchType="RelativeToTallestObject" x="110" y="120" width="430" height="30" uuid="4ee2698e-a1d8-44e2-8b4f-61a6e385b7f2">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>

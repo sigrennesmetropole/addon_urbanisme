@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.AdsAutorisation;
+package org.georchestra.urbanisme.adsautorisation;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
