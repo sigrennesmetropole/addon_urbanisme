@@ -474,7 +474,7 @@
 						<textElement>
 							<font isBold="true"/>
 						</textElement>
-						<text><![CDATA[Adresses postales
+						<text><![CDATA[Adresses légales
 ]]></text>
 					</staticText>
 					<textField isStretchWithOverflow="true" pattern="">

@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.RenseignUrba;
+package org.georchestra.urbanisme.renseignurba;
 
 public enum TemplateRuleOperator {
 

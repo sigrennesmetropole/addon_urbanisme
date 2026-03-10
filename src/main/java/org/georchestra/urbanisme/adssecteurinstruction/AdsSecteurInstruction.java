@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.AdsSecteurInstruction;
+package org.georchestra.urbanisme.adssecteurinstruction;
 
 public class AdsSecteurInstruction {
 

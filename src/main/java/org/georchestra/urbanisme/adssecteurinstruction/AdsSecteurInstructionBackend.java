@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.AdsSecteurInstruction;
+package org.georchestra.urbanisme.adssecteurinstruction;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
