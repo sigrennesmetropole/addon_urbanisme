@@ -1,12 +1,11 @@
 /**
  * 
  */
-package org.georchestra.urbanisme.RenseignUrba;
+package org.georchestra.urbanisme.renseignurba;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.LoggerFactory;

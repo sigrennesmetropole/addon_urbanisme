@@ -17,15 +17,14 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrbaInfos;
-
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.georchestra.urbanisme.RenseignUrbaInfos.RenseignUrbaInfos;
+package org.georchestra.urbanisme.renseignurbainfos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.apache.commons.dbcp2.BasicDataSource;
 
 
 public class RenseignUrbaInfosBackend {

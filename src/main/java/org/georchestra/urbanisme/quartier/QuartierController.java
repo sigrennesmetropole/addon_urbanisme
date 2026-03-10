@@ -1,6 +1,5 @@
-package org.georchestra.urbanisme.AdsAutorisation;
+package org.georchestra.urbanisme.quartier;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,19 +13,19 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 @Controller
-public class AdsAutorisationController {
+public class QuartierController {
 
     private static final String PARCELLE = "parcelle";
-    private static final String NUM_DOSSIER = "numdossier";
+    private static final String NUM_NOM = "numnom";
     private static final String RESPONSE_TYPE_JSON = "application/json; charset=utf-8";
 
     /**
      * Backend managing database configuration
      */
-    private AdsAutorisationBackend backend;
+    private QuartierBackend backend;
 
-    @Value("${adsAutorisationFunction}")
-    private String adsAutorisationFunction;
+    @Value("${quartierFunction}")
+    private String quartierFunction;
     @Value("${jdbcUrl}")
     private String jdbcUrl;
     @Value("${driverClassName}")
@@ -37,37 +36,27 @@ public class AdsAutorisationController {
      */
     @PostConstruct
     private void init() {
-        this.backend = new AdsAutorisationBackend(driverClassName, adsAutorisationFunction, jdbcUrl);
+        this.backend = new QuartierBackend(driverClassName, quartierFunction, jdbcUrl);
     }
 
-
     /**
-     * Retrieve numdossier for the parcelle given in parameter
+     * Retrieve numnom for the parcelle given in parameter
      *
      * @param response
      * @throws Exception
      */
-    @RequestMapping(value = "/adsAutorisation", method = RequestMethod.GET)
-    public void getAdsAutorisation(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+    @RequestMapping(value = "/quartier", method = RequestMethod.GET)
+    public void getQuartier(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
-        AdsAutorisation adsAutorisation = this.backend.getNumDossier(request.getParameter(PARCELLE));
-
-        JSONArray nums = new JSONArray();
-
-
-        for (String numdossier : adsAutorisation.getNumdossier()) {
-            JSONObject numDossierRow = new JSONObject();
-            numDossierRow.put(NUM_DOSSIER, numdossier);
-            nums.put(numDossierRow);
-        }
+        Quartier quartier = this.backend.getNumNom(request.getParameter(PARCELLE));
 
         JSONObject res = new JSONObject();
 
-        res.put(NUM_DOSSIER, nums);
+        res.put(NUM_NOM, quartier.getNumnom());
         res.put(PARCELLE, request.getParameter(PARCELLE));
-
 
         response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));
     }
+
 }

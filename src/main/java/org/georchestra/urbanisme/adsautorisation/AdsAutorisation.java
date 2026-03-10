@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.AdsAutorisation;
+package org.georchestra.urbanisme.adsautorisation;
 
 import java.util.List;
 

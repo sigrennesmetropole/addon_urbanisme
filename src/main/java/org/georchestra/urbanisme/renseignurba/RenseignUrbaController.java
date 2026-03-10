@@ -17,7 +17,7 @@
  * geOrchestra.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.georchestra.urbanisme.RenseignUrba;
+package org.georchestra.urbanisme.renseignurba;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -151,7 +151,7 @@ public class RenseignUrbaController {
 		// On récupère le renseignement d'urbanisme
 		RenseignUrba renseign = this.backend.getParcelleNouvelleNRU(request.getParameter(PARCELLE));
 
-		// On recupere les adresses postales
+		// On recupere les adresses légales
 		List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
 
 		// Initialisation de la liste des groupes de renseignements
@@ -183,7 +183,8 @@ public class RenseignUrbaController {
 			// On ajoute le nom et l'ordre
 			Long ordre = 0L;
 			int index = renseign.getGroupesRu().indexOf(groupe);
-			if (index != -1 && index < renseign.getOrdres().size()) {
+			int countOrdre = renseign.getOrdres().size();
+			if (index != -1 && index < countOrdre) {
 				ordre = renseign.getOrdres().get(index);
 			}
 			groupeRu.put(GROUPE_RU, groupe);
@@ -192,7 +193,8 @@ public class RenseignUrbaController {
 			// On ajoute ensuite tous les libelles associés à ce groupement de
 			// renseignements
 			List<String> libelles = new ArrayList<>();
-			for (int i = 0; i < renseign.getLibelles().size(); i++) {
+			int countRenseign = renseign.getLibelles().size();
+			for (int i = 0; i < countRenseign; i++) {
 				if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe)) {
 					libelles.add(renseign.getLibelles().get(i));
 				}

@@ -1,4 +1,4 @@
-package org.georchestra.urbanisme.Quartier;
+package org.georchestra.urbanisme.quartier;
 
 public class Quartier {
 
