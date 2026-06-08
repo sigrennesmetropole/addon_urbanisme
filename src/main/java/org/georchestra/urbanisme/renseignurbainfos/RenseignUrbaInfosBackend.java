@@ -37,7 +37,7 @@ public class RenseignUrbaInfosBackend {
      * Create a new instance of RenseignUrbaInfosBackend and crate a BasicDataSource configured with jdbc URL
      *
      * @param table      name of table containing date production RU
-     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data
      */
     public RenseignUrbaInfosBackend(final String driverClassName,
                                final String table, final String jdbcUrl) {

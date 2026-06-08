@@ -53,7 +53,7 @@ public class RenseignUrbaBackend {
 	 * @param tableTheme      name of table containing theme description
 	 * @param ordreTheme      theme codes order
 	 * @param jdbcUrl         jdbc URL used to connect to database. Example :
-	 *                        jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+	 *                        jdbc:postgresql://localhost:5432/georchestra?user=www-data
 	 */
 	public RenseignUrbaBackend(final String driverClassName, final String table, String tableTypeColumn,
 			final String tableTheme, final String tableThemeGroupes, final String ordreTheme,

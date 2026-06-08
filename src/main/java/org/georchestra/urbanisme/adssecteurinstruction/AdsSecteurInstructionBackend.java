@@ -17,7 +17,7 @@ public class AdsSecteurInstructionBackend {
      * Create a new instance of AdsSecteurInstructionBackend and crate a BasicDataSource configured with jdbc URL
      *
      * @param functionAdsInstruction      name of function containing nom && ini_instru
-     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data
      */
     public AdsSecteurInstructionBackend(final String driverClassName,
                                     final String functionAdsInstruction,  final String jdbcUrl) {

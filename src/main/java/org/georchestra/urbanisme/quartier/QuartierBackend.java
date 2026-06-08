@@ -17,7 +17,7 @@ public class QuartierBackend {
      * Create a new instance of QuartierBackend and crate a BasicDataSource configured with jdbc URL
      *
      * @param functionQuartier      name of function containing nomnum
-     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data
      */
     public QuartierBackend(final String driverClassName,
                                    final String functionQuartier, final String jdbcUrl) {

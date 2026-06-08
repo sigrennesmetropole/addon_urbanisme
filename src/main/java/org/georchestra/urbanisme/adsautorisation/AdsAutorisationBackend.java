@@ -20,7 +20,7 @@ public class AdsAutorisationBackend {
      * Create a new instance of AdsAutorisationBackend and crate a BasicDataSource configured with jdbc URL
      *
      * @param functionAdsAutorisation      name of function containing numdossier
-     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data
      */
     public AdsAutorisationBackend(final String driverClassName,
                                         final String functionAdsAutorisation, final String jdbcUrl) {
