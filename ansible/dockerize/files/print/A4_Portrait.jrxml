@@ -538,7 +538,7 @@
 					<textElement markup="none">
 						<font size="8" isItalic="true"/>
 					</textElement>
-					<text><![CDATA[(source Rennes Métropole)]]></text>
+					<text><![CDATA[(source API Géoplateforme - Géocodage 1.0.0)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="270" y="12" width="120" height="18" forecolor="#29335C" uuid="f4124f0c-2d7f-4db1-bdd0-e64d677703ca">

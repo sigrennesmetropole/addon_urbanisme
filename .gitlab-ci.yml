@@ -19,8 +19,20 @@ include:
     file: 'docker/docker-template.yml'
   - project: 'boost/template-ci/pipelines/common'
     file: 'securite/oss-index/oss-index-template.yml'
-  - project: 'bots/trivy-script'
-    file: '/trivy-template-job.yml'
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/dependency-track@2.0.0
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/cdxgen-sbom@2.0.1
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/syft-docker-sbom@2.0.0
+    inputs:
+      image_docker: 'glregistry.boost.open.global/rennes-metropole/urbanisme/addon_urbanisme/rennes-metropole:open-develop'
+      rules: 
+        [
+          {
+            "if": "$CI_COMMIT_BRANCH =~ /^develop/  || $CI_COMMIT_BRANCH =~ /^karbonification/"
+          },
+          {
+            "if": "$CI_COMMIT_TAG"
+          }
+        ]
 
 default:
   image: maven:3.9.9-eclipse-temurin-17
@@ -33,6 +45,7 @@ stages:
   - build
   - test
   - sast
+  - post_sast
   - pre_docker
   - docker
   - deploy
@@ -259,14 +272,3 @@ urb:deploy-karbon:qua:
     PARENT_PROJECT_ID: $CI_PROJECT_ID
     PARENT_STAGE_PREFIX: urb:deploy-karbon:prepare
   when: manual
-
-trivyscan:back:
-  extends:
-    - .trivy-scan
-  stage: docker
-  variables:
-    TRIVY_DOCKER_SCAN: glregistry.boost.open.global/rennes-metropole/urbanisme/addon_urbanisme/rennes-metropole:open-develop
-  only:
-    refs:
-      - open/develop
-      - /.*karbonification.*/
