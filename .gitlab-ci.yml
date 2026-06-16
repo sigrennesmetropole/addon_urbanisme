@@ -1,6 +1,7 @@
 # Pipeline variables
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=.m2/repository --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
+  MVN_ARGs: "-s /build/rennes-metropole/urbanisme/addon_urbanisme/.m2/settings.xml"
   GIT_SUBMODULE_STRATEGY: recursive
   NODE_OPTIONS: "--max-old-space-size=8192"
   DOCKER_DISABLE: "true"  
