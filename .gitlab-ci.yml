@@ -1,7 +1,7 @@
 # Pipeline variables
 variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml -Dmaven.repo.local=.m2/repository --batch-mode --errors --fail-at-end --show-version -DinstallAtEnd=true -DdeployAtEnd=true"
-  MVN_ARGs: "-s /build/rennes-metropole/urbanisme/addon_urbanisme/.m2/settings.xml"
+  MVN_ARGS: "-s /builds/rennes-metropole/urbanisme/addon_urbanisme/.m2/settings.xml"
   GIT_SUBMODULE_STRATEGY: recursive
   NODE_OPTIONS: "--max-old-space-size=8192"
   DOCKER_DISABLE: "true"  
@@ -18,13 +18,11 @@ cache:
 include:
   - project: 'boost/template-ci/pipelines/common'
     file: 'docker/docker-template.yml'
-  - project: 'boost/template-ci/pipelines/common'
-    file: 'securite/oss-index/oss-index-template.yml'
-  - component: $CI_SERVER_FQDN/boost/ci-component/security/dependency-track@2.0.0
-  - component: $CI_SERVER_FQDN/boost/ci-component/security/cdxgen-sbom@2.0.1
-  - component: $CI_SERVER_FQDN/boost/ci-component/security/syft-docker-sbom@2.0.0
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/dependency-track@~latest
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/cdxgen-sbom@~latest
+  - component: $CI_SERVER_FQDN/boost/ci-component/security/syft-docker-sbom@~latest
     inputs:
-      image_docker: 'glregistry.boost.open.global/rennes-metropole/urbanisme/addon_urbanisme/rennes-metropole:open-develop'
+      image_docker: 'glregistry.boost.open.global/rennes-metropole/urbanisme/addon_urbanisme/urbanisme:open-develop'
 
 default:
   image: maven:3.9.9-eclipse-temurin-17
