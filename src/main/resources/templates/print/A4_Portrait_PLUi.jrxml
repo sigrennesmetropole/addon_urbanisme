@@ -114,10 +114,10 @@
 				<textFieldExpression><![CDATA["Parcelle N° " + $P{parcelle}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="160" splitType="Stretch">
+		<band height="190" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement stretchType="RelativeToTallestObject" x="10" y="0" width="540" height="150" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
+				<reportElement stretchType="RelativeToTallestObject" x="10" y="0" width="540" height="180" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
@@ -501,78 +501,74 @@
 					</textElement>
 					<text><![CDATA[(source Rennes Métropole)]]></text>
 				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="150" width="110" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="1a2a4e40-12a8-44f3-b93a-aece75ae3ff9">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="2" leftPadding="4" bottomPadding="2">
+						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Compte propriétaire]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="">
+					<reportElement stretchType="RelativeToTallestObject" x="110" y="150" width="160" height="30" isRemoveLineWhenBlank="true" uuid="edf302fd-7995-47f0-81f4-670bc818c8cd">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="2" leftPadding="4" bottomPadding="2">
+						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Left" markup="html"/>
+					<textFieldExpression><![CDATA[$P{codeProprio}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" mode="Transparent" x="270" y="150" width="110" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="b737f3a4-5f02-4d45-bde4-eb535217d87c">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="2" leftPadding="4" bottomPadding="2">
+						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+						<topPen lineWidth="1.0"/>
+						<leftPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Propriétaire(s)]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" pattern="">
+					<reportElement stretchType="RelativeToTallestObject" x="380" y="150" width="160" height="30" isRemoveLineWhenBlank="true" uuid="3aa77447-1223-408e-9572-e5f58c074ba3">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="2" leftPadding="4" bottomPadding="2">
+						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+						<topPen lineWidth="1.0"/>
+						<bottomPen lineWidth="1.0"/>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Left" markup="html"/>
+					<textFieldExpression><![CDATA[$P{nomProprio}]]></textFieldExpression>
+				</textField>
 			</frame>
-		</band>
-		<band height="40">
-			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
-			<staticText>
-				<reportElement stretchType="ElementGroupHeight" mode="Transparent" x="10" y="0" width="110" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="1a2a4e40-12a8-44f3-b93a-aece75ae3ff9">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="2" leftPadding="4" bottomPadding="2">
-					<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Compte propriétaire]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true" pattern="">
-				<reportElement stretchType="ElementGroupHeight" x="120" y="0" width="160" height="30" isRemoveLineWhenBlank="true" uuid="edf302fd-7995-47f0-81f4-670bc818c8cd">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.y" value="px"/>
-					<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="2" leftPadding="4" bottomPadding="2">
-					<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-					<topPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Left" markup="html"/>
-				<textFieldExpression><![CDATA[$P{codeProprio}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement stretchType="ElementGroupHeight" mode="Transparent" x="280" y="0" width="105" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="b737f3a4-5f02-4d45-bde4-eb535217d87c">
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="2" leftPadding="4" bottomPadding="2">
-					<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<text><![CDATA[Propriétaire(s)]]></text>
-			</staticText>
-			<textField isStretchWithOverflow="true" pattern="">
-				<reportElement stretchType="ElementGroupHeight" x="385" y="0" width="165" height="30" isRemoveLineWhenBlank="true" uuid="3aa77447-1223-408e-9572-e5f58c074ba3">
-					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
-				</reportElement>
-				<box topPadding="2" leftPadding="4" bottomPadding="2">
-					<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-					<topPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Left" markup="html"/>
-				<textFieldExpression><![CDATA[$P{nomProprio}]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="45" splitType="Immediate">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
