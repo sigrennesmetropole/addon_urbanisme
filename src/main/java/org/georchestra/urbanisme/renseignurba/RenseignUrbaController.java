@@ -128,10 +128,13 @@ public class RenseignUrbaController {
 			libs.put(libelleRow);
 		}
 
+		List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
+
 		JSONObject res = new JSONObject();
 
 		res.put(PARCELLE, request.getParameter(PARCELLE));
 		res.put(LIBELLES, libs);
+		res.put(ADRESSES_POSTALES, adressesPostales);
 
 		response.setContentType(RESPONSE_TYPE_JSON);
 		response.getWriter().print(res.toString(4));
