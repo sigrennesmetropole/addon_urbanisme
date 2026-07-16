@@ -3,8 +3,7 @@ package org.georchestra.urbanisme.quartier;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -42,17 +41,16 @@ public class QuartierController {
     /**
      * Retrieve numnom for the parcelle given in parameter
      *
-     * @param response
-     * @throws Exception
+     * @param response HTTP response used to return the result as JSON
      */
-    @RequestMapping(value = "/quartier", method = RequestMethod.GET)
+    @GetMapping(value = "/quartier")
     public void getQuartier(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 
         Quartier quartier = this.backend.getNumNom(request.getParameter(PARCELLE));
 
         JSONObject res = new JSONObject();
 
-        res.put(NUM_NOM, quartier.getNumnom());
+        res.put(NUM_NOM, quartier.numnom());
         res.put(PARCELLE, request.getParameter(PARCELLE));
 
         response.setContentType(RESPONSE_TYPE_JSON);

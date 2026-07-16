@@ -9,9 +9,8 @@ import java.sql.SQLException;
 
 public class QuartierBackend {
 
-    private String functionQuartier;
-    private String jdbcUrl;
-    private BasicDataSource basicDataSource;
+    private final String functionQuartier;
+    private final BasicDataSource basicDataSource;
 
     /**
      * Create a new instance of QuartierBackend and crate a BasicDataSource configured with jdbc URL
@@ -23,8 +22,6 @@ public class QuartierBackend {
                                    final String functionQuartier, final String jdbcUrl) {
         this.functionQuartier = functionQuartier;
 
-        this.jdbcUrl = jdbcUrl;
-
         this.basicDataSource = new BasicDataSource();
         this.basicDataSource.setDriverClassName(driverClassName);
         this.basicDataSource.setTestOnBorrow(true);
@@ -32,18 +29,19 @@ public class QuartierBackend {
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
         this.basicDataSource.setDefaultReadOnly(true);
         this.basicDataSource.setDefaultAutoCommit(true);
-        this.basicDataSource.setUrl(this.jdbcUrl);
+        this.basicDataSource.setUrl(jdbcUrl);
     }
 
     /**
      * Get numnom
      *
-     * @param parcelle
+     * @param parcelle Parcelle ID
      * @return Quartier instance containing numnom
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs
      */
     public Quartier getNumNom(String parcelle) throws SQLException {
         String numnom = "";
+        //noinspection SqlResolve
         String query = "SELECT"
                 +" numnom "
                 +" FROM "

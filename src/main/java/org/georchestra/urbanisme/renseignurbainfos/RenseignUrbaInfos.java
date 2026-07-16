@@ -21,34 +21,10 @@ package org.georchestra.urbanisme.renseignurbainfos;
 
 /**
  * This class hold informations about renseignement d'urbanisme.
+ *
+ * @param codeCommune code commune
+ * @param dateRu      date de production des RU
+ * @param datePci     Le millésime du cadastre
  */
-public class RenseignUrbaInfos {
-    private String code_commune;
-    private String date_ru;
-    private String date_pci;
-
-    /**
-     * Create a new instance of renseignUrban
-     *
-     * @param code_commune code commune
-     * @param date_ru date de production des RU
-     * @param date_pci 	Le millésime du cadastre
-     */
-    public RenseignUrbaInfos(String code_commune, String date_ru, String date_pci) {
-        this.code_commune = code_commune;
-        this.date_ru = date_ru;
-        this.date_pci = date_pci;
-    }
-
-    public String getCode_commune() {
-        return code_commune;
-    }
-
-    public String getDate_ru() {
-        return date_ru;
-    }
-
-    public String getDate_pci() {
-        return date_pci;
-    }
+public record RenseignUrbaInfos(String codeCommune, String dateRu, String datePci) {
 }

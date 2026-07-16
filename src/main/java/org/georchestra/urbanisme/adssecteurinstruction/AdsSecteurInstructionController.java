@@ -43,8 +43,7 @@ public class AdsSecteurInstructionController {
     /**
      * Retrieve nom && ini_instru for the parcelle given in parameter
      *
-     * @param response
-     * @throws Exception
+     * @param response HTTP response used to return the result as JSON
      */
     @GetMapping(value = "/adsSecteurInstruction")
     public void getAdsSecteurInstruction(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
@@ -53,8 +52,8 @@ public class AdsSecteurInstructionController {
 
         JSONObject res = new JSONObject();
 
-        res.put(NOM, adsSecteurInstruction.getNom());
-        res.put(INI_INSTRU, adsSecteurInstruction.getIni_instru());
+        res.put(NOM, adsSecteurInstruction.nom());
+        res.put(INI_INSTRU, adsSecteurInstruction.iniInstru());
         res.put(PARCELLE, request.getParameter(PARCELLE));
 
         response.setContentType(RESPONSE_TYPE_JSON);

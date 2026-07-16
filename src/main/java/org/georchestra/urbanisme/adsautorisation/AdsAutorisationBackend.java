@@ -11,10 +11,8 @@ import java.util.List;
 
 public class AdsAutorisationBackend {
 
-
-    private String functionAdsAutorisation;
-    private String jdbcUrl;
-    private BasicDataSource basicDataSource;
+    private final String functionAdsAutorisation;
+    private final BasicDataSource basicDataSource;
 
     /**
      * Create a new instance of AdsAutorisationBackend and crate a BasicDataSource configured with jdbc URL
@@ -26,8 +24,6 @@ public class AdsAutorisationBackend {
                                         final String functionAdsAutorisation, final String jdbcUrl) {
         this.functionAdsAutorisation = functionAdsAutorisation;
 
-        this.jdbcUrl = jdbcUrl;
-
         this.basicDataSource = new BasicDataSource();
         this.basicDataSource.setDriverClassName(driverClassName);
         this.basicDataSource.setTestOnBorrow(true);
@@ -35,18 +31,19 @@ public class AdsAutorisationBackend {
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
         this.basicDataSource.setDefaultReadOnly(true);
         this.basicDataSource.setDefaultAutoCommit(true);
-        this.basicDataSource.setUrl(this.jdbcUrl);
+        this.basicDataSource.setUrl(jdbcUrl);
     }
 
     /**
      * Get numdossier.
      *
-     * @param parcelle
+     * @param parcelle Parcelle ID
      * @return AdsAutorisation instance containing numdossier
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs
      */
     public AdsAutorisation getNumDossier(String parcelle) throws SQLException {
         List<String> numDossiers = new ArrayList<>();
+        //noinspection SqlResolve
         String query = "SELECT"
                 +" numdossier "
                 +" FROM "
