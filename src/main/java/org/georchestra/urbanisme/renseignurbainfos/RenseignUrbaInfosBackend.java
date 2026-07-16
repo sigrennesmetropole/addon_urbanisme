@@ -29,9 +29,8 @@ import org.apache.commons.dbcp2.BasicDataSource;
 
 public class RenseignUrbaInfosBackend {
 
-    private String table;
-    private String jdbcUrl;
-    private BasicDataSource basicDataSource;
+    private final String table;
+    private final BasicDataSource basicDataSource;
 
     /**
      * Create a new instance of RenseignUrbaInfosBackend and crate a BasicDataSource configured with jdbc URL
@@ -43,8 +42,6 @@ public class RenseignUrbaInfosBackend {
                                final String table, final String jdbcUrl) {
         this.table = table;
 
-        this.jdbcUrl = jdbcUrl;
-
         this.basicDataSource = new BasicDataSource();
         this.basicDataSource.setDriverClassName(driverClassName);
         this.basicDataSource.setTestOnBorrow(true);
@@ -52,35 +49,35 @@ public class RenseignUrbaInfosBackend {
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
         this.basicDataSource.setDefaultReadOnly(true);
         this.basicDataSource.setDefaultAutoCommit(true);
-        this.basicDataSource.setUrl(this.jdbcUrl);
+        this.basicDataSource.setUrl(jdbcUrl);
     }
 
     /**
      * Get date de production des RU et le millésime du cadastre.
      *
-     * @param code_commune
+     * @param codeCommune code commune used to filter the renseignement
      * @return RenseignUrba instance containing date_ru & date_pci
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs
      */
-    public RenseignUrbaInfos getDate(String code_commune) throws SQLException {
-        String date_ru = "";
-        String date_pci = "";
+    public RenseignUrbaInfos getDate(String codeCommune) throws SQLException {
+        String dateRu = "";
+        String datePci = "";
         String query = "SELECT " +" code_commune," +"date_ru," +" date_pci FROM " + this.table +" WHERE code_commune like ?;";
         ResultSet rs = null;
         try (
                 Connection connection = this.basicDataSource.getConnection();
                 PreparedStatement queryDateByCommune = connection.prepareStatement(query);
         ){
-            queryDateByCommune.setString(1, code_commune);
+            queryDateByCommune.setString(1, codeCommune);
 
             rs = queryDateByCommune.executeQuery();
 
             if(rs.next()) {
-                date_ru= rs.getString("date_ru");
-                date_pci= rs.getString("date_pci");
+                dateRu= rs.getString("date_ru");
+                datePci= rs.getString("date_pci");
             }
 
-            return new RenseignUrbaInfos(code_commune, date_ru, date_pci);
+            return new RenseignUrbaInfos(codeCommune, dateRu, datePci);
         } finally {
             if (rs != null) {
                 rs.close();

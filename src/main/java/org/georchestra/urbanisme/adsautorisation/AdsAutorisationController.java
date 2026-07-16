@@ -44,8 +44,7 @@ public class AdsAutorisationController {
     /**
      * Retrieve numdossier for the parcelle given in parameter
      *
-     * @param response
-     * @throws Exception
+     * @param response HTTP response used to return the result as JSON
      */
     @GetMapping(value = "/adsAutorisation")
     public void getAdsAutorisation(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {

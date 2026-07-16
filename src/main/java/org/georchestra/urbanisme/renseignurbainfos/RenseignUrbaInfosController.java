@@ -69,8 +69,7 @@ public class RenseignUrbaInfosController {
     /**
      * Retrieve libelles for the parcelle given in parameter
      *
-     * @param response
-     * @throws Exception
+     * @param response HTTP response used to return the result as JSON
      */
     @GetMapping(value = "/renseignUrbaInfos")
     public void getRenseignUrbaInfos(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
@@ -80,8 +79,8 @@ public class RenseignUrbaInfosController {
         JSONObject res = new JSONObject();
 
         res.put(CODE_COMMUNE, request.getParameter(CODE_COMMUNE));
-        res.put(DATE_RU, renseign.getDate_ru());
-        res.put(DATE_PCI, renseign.getDate_pci());
+        res.put(DATE_RU, renseign.dateRu());
+        res.put(DATE_PCI, renseign.datePci());
 
         response.setContentType(RESPONSE_TYPE_JSON);
         response.getWriter().print(res.toString(4));

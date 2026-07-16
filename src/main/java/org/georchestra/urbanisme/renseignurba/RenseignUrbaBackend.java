@@ -29,11 +29,15 @@ import java.util.List;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.lang.StringUtils;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * This class represent storage of Renseignement d'urbanisme.
  */
+@RequiredArgsConstructor
 public class RenseignUrbaBackend {
 
+	private final String driverClassName;
 	private final String table;
 	private final String tableTypeColumn;
 	private final String tableTheme;
@@ -44,40 +48,22 @@ public class RenseignUrbaBackend {
 	private BasicDataSource basicDataSource;
 
 	/**
-	 * Create a new instance of RenseignUrbaBackend and create a BasicDataSource
-	 * configured with jdbc URL
-	 * 
-	 * @param table           name of table containing renseignement d'urbanisme
-	 *                        (libelles)
-	 * @param tableTypeColumn TODO
-	 * @param tableTheme      name of table containing theme description
-	 * @param ordreTheme      theme codes order
-	 * @param jdbcUrl         jdbc URL used to connect to database. Example :
-	 *                        jdbc:postgresql://localhost:5432/georchestra?user=www-data
+	 * Lazily create and return the BasicDataSource configured with the jdbc URL.
+	 *
+	 * @return the configured BasicDataSource
 	 */
-	public RenseignUrbaBackend(final String driverClassName, final String table, String tableTypeColumn,
-			final String tableTheme, final String tableThemeGroupes, final String ordreTheme,
-			final String parcelleAdresseRvaTable, final String jdbcUrl) {
-		this.table = table;
-		this.tableTypeColumn = tableTypeColumn;
-		this.tableTheme = tableTheme;
-		this.tableThemeGroupes = tableThemeGroupes;
-		this.ordreTheme = ordreTheme;
-		this.parcelleAdresseRvaTable = parcelleAdresseRvaTable;
-		this.jdbcUrl = jdbcUrl;
-
-		this.initDataSource(driverClassName);
-	}
-
-	private void initDataSource(String driverClassName) {
-		this.basicDataSource = new BasicDataSource();
-		this.basicDataSource.setDriverClassName(driverClassName);
-		this.basicDataSource.setTestOnBorrow(true);
-		this.basicDataSource.setPoolPreparedStatements(true);
-		this.basicDataSource.setMaxOpenPreparedStatements(-1);
-		this.basicDataSource.setDefaultReadOnly(true);
-		this.basicDataSource.setDefaultAutoCommit(true);
-		this.basicDataSource.setUrl(this.jdbcUrl);
+	private BasicDataSource getDataSource() {
+		if (this.basicDataSource == null) {
+			this.basicDataSource = new BasicDataSource();
+			this.basicDataSource.setDriverClassName(this.driverClassName);
+			this.basicDataSource.setTestOnBorrow(true);
+			this.basicDataSource.setPoolPreparedStatements(true);
+			this.basicDataSource.setMaxOpenPreparedStatements(-1);
+			this.basicDataSource.setDefaultReadOnly(true);
+			this.basicDataSource.setDefaultAutoCommit(true);
+			this.basicDataSource.setUrl(this.jdbcUrl);
+		}
+		return this.basicDataSource;
 	}
 
 	/**
@@ -85,14 +71,14 @@ public class RenseignUrbaBackend {
 	 *
 	 * @param parcelle Parcelle ID
 	 * @return RenseignUrba instance containing the libelles
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs
 	 */
 	public RenseignUrba getParcelle(String parcelle) throws SQLException {
 		List<String> libellesVal = new ArrayList<>();
 		String query = this.getNRUQuery();
 		ResultSet rs = null;
-		try (Connection connection = this.basicDataSource.getConnection();
-				PreparedStatement queryLibellesByParcelle = connection.prepareStatement(query);) {
+		try (Connection connection = this.getDataSource().getConnection();
+				PreparedStatement queryLibellesByParcelle = connection.prepareStatement(query)) {
 			queryLibellesByParcelle.setString(1, parcelle);
 
 			rs = queryLibellesByParcelle.executeQuery();
@@ -115,7 +101,7 @@ public class RenseignUrbaBackend {
 	 * @param parcelle Parcelle ID
 	 * @return RenseignUrba instance containing the libelles, the ordres, the
 	 *         groupeRu
-	 * @throws SQLException
+	 * @throws SQLException if a database access error occurs
 	 */
 	public RenseignUrba getParcelleNouvelleNRU(String parcelle) throws SQLException {
 
@@ -126,8 +112,8 @@ public class RenseignUrbaBackend {
 		ResultSet rs = null;
 
 		String query = this.getNewNRUQuery();
-		try (Connection connection = this.basicDataSource.getConnection();
-				PreparedStatement queryInfosByParcelle = connection.prepareStatement(query);) {
+		try (Connection connection = this.getDataSource().getConnection();
+				PreparedStatement queryInfosByParcelle = connection.prepareStatement(query)) {
 			queryInfosByParcelle.setString(1, parcelle);
 			rs = queryInfosByParcelle.executeQuery();
 
@@ -192,7 +178,7 @@ public class RenseignUrbaBackend {
 		List<String> adressesPostales = new ArrayList<>();
 		PreparedStatement queryAdressesPostalesByParcelle = null;
 		ResultSet rs = null;
-		try (Connection connection = this.basicDataSource.getConnection()) {
+		try (Connection connection = this.getDataSource().getConnection()) {
 			if (StringUtils.isEmpty(this.parcelleAdresseRvaTable)) {
 				return adressesPostales;
 			}
