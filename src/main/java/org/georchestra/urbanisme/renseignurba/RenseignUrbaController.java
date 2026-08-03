@@ -33,15 +33,17 @@ import org.apache.commons.lang.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * This class defines webservices to retrieve « libelles » from database
  */
 @Controller
+@RequiredArgsConstructor
 public class RenseignUrbaController {
 
 	private static final String PARCELLE = "parcelle";
@@ -78,8 +80,7 @@ public class RenseignUrbaController {
 	@Value("${driverClassName}")
 	private String driverClassName;
 
-	@Autowired
-	private TemplateRuleHelper templateRuleHelper;
+	private final TemplateRuleHelper templateRuleHelper;
 
 	/**
 	 * This read configuration in datadir a create configured backend
@@ -93,9 +94,9 @@ public class RenseignUrbaController {
 	/**
 	 * Give general information about web service. Mostly present for debug purpose.
 	 *
-	 * @param response
-	 * @throws IOException
-	 * @throws JSONException
+	 * @param response HTTP response used to return the result as JSON
+	 * @throws IOException   if writing the response fails
+	 * @throws JSONException if building the JSON payload fails
 	 */
 	@GetMapping(value = "/about")
 	public void getAbout(HttpServletResponse response) throws IOException, JSONException {
@@ -111,9 +112,8 @@ public class RenseignUrbaController {
 	/**
 	 * Retrieve libelles for the parcelle given in parameter
 	 *
-	 * @param response
-	 * @throws Exception
-	 */
+	 * @param response HTTP response used to return the result as JSON
+     */
 	@GetMapping(value = "/renseignUrba")
 	public void getRenseignUrba(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
@@ -128,10 +128,13 @@ public class RenseignUrbaController {
 			libs.put(libelleRow);
 		}
 
+		List<String> adressesPostales = this.backend.getAdressesPostales(request.getParameter(PARCELLE));
+
 		JSONObject res = new JSONObject();
 
 		res.put(PARCELLE, request.getParameter(PARCELLE));
 		res.put(LIBELLES, libs);
+		res.put(ADRESSES_POSTALES, adressesPostales);
 
 		response.setContentType(RESPONSE_TYPE_JSON);
 		response.getWriter().print(res.toString(4));
@@ -141,9 +144,8 @@ public class RenseignUrbaController {
 	 * Retrieve groupements de renseignements (libelles, nom, ordre) for the
 	 * parcelle given in parameter
 	 *
-	 * @param response
-	 * @throws Exception
-	 */
+	 * @param response HTTP response used to return the result as JSON
+     */
 	@GetMapping(value = "/renseignUrbaGroupe")
 	public void getNewRenseignUrba(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException {
@@ -203,8 +205,10 @@ public class RenseignUrbaController {
 
 			// On continue en ajoutant tous les types de documents associés
 			List<String> types = new ArrayList<>();
-			for (int i = 0; i < renseign.getTypeDocuments().size(); i++) {
-				String type = renseign.getTypeDocuments().get(i);
+			List<String> typeDocuments = renseign.getTypeDocuments();
+			int countTypeDocuments = typeDocuments.size();
+			for (int i = 0; i < countTypeDocuments; i++) {
+				String type = typeDocuments.get(i);
 				if (i < renseign.getGroupesRu().size() && StringUtils.equals(renseign.getGroupesRu().get(i), groupe)
 						&& !excludeDocumentTypes.contains(type)) {
 					types.add(type);

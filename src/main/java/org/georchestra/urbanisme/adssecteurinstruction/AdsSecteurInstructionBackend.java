@@ -9,21 +9,18 @@ import java.sql.SQLException;
 
 public class AdsSecteurInstructionBackend {
 
-    private String functionAdsInstruction;
-    private String jdbcUrl;
-    private BasicDataSource basicDataSource;
+    private final String functionAdsInstruction;
+    private final BasicDataSource basicDataSource;
 
     /**
      * Create a new instance of AdsSecteurInstructionBackend and crate a BasicDataSource configured with jdbc URL
      *
      * @param functionAdsInstruction      name of function containing nom && ini_instru
-     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data&password=www-data
+     * @param jdbcUrl    jdbc URL used to connect to database. Example : jdbc:postgresql://localhost:5432/georchestra?user=www-data
      */
     public AdsSecteurInstructionBackend(final String driverClassName,
                                     final String functionAdsInstruction,  final String jdbcUrl) {
         this.functionAdsInstruction = functionAdsInstruction;
-
-        this.jdbcUrl = jdbcUrl;
 
         this.basicDataSource = new BasicDataSource();
         this.basicDataSource.setDriverClassName(driverClassName);
@@ -32,19 +29,20 @@ public class AdsSecteurInstructionBackend {
         this.basicDataSource.setMaxOpenPreparedStatements(-1);
         this.basicDataSource.setDefaultReadOnly(true);
         this.basicDataSource.setDefaultAutoCommit(true);
-        this.basicDataSource.setUrl(this.jdbcUrl);
+        this.basicDataSource.setUrl(jdbcUrl);
     }
 
     /**
      * Get nom and ini_instru.
      *
-     * @param parcelle
+     * @param parcelle Parcelle ID
      * @return AdsSecteurInstruction instance containing nom && ini_instru
-     * @throws SQLException
+     * @throws SQLException if a database access error occurs
      */
     public AdsSecteurInstruction getadsInstruction(String parcelle) throws SQLException {
         String nom = "";
-        String ini_instru = "";
+        String iniInstru = "";
+        //noinspection SqlResolve
         String query = "SELECT"
                 +" nom,ini_instru "
                 +" FROM "
@@ -59,10 +57,10 @@ public class AdsSecteurInstructionBackend {
 
             while(rs.next()) {
                 nom= rs.getString("nom");
-                ini_instru= rs.getString("ini_instru");
+                iniInstru= rs.getString("ini_instru");
             }
 
-            return new AdsSecteurInstruction(nom, ini_instru);
+            return new AdsSecteurInstruction(nom, iniInstru);
         } finally {
             if (rs != null) {
                 rs.close();
