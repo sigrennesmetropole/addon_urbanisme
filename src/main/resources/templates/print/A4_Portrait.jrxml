@@ -116,7 +116,7 @@
 		<band height="197" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
 			<frame>
-				<reportElement x="10" y="10" width="540" height="187" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
+				<reportElement stretchType="RelativeToTallestObject" x="10" y="10" width="540" height="187" uuid="53ca7c71-fac3-4a57-99b6-caf63ff25135">
 					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
@@ -456,40 +456,56 @@
 					<textElement textAlignment="Left"/>
 					<textFieldExpression><![CDATA[$P{datePCI}]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement mode="Transparent" x="0" y="120" width="110" height="30" forecolor="#29335C" uuid="3d6618fb-41a6-4452-8db0-e139817b0d3a">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<box topPadding="2" leftPadding="4" bottomPadding="2">
-						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-						<topPen lineWidth="1.0"/>
-						<leftPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-					</box>
-					<textElement>
-						<font isBold="true"/>
-					</textElement>
-					<text><![CDATA[Adresses légales
+				<frame>
+					<reportElement stretchType="RelativeToTallestObject" x="0" y="120" width="540" height="30" uuid="7b8c9d0e-1f2a-4b3c-9d4e-5f6a7b8c9d0e"/>
+					<staticText>
+						<reportElement stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="110" height="30" forecolor="#29335C" uuid="3d6618fb-41a6-4452-8db0-e139817b0d3a">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</reportElement>
+						<box topPadding="2" leftPadding="4" bottomPadding="2">
+							<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+							<topPen lineWidth="1.0"/>
+							<leftPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+						</box>
+						<textElement>
+							<font isBold="true"/>
+						</textElement>
+						<text><![CDATA[Adresses légales
 ]]></text>
-				</staticText>
-				<textField pattern="">
-					<reportElement x="110" y="120" width="430" height="30" uuid="4ee2698e-a1d8-44e2-8b4f-61a6e385b7f2">
-						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<box topPadding="2" leftPadding="4" bottomPadding="2">
-						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
-						<topPen lineWidth="1.0"/>
-						<bottomPen lineWidth="1.0"/>
-						<rightPen lineWidth="1.0"/>
-					</box>
-					<textElement textAlignment="Left" markup="html"/>
-					<textFieldExpression><![CDATA[$P{adressesPostales}]]></textFieldExpression>
-				</textField>
+					</staticText>
+					<textField isStretchWithOverflow="true" pattern="">
+						<reportElement stretchType="RelativeToTallestObject" x="110" y="0" width="430" height="30" uuid="4ee2698e-a1d8-44e2-8b4f-61a6e385b7f2">
+							<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<box topPadding="2" leftPadding="4" bottomPadding="2">
+							<pen lineWidth="0.2" lineColor="#BDBDBD"/>
+							<topPen lineWidth="1.0"/>
+							<bottomPen lineWidth="1.0"/>
+							<rightPen lineWidth="1.0"/>
+						</box>
+						<textElement textAlignment="Left" markup="html"/>
+						<textFieldExpression><![CDATA[$P{adressesPostales}]]></textFieldExpression>
+					</textField>
+					<staticText>
+						<reportElement stretchType="ContainerHeight" x="0" y="12" width="110" height="18" forecolor="#29335C" uuid="f9f6c90f-079e-433c-ba34-86790bd5f06d">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.y" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.x" value="px"/>
+						</reportElement>
+						<box topPadding="2" leftPadding="4" bottomPadding="2"/>
+						<textElement markup="none">
+							<font size="8" isItalic="true"/>
+						</textElement>
+						<text><![CDATA[(source API Géoplateforme - Géocodage 1.0.0)]]></text>
+					</staticText>
+				</frame>
 				<staticText>
 					<reportElement x="0" y="42" width="110" height="18" forecolor="#29335C" uuid="403f7464-88bd-4ebd-a731-fd3125a4d2f8">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -529,19 +545,6 @@
 					<text><![CDATA[(source DGFIP)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement x="0" y="132" width="110" height="18" forecolor="#29335C" uuid="f9f6c90f-079e-433c-ba34-86790bd5f06d">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-					</reportElement>
-					<box topPadding="2" leftPadding="4" bottomPadding="2"/>
-					<textElement markup="none">
-						<font size="8" isItalic="true"/>
-					</textElement>
-					<text><![CDATA[(source API Géoplateforme - Géocodage 1.0.0)]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="270" y="12" width="120" height="18" forecolor="#29335C" uuid="f4124f0c-2d7f-4db1-bdd0-e64d677703ca">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
@@ -563,7 +566,7 @@
 					<textElement markup="none">
 						<font size="8" isItalic="true"/>
 					</textElement>
-					<text><![CDATA[(source Rennes Métropole)]]></text>
+					<text><![CDATA[(source API Géoplateforme - Géocodage 1.0.0)]]></text>
 				</staticText>
 			</frame>
 		</band>

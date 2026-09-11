@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.georchestra</groupId>
 	<artifactId>urbanisme</artifactId>
-	<version>19.0.0</version>
+	<version>19.0.1</version>
 	<packaging>war</packaging>
 	<description>This project contains two different things:
 
@@ -32,7 +32,7 @@
 		<httpclient.version>4.5.14</httpclient.version>
 		<httpclient5.version>5.4.2</httpclient5.version>
 		<mapfish.version>3.31.7</mapfish.version>
-		<metrics.version>4.2.30</metrics.version>
+		<metrics.version>4.2.40</metrics.version>
 		<jsr166y.version>1.7.0</jsr166y.version>
 		<postgresql.version>42.7.5</postgresql.version>
 
@@ -44,8 +44,8 @@
 		<jasperreports.fonts.version>6.0.0</jasperreports.fonts.version>
 		<jasperreports.version>6.17.0</jasperreports.version>
 		<velocity.version>1.7</velocity.version>
-		<logback.version>1.5.17</logback.version>
-		<commons-collection.version>4.5.0</commons-collection.version>
+		<logback.version>1.6.2</logback.version>
+		<commons-collection.version>4.6.0</commons-collection.version>
 		<junit.version>5.8.2</junit.version>
 		<mockito.version>4.5.1</mockito.version>
 		<lombok.version>1.18.34</lombok.version>
