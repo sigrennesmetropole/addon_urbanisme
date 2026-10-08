@@ -224,6 +224,8 @@ urb:deploy-karbon:prepare:qua:
   variables:
     TRIGGERED_BY: urbanisme
     PARENT_PIPELINE_ID: $CI_PIPELINE_ID
+    REGISTRY_PULL_USER: $URBANISME_REGISTRY_PULL_USER
+    REGISTRY_PULL_TOKEN: $URBANISME_REGISTRY_PULL_TOKEN
 
 urb:deploy-karbon:dev:
   extends: .urb:deploy-karbon
