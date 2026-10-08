@@ -325,11 +325,11 @@
 					<textFieldExpression><![CDATA[$P{surfaceSIG}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement stretchType="ElementGroupHeight" mode="Transparent" x="0" y="155" width="110" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="ef9b29dc-1945-467b-95f3-a5412b3da591">
+					<reportElement stretchType="ElementGroupHeight" positionType="Float" mode="Transparent" x="0" y="155" width="110" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="ef9b29dc-1945-467b-95f3-a5412b3da591">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{codeProprio} != null && !$P{codeProprio}.trim().isEmpty()]]></printWhenExpression>
 					</reportElement>
 					<box topPadding="2" leftPadding="4" bottomPadding="2">
 						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
@@ -343,11 +343,11 @@
 					<text><![CDATA[Compte propriétaire]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" pattern="">
-					<reportElement stretchType="ElementGroupHeight" x="110" y="155" width="160" height="30" isRemoveLineWhenBlank="true" uuid="e7409985-42d1-49eb-a1e8-599f2855c155">
+					<reportElement stretchType="ElementGroupHeight" positionType="Float" x="110" y="155" width="160" height="30" isRemoveLineWhenBlank="true" uuid="e7409985-42d1-49eb-a1e8-599f2855c155">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.y" value="px"/>
-						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{codeProprio} != null && !$P{codeProprio}.trim().isEmpty()]]></printWhenExpression>
 					</reportElement>
 					<box topPadding="2" leftPadding="4" bottomPadding="2">
 						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
@@ -359,11 +359,11 @@
 					<textFieldExpression><![CDATA[$P{codeProprio}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement stretchType="ElementGroupHeight" mode="Transparent" x="270" y="155" width="105" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="9aec8eb7-e6b8-466f-a59a-5b0c93d6788c">
+					<reportElement stretchType="ElementGroupHeight" positionType="Float" mode="Transparent" x="270" y="155" width="105" height="30" isRemoveLineWhenBlank="true" forecolor="#29335C" uuid="9aec8eb7-e6b8-466f-a59a-5b0c93d6788c">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<property name="com.jaspersoft.studio.unit.x" value="px"/>
-						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{codeProprio} != null && !$P{codeProprio}.trim().isEmpty()]]></printWhenExpression>
 					</reportElement>
 					<box topPadding="2" leftPadding="4" bottomPadding="2">
 						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
@@ -377,10 +377,10 @@
 					<text><![CDATA[Propriétaire(s)]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="true" pattern="">
-					<reportElement stretchType="ElementGroupHeight" x="375" y="155" width="165" height="30" isRemoveLineWhenBlank="true" uuid="b76587c9-e0ea-4c0e-aaf5-9253eee4ecd2">
+					<reportElement stretchType="ElementGroupHeight" positionType="Float" x="375" y="155" width="165" height="30" isRemoveLineWhenBlank="true" uuid="b76587c9-e0ea-4c0e-aaf5-9253eee4ecd2">
 						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[$P{intra}.booleanValue()==true]]></printWhenExpression>
+						<printWhenExpression><![CDATA[$P{codeProprio} != null && !$P{codeProprio}.trim().isEmpty()]]></printWhenExpression>
 					</reportElement>
 					<box topPadding="2" leftPadding="4" bottomPadding="2">
 						<pen lineWidth="0.2" lineColor="#BDBDBD"/>
