@@ -113,6 +113,14 @@
 				</textElement>
 				<textFieldExpression><![CDATA["Parcelle N° " + $P{parcelle}]]></textFieldExpression>
 			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="10" y="0" width="234" height="20" forecolor="#29335C" uuid="7c2a1d3f-9e5b-4f6c-8b8d-4a3e2f1c0b92">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{typeDocument} != null && !$P{typeDocument}.trim().isEmpty()]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html"/>
+				<textFieldExpression><![CDATA["<b>Document(s) d'urbanisme :</b> " + $P{typeDocument}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="190" splitType="Stretch">
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
